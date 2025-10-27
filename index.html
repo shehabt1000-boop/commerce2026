@@ -5,20 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة خدمات طلاب كلية التجارة - جامعة الزقازيق</title>
 
-    <!-- ==================================== -->
-    <!-- إضافات PWA (تطبيق الويب التقدمي) -->
-    <!-- ==================================== -->
-    
+    <!-- [.. باقي الـ Head والـ Manifest ..] -->
     <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82%22,%22short_name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%22,%22start_url%22:%22./%22,%22display%22:%22standalone%22,%22background_color%22:%22%23eceef1%22,%22theme_color%22:%22%23004c99%22,%22description%22:%22%D8%A8%D9%88%D8%A7%D8%A8%D8%A9%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B7%D9%84%D8%A7%D8%A8%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9%20%D9%84%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82.%22,%22icons%22:[{%22src%22:%22https://placehold.co/192x192/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22},{%22src%22:%22https://placehold.co/512x512/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22}]}">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="خدمات التجارة">
-
     <meta name="theme-color" content="#004c99">
-    <!-- ==================================== -->
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -26,8 +19,8 @@
 
 
     <style>
+        /* [.. نفس كود الـ CSS بالكامل ..] */
         *, *::before, *::after { box-sizing: border-box; }
-
         body {
             --primary-color: #004c99; 
             --accent-color: #ffc107; 
@@ -59,10 +52,8 @@
             position: relative;
             overflow-x: hidden;
         }
-
         a { text-decoration: none; color: inherit; }
         .container { width: 95%; max-width: 1200px; margin: 0 auto; padding: 0 10px; }
-
         .glass-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(240, 240, 240, 0.8); 
@@ -70,7 +61,6 @@
             -webkit-backdrop-filter: blur(8px);
             z-index: -1; 
         }
-
         body.dark-mode {
             --text-color: #e9ecef;
             --bg-color: #121212; 
@@ -91,7 +81,6 @@
         body.dark-mode .service-card h3 { color: #cccccc; }
         body.dark-mode #iframe-error h4 { color: var(--text-color); }
         body.dark-mode #iframe-error p { color: #aaa; }
-        /* (جديد) 3. ألوان لوحة التحكم في الوضع الليلي */
         body.dark-mode .admin-panel-content { background-color: #2c3e50; color: var(--text-color); }
         body.dark-mode .admin-service-item { border-bottom-color: #34495e; }
         body.dark-mode .admin-service-item select { background-color: #34495e; color: var(--text-color); border-color: #555; }
@@ -121,7 +110,6 @@
             align-items: center; justify-content: center;
             flex-grow: 1; order: 2; 
         }
-        /* (مُعدل) 1. إضافة cursor: pointer للقبعه */
         .university-logo {
             width: 30px; height: 30px; margin: 0 0 3px 0; 
             background-color: #FFFFFF; border-radius: 50%;
@@ -129,8 +117,8 @@
             border: 2px solid var(--accent-color); 
             color: var(--primary-color); font-size: 1rem; 
             box-shadow: 0 0 2px var(--accent-color), 0 0 2px rgba(255, 255, 255, 0.5) inset;
-            cursor: pointer; /* (جديد) 1. لجعلها قابلة للضغط */
-            z-index: 1; /* للتأكد أنها فوق أي عناصر أخرى */
+            cursor: pointer; 
+            z-index: 1; 
         }
         body.dark-mode .university-logo {
              box-shadow: 0 0 3px var(--accent-color), 0 0 3px rgba(255, 255, 255, 0.1) inset;
@@ -444,7 +432,6 @@
             z-index: 1;
         }
         
-        /* (جديد) 3. تنسيقات لوحة التحكم المخفية */
         #admin-panel-modal {
             display: none; /* مخفي افتراضياً */
             position: fixed;
@@ -529,6 +516,7 @@
             font-size: 0.9rem;
             cursor: pointer;
             width: 48%;
+            transition: background-color 0.2s; /* (جديد) */
         }
         #admin-save-btn {
             background-color: var(--primary-color);
@@ -537,6 +525,40 @@
         #admin-cancel-btn {
             background-color: #aaa;
             color: white;
+        }
+
+        /* (جديد) 1. تنسيق زر الحفظ وهو غير مفعل */
+        #admin-save-btn:disabled {
+            background-color: #999;
+            color: #eee;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* (جديد) 2. تنسيق رسالة التنبيه (Toast) */
+        #toast-notification {
+            position: fixed;
+            bottom: -100px; /* يبدأ مخفي */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: bottom 0.5s ease;
+        }
+        #toast-notification.show {
+            bottom: 70px; /* يظهر فوق الفوتر */
+        }
+        #toast-notification.error {
+            background-color: #dc3545; /* أحمر */
+        }
+        #toast-notification.success {
+            background-color: #28a745; /* أخضر */
         }
 
 
@@ -578,7 +600,6 @@
             #iframe-error p { font-size: 0.8rem; }
             #iframe-retry-btn { padding: 10px 30px; font-size: 0.9rem; }
 
-            /* (جديد) 3. تنسيقات لوحة التحكم للديسكتوب */
             .admin-panel-content h2 { font-size: 1.5rem; }
             .admin-service-item span { font-size: 1rem; }
             .admin-service-item select { font-size: 1rem; }
@@ -587,6 +608,7 @@
 </head>
 <body>
 
+    <!-- [.. نفس كود الـ HTML body بالكامل ..] -->
     <div class="glass-background"></div>
 
     <div class="top-bar">
@@ -611,7 +633,6 @@
         </div>
 
         <div class="logo-container">
-            <!-- (مُعدل) 1. إضافة ID للقبعه -->
             <div class="university-logo" id="admin-panel-trigger" title="لوحة التحكم">
                 <i class="fa-solid fa-graduation-cap"></i>
             </div>
@@ -749,22 +770,18 @@
         </div>
     </div>
 
-    <!-- زر العودة للأعلى -->
     <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="scrollToTopBtn" title="العودة للأعلى" aria-label="العودة لأعلى الصفحة">⬆️</button>
 
-    <!-- الشريط السفلي (Footer) -->
     <div class="footer">
         <p>بوابة الخدمات الإلكترونية | كلية التجارة - جامعة الزقازيق &copy; 2026</p>
     </div>
 
-    <!-- حاوية الـ iFrame للمتصفح الداخلي -->
     <div id="iframe-viewer" class="iframe-container">
         <div class="iframe-header">
             <button id="iframe-back-btn" aria-label="رجوع"><i class="fas fa-arrow-right"></i></button>
             <h3 id="iframe-title">جاري التحميل...</h3>
         </div>
         <div class="iframe-body">
-            <!-- دائرة التحميل -->
             <div id="iframe-loader">
                 <div class="loader-spinner"></div>
                 <span>جاري التحميل...</span>
@@ -779,7 +796,6 @@
         </div>
     </div>
 
-    <!-- (جديد) 3. لوحة التحكم المخفية -->
     <div id="admin-panel-modal">
         <div class="admin-panel-content">
             <h2>لوحة تحكم حالة المواقع</h2>
@@ -788,12 +804,288 @@
             </div>
             <div class="admin-panel-buttons">
                 <button id="admin-cancel-btn">إلغاء</button>
-                <button id="admin-save-btn">حفظ وإغلاق</button>
+                <!-- (جديد) 1. إضافة "disabled" للزر افتراضياً -->
+                <button id="admin-save-btn" disabled>حفظ وإغلاق</button>
             </div>
         </div>
     </div>
 
+    <!-- (جديد) 2. إضافة عنصر رسالة التنبيه (Toast) -->
+    <div id="toast-notification"></div>
 
+    <!-- ==================================== -->
+    <!-- (مُعدل) كود Firebase واللوجيك الأساسي -->
+    <!-- ==================================== -->
+    <script type="module">
+        // استيراد الدوال المطلوبة من Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // متغيرات Firebase
+        let db;
+        let auth;
+        let siteStatusDocRef;
+        let siteStatuses = {}; 
+
+        // متغيرات التطبيق والـ ID
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        const firebaseConfig = JSON.parse(firebaseConfigStr);
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // (جديد) 2. دالة إظهار رسالة التنبيه
+        const toastEl = document.getElementById('toast-notification');
+        function showToast(message, type = 'success') {
+            if (!toastEl) return;
+            toastEl.textContent = message;
+            toastEl.className = type; // "success" or "error"
+            toastEl.classList.add('show');
+            
+            setTimeout(() => {
+                toastEl.classList.remove('show');
+            }, 3000); // إخفاء الرسالة بعد 3 ثواني
+        }
+
+        // دالة بدء تشغيل Firebase
+        async function initFirebase() {
+            try {
+                setLogLevel('Debug');
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                
+                const userId = auth.currentUser ? auth.currentUser.uid : 'anonymous';
+                console.log('Firebase initialized. App ID:', appId, 'User ID:', userId);
+
+                const statusDocPath = `/artifacts/${appId}/public/data/site_status/config`;
+                siteStatusDocRef = doc(db, statusDocPath);
+
+                // الاستماع للتغييرات اللحظية
+                onSnapshot(siteStatusDocRef, (doc) => {
+                    if (doc.exists()) {
+                        siteStatuses = doc.data();
+                        console.log('Site statuses updated from cloud:', siteStatuses);
+                    } else {
+                        console.log('No status config found in cloud. Using defaults.');
+                        siteStatuses = {};
+                    }
+                    
+                    // (جديد) 1. 
+                    // تفعيل زر الحفظ فقط بعد التأكد من الاتصال وجلب البيانات
+                    if (adminSaveBtn) {
+                        adminSaveBtn.disabled = false;
+                        adminSaveBtn.textContent = 'حفظ وإغلاق';
+                    }
+                }, (error) => {
+                    console.error("Error listening to site status:", error);
+                    // (جديد) 1. تفعيل الزر حتى لو فشل، مع رسالة خطأ
+                    if (adminSaveBtn) {
+                        adminSaveBtn.disabled = false;
+                        adminSaveBtn.textContent = 'حفظ وإغلاق';
+                    }
+                    showToast('فشل الاتصال بقاعدة البيانات', 'error');
+                });
+
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                if (adminSaveBtn) adminSaveBtn.disabled = true; // إبقاؤه معطلاً
+                showToast('فشل تهيئة التطبيق', 'error');
+            }
+        }
+        
+        // --- ربط دوال لوحة التحكم بـ Firebase ---
+
+        const adminPanelTrigger = document.getElementById('admin-panel-trigger');
+        const adminPanelModal = document.getElementById('admin-panel-modal');
+        const adminServiceList = document.getElementById('admin-service-list');
+        const adminSaveBtn = document.getElementById('admin-save-btn');
+        const adminCancelBtn = document.getElementById('admin-cancel-btn');
+        const allServiceCards = document.querySelectorAll('.service-card'); 
+
+        function openAdminPanel() {
+            if (!adminServiceList || !adminPanelModal) return;
+            
+            adminServiceList.innerHTML = '';
+            const statuses = siteStatuses;
+            
+            let index = 1;
+            allServiceCards.forEach(card => {
+                const title = card.querySelector('h3').textContent;
+                const url = card.getAttribute('data-href');
+                if (!url || url.startsWith('https://chat.whatsapp.com')) return;
+
+                const currentStatus = statuses[url] || 'up'; 
+                
+                const item = document.createElement('div');
+                item.className = 'admin-service-item';
+                item.innerHTML = `
+                    <span>${index}. ${title}</span>
+                    <select data-url="${url}">
+                        <option value="up" ${currentStatus === 'up' ? 'selected' : ''}>يعمل</option>
+                        <option value="down" ${currentStatus === 'down' ? 'selected' : ''}>لا يعمل</option>
+                    </select>
+                `;
+                adminServiceList.appendChild(item);
+                index++;
+            });
+            
+            adminPanelModal.style.display = 'block';
+        }
+
+        // (مُعدل) 3. تعديل دالة الحفظ لإظهار رسائل الحالة
+        async function saveAdminStatus() {
+            if (!adminServiceList || !siteStatusDocRef || !adminSaveBtn) {
+                console.error('Admin list or Firestore doc ref is not ready.');
+                showToast('التطبيق غير جاهز، حاول مرة أخرى', 'error');
+                return;
+            }
+            
+            // إظهار حالة التحميل
+            adminSaveBtn.disabled = true;
+            adminSaveBtn.textContent = 'جاري الحفظ...';
+            showToast('جاري الحفظ...', 'success'); // رسالة مؤقتة
+
+            const newStatuses = {};
+            const selects = adminServiceList.querySelectorAll('select');
+            
+            selects.forEach(select => {
+                const url = select.getAttribute('data-url');
+                const status = select.value;
+                newStatuses[url] = status;
+            });
+            
+            try {
+                // حفظ في السحاب
+                await setDoc(siteStatusDocRef, newStatuses);
+                console.log('Admin statuses saved to cloud:', newStatuses);
+                
+                showToast('تم الحفظ بنجاح!', 'success'); // رسالة النجاح
+                closeAdminPanel();
+
+            } catch (error) {
+                console.error("Error saving status to cloud:", error);
+                showToast('فشل الحفظ. حاول مرة أخرى.', 'error'); // رسالة الخطأ
+            } finally {
+                // إعادة تفعيل الزر
+                adminSaveBtn.disabled = false;
+                adminSaveBtn.textContent = 'حفظ وإغلاق';
+            }
+        }
+
+        function closeAdminPanel() {
+            if (adminPanelModal) adminPanelModal.style.display = 'none';
+        }
+
+        // ربط الأحداث
+        if (adminPanelTrigger) adminPanelTrigger.addEventListener('click', openAdminPanel);
+        if (adminSaveBtn) adminSaveBtn.addEventListener('click', saveAdminStatus);
+        if (adminCancelBtn) adminCancelBtn.addEventListener('click', closeAdminPanel);
+
+        // --- ربط منطق فتح البطاقات بـ Firebase ---
+        
+        const iframeViewer = document.getElementById('iframe-viewer');
+        const iframeBackBtn = document.getElementById('iframe-back-btn');
+        const iframeTitle = document.getElementById('iframe-title');
+        const iframeContent = document.getElementById('iframe-content');
+        const iframeLoader = document.getElementById('iframe-loader');
+        const iframeError = document.getElementById('iframe-error');
+        const iframeRetryBtn = document.getElementById('iframe-retry-btn');
+        
+        let iframeLoadTimer = null; 
+        let currentIframeConfig = { url: '', title: '' }; 
+
+        function showIframeError() {
+            if (!iframeViewer.classList.contains('active')) return;
+            iframeContent.src = 'about:blank'; 
+            iframeLoader.style.display = 'none';
+            iframeError.style.display = 'flex';
+        }
+
+        function loadIframe(url, title) {
+            currentIframeConfig = { url, title }; 
+            clearTimeout(iframeLoadTimer); 
+            iframeTitle.textContent = title;
+            iframeLoader.style.display = 'flex'; 
+            iframeError.style.display = 'none'; 
+            iframeContent.style.visibility = 'hidden';
+            iframeContent.src = url; 
+            if (!iframeViewer.classList.contains('active')) {
+                iframeViewer.classList.add('active'); 
+            }
+            iframeLoadTimer = setTimeout(showIframeError, 15000); 
+        }
+
+        allServiceCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                const url = card.getAttribute('data-href');
+                const title = card.querySelector('h3').textContent;
+                
+                if (url) {
+                    if (url.startsWith('https://chat.whatsapp.com')) {
+                        window.open(url, '_blank');
+                        return;
+                    }
+                    
+                    // التحقق من الحالة السحابية
+                    if (siteStatuses[url] === 'down') {
+                        currentIframeConfig = { url, title }; 
+                        iframeTitle.textContent = title;
+                        iframeLoader.style.display = 'none';
+                        iframeContent.style.visibility = 'hidden';
+                        iframeViewer.classList.add('active'); 
+                        showIframeError(); 
+                    } else {
+                        loadIframe(url, title);
+                    }
+                }
+            });
+        });
+        
+        iframeBackBtn.addEventListener('click', () => {
+            iframeViewer.classList.remove('active');
+            clearTimeout(iframeLoadTimer); 
+            iframeContent.src = 'about:blank';
+            iframeTitle.textContent = 'جاري التحميل...';
+            iframeLoader.style.display = 'flex';
+            iframeError.style.display = 'none';
+            iframeContent.style.visibility = 'hidden';
+        });
+
+        iframeRetryBtn.addEventListener('click', () => {
+            const url = currentIframeConfig.url;
+            if (siteStatuses[url] === 'down') {
+                showIframeError(); 
+            } else {
+                loadIframe(url, currentIframeConfig.title);
+            }
+        });
+
+        iframeContent.addEventListener('load', () => {
+            if (iframeContent.src !== 'about:blank') {
+                clearTimeout(iframeLoadTimer); 
+                iframeLoader.style.display = 'none';
+                iframeError.style.display = 'none';
+                iframeContent.style.visibility = 'visible';
+            }
+        });
+
+        // بدء تشغيل Firebase
+        initFirebase();
+
+    </script>
+
+
+    <!-- ==================================== -->
+    <!-- باقي أكواد الجافاسكريبت (القديمة) -->
+    <!-- ==================================== -->
     <script>
         // الكود الأصلي الخاص بك (الوضع الليلي والبحث وزر الصعود)
         const darkModeToggleContainer = document.getElementById('darkModeToggleContainer');
@@ -801,8 +1093,6 @@
         const modeLabel = document.getElementById('modeLabel');
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
         const searchInput = document.getElementById('serviceSearch');
-        // (مُعدل) 3. تم نقل serviceCards للسكربت الثاني ليكون متاحاً للكل
-        // const serviceCards = document.querySelectorAll('.service-card'); 
 
         function updateModeLabel(isDarkMode) {
             if (isDarkMode) {
@@ -820,7 +1110,6 @@
         });
         searchInput.addEventListener('input', () => {
             const searchTerm = searchInput.value.trim().toLowerCase();
-            // (مُعدل) 3. التأكد من أن serviceCards معرف
             const allServiceCards = document.querySelectorAll('.service-card'); 
             allServiceCards.forEach(card => {
                 const cardTitle = card.querySelector('h3').textContent.toLowerCase();
@@ -855,11 +1144,9 @@
         });
     </script>
 
-    <!-- ==================================== -->
-    <!-- (مُعدل) 3. كود PWA والمتصفح ولوحة التحكم -->
-    <!-- ==================================== -->
+    <!-- كود PWA والتثبيت (منفصل) -->
     <script>
-        // === PWA Installation Logic (V3 - Final) ===
+        // === PWA Installation Logic ===
         const installContainer = document.querySelector('.install-container');
         const installBtn = document.getElementById('installAppBtn');
         const installLabel = document.getElementById('installAppLabel');
@@ -910,206 +1197,10 @@
             setInstallButtonState(true);
             deferredPrompt = null;
         });
-        
-        // === (مُعدل) 3. In-App Browser + Admin Panel Logic ===
-        
-        const serviceCards = document.querySelectorAll('.service-card'); // (جديد) 3. تعريف البطاقات هنا
-        const iframeViewer = document.getElementById('iframe-viewer');
-        const iframeBackBtn = document.getElementById('iframe-back-btn');
-        const iframeTitle = document.getElementById('iframe-title');
-        const iframeContent = document.getElementById('iframe-content');
-        const iframeLoader = document.getElementById('iframe-loader');
-        const iframeError = document.getElementById('iframe-error');
-        const iframeRetryBtn = document.getElementById('iframe-retry-btn');
-        
-        // (جديد) 3. متغيرات لوحة التحكم
-        const adminPanelTrigger = document.getElementById('admin-panel-trigger');
-        const adminPanelModal = document.getElementById('admin-panel-modal');
-        const adminServiceList = document.getElementById('admin-service-list');
-        const adminSaveBtn = document.getElementById('admin-save-btn');
-        const adminCancelBtn = document.getElementById('admin-cancel-btn');
-        const SERVICE_STATUS_KEY = 'serviceStatusStore';
-
-        let iframeLoadTimer = null; 
-        let currentIframeConfig = { url: '', title: '' }; 
-
-        // دالة إظهار الخطأ
-        function showIframeError() {
-            if (!iframeViewer.classList.contains('active')) return;
-            iframeContent.src = 'about:blank'; // إيقاف التحميل
-            iframeLoader.style.display = 'none';
-            iframeError.style.display = 'flex';
-        }
-
-        // دالة تحميل الـ iFrame
-        function loadIframe(url, title) {
-            currentIframeConfig = { url, title }; 
-            
-            clearTimeout(iframeLoadTimer); 
-
-            iframeTitle.textContent = title;
-            iframeLoader.style.display = 'flex'; 
-            iframeError.style.display = 'none'; 
-            iframeContent.style.visibility = 'hidden';
-            
-            iframeContent.src = url; 
-
-            if (!iframeViewer.classList.contains('active')) {
-                iframeViewer.classList.add('active'); 
-            }
-
-            iframeLoadTimer = setTimeout(showIframeError, 15000); // 15 ثانية
-        }
-
-        // (مُعدل) 3. الكود الرئيسي لفتح البطاقات
-        serviceCards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                const url = card.getAttribute('data-href');
-                const title = card.querySelector('h3').textContent;
-                
-                if (url) {
-                    if (url.startsWith('https://chat.whatsapp.com')) {
-                        window.open(url, '_blank');
-                        return;
-                    }
-
-                    // (جديد) 3. التحقق من حالة الصيانة قبل التحميل
-                    const statuses = JSON.parse(localStorage.getItem(SERVICE_STATUS_KEY) || '{}');
-                    if (statuses[url] === 'down') {
-                        // الموقع مُعطل يدوياً
-                        currentIframeConfig = { url, title }; // حفظ البيانات
-                        iframeTitle.textContent = title;
-                        iframeLoader.style.display = 'none';
-                        iframeContent.style.visibility = 'hidden';
-                        iframeViewer.classList.add('active'); // إظهار النافذة
-                        showIframeError(); // إظهار الخطأ فوراً
-                    } else {
-                        // الموقع "يعمل" أو غير مُسجل، قم بالتحميل العادي
-                        loadIframe(url, title);
-                    }
-                }
-            });
-        });
-        
-        // تعديل زر الرجوع
-        iframeBackBtn.addEventListener('click', () => {
-            iframeViewer.classList.remove('active');
-            clearTimeout(iframeLoadTimer); 
-            
-            iframeContent.src = 'about:blank';
-            iframeTitle.textContent = 'جاري التحميل...';
-            iframeLoader.style.display = 'flex';
-            iframeError.style.display = 'none';
-            iframeContent.style.visibility = 'hidden';
-        });
-
-        // (مُعدل) 3. تعديل زر إعادة المحاولة ليتوافق مع لوحة التحكم
-        iframeRetryBtn.addEventListener('click', () => {
-            const statuses = JSON.parse(localStorage.getItem(SERVICE_STATUS_KEY) || '{}');
-            const url = currentIframeConfig.url;
-
-            if (statuses[url] === 'down') {
-                // لا يزال مُعطل، أظهر الخطأ فقط ولا تحاول التحميل
-                showIframeError(); 
-            } else {
-                // "يعمل" أو غير مُسجل، حاول التحميل
-                loadIframe(url, currentIframeConfig.title);
-            }
-        });
-
-        // تعديل مستمع اكتمال التحميل
-        iframeContent.addEventListener('load', () => {
-            if (iframeContent.src !== 'about:blank') {
-                clearTimeout(iframeLoadTimer); // إيقاف التايمر عند نجاح التحميل
-                
-                iframeLoader.style.display = 'none';
-                iframeError.style.display = 'none';
-                iframeContent.style.visibility = 'visible';
-            }
-        });
-
-        // --- (جديد) 3. دوال لوحة التحكم ---
-        function openAdminPanel() {
-            if (!adminServiceList || !adminPanelModal) return;
-            
-            // 1. مسح القائمة القديمة
-            adminServiceList.innerHTML = '';
-            
-            // 2. تحميل الحالات المحفوظة
-            const statuses = JSON.parse(localStorage.getItem(SERVICE_STATUS_KEY) || '{}');
-            
-            // 3. بناء القائمة من البطاقات الموجودة
-            let index = 1;
-            serviceCards.forEach(card => {
-                const title = card.querySelector('h3').textContent;
-                const url = card.getAttribute('data-href');
-                
-                if (!url || url.startsWith('https://chat.whatsapp.com')) {
-                    return; // تخطي روابط واتساب أو البطاقات بدون رابط
-                }
-
-                const currentStatus = statuses[url] || 'up'; // الافتراضي "يعمل"
-                
-                const item = document.createElement('div');
-                item.className = 'admin-service-item';
-                item.innerHTML = `
-                    <span>${index}. ${title}</span>
-                    <select data-url="${url}">
-                        <option value="up" ${currentStatus === 'up' ? 'selected' : ''}>يعمل</option>
-                        <option value="down" ${currentStatus === 'down' ? 'selected' : ''}>لا يعمل</option>
-                    </select>
-                `;
-                adminServiceList.appendChild(item);
-                index++;
-            });
-            
-            // 4. إظهار النافذة
-            adminPanelModal.style.display = 'block';
-        }
-
-        function saveAdminStatus() {
-            if (!adminServiceList) return;
-            
-            const newStatuses = {};
-            const selects = adminServiceList.querySelectorAll('select');
-            
-            selects.forEach(select => {
-                const url = select.getAttribute('data-url');
-                const status = select.value;
-                newStatuses[url] = status;
-            });
-            
-            // حفظ في localStorage
-            localStorage.setItem(SERVICE_STATUS_KEY, JSON.stringify(newStatuses));
-            
-            closeAdminPanel();
-        }
-
-        function closeAdminPanel() {
-            if (adminPanelModal) {
-                adminPanelModal.style.display = 'none';
-            }
-        }
-
-        // ربط الأحداث بأزرار لوحة التحكم
-        if (adminPanelTrigger) {
-            adminPanelTrigger.addEventListener('click', openAdminPanel);
-        }
-        if (adminSaveBtn) {
-            adminSaveBtn.addEventListener('click', saveAdminStatus);
-        }
-        if (adminCancelBtn) {
-            adminCancelBtn.addEventListener('click', closeAdminPanel);
-        }
-        
     </script>
-
-    <!-- ==================================== -->
+    
     <!-- كود الـ Service Worker (كما هو) -->
-    <!-- ==================================== -->
     <script>
-        // Service Worker Registration (Embedded)
         if ('serviceWorker' in navigator) {
             const swCode = `
                 const CACHE_NAME = 'commerce-services-cache-v1';
@@ -1195,5 +1286,4 @@
     </script>
 </body>
 </html>
-
 
