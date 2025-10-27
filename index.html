@@ -9,21 +9,20 @@
     <!-- إضافات PWA (تطبيق الويب التقدمي) -->
     <!-- ==================================== -->
     
-    <!-- (مُصحح) 3. تم تغيير الأيقونة إلى اسم "shehab" -->
     <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82%22,%22short_name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%22,%22start_url%22:%22./%22,%22display%22:%22standalone%22,%22background_color%22:%22%23eceef1%22,%22theme_color%22:%22%23004c99%22,%22description%22:%22%D8%A8%D9%88%D8%A7%D8%A8%D8%A9%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B7%D9%84%D8%A7%D8%A8%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9%20%D9%84%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82.%22,%22icons%22:[{%22src%22:%22https://placehold.co/192x192/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22},{%22src%22:%22https://placehold.co/512x512/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22}]}">
     
-    <!-- لون شريط المتصفح العلوي على الموبايل -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="خدمات التجارة">
+
     <meta name="theme-color" content="#004c99">
     <!-- ==================================== -->
 
 
-    <!-- تحميل أيقونات Font Awesome للواجهة -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- تحميل خط القاهرة (Cairo) -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
     <style>
@@ -41,7 +40,6 @@
             --primary-color: #004c99; /* أزرق جامعي داكن */ 
             --accent-color: #ffc107; /* أصفر مميز (للتفاعل فقط) */ 
             --gold-glow-color: #ffca28; /* لون ذهبي/أصفر ناعم للإضاءة */
-            /* لون الإطار العلوي للفوتر (أزرق غامق نقي) */
             --deep-blue-border: #003a7a; 
 
 
@@ -63,7 +61,6 @@
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); 
 
 
-            /* الحد القياسي (للويب) */
             --border-color: var(--primary-color);
             --border-style: 2px solid var(--border-color); 
 
@@ -77,7 +74,6 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
-            /* ترك مسافة للفوتر - يتم تعديله في وضع الهاتف */
             padding-bottom: 70px; 
             position: relative;
             overflow-x: hidden;
@@ -111,7 +107,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* خلفية محايدة هادئة */
             background-color: rgba(240, 240, 240, 0.8); 
             backdrop-filter: blur(8px); 
             -webkit-backdrop-filter: blur(8px);
@@ -151,22 +146,20 @@
         }
 
 
-        /* تهدئة اللون الأبيض في الوضع الداكن */
         body.dark-mode .service-card h3 {
-            color: #cccccc; /* لون رمادي فاتح ناعم بدلاً من الأبيض الصارخ */
+            color: #cccccc; 
         }
 
 
 
 
         /* ==================================== */
-        /* (مُعدل) الشريط العلوي (Top Bar) */
+        /* الشريط العلوي (Top Bar) */
         /* ==================================== */
         .top-bar {
             background: var(--top-bar-bg);
             color: white;
             padding: 5px 10px 20px 10px; 
-            /* تهدئة ظل الشريط العلوي في الوضع النهاري */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
             display: flex;
             flex-direction: row; 
@@ -176,13 +169,9 @@
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 85% 100%, 15% 100%, 0 calc(100% - 10px)); 
             margin-bottom: 10px; 
             z-index: 5;
-
-
             border-bottom: none; 
             border-right: none;
             border-left: none;
-
-
             min-width: 0; 
         }
 
@@ -216,7 +205,6 @@
             border: 2px solid var(--accent-color); 
             color: var(--primary-color); 
             font-size: 1rem; 
-            /* تهدئة إضاءة الشعار في الوضع النهاري */
             box-shadow: 0 0 2px var(--accent-color), 0 0 2px rgba(255, 255, 255, 0.5) inset;
         }
 
@@ -243,14 +231,13 @@
             text-align: center; 
         }
 
-        /* 2. حاوية للعناصر اليسرى (المصمم وزر التثبيت) */
         .top-bar-left {
             order: 3;
             display: flex;
             flex-direction: column;
-            align-items: center; /* 2. توسيط العناصر */
+            align-items: center; 
             flex-shrink: 0;
-            text-align: center; /* 2. لضمان توسيط نص المصمم */
+            text-align: center; 
         }
 
         /* ==================================== */
@@ -268,12 +255,11 @@
             position: static; 
             display: flex;
             flex-direction: column;
-            align-items: center; /* 2. توسيط نص المصمم */
+            align-items: center; 
             text-align: center;
         }
 
 
-        /* حجم المصمم والرقم في وضع الهاتف */
         .designer-credit, .designer-phone {
             font-size: 0.45rem; 
             opacity: 1; 
@@ -414,7 +400,6 @@
         #serviceSearch:focus {
             outline: none;
             border-color: var(--accent-color);
-            /* إضافة حلقة تركيز ناعمة لسهولة الوصول */
             box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.5); 
         }
 
@@ -439,7 +424,6 @@
 
 
         .service-card {
-            /* حجم البطاقة النهائي في وضع الهاتف */
             padding: 10px; 
             border-radius: 20px; 
             background: var(--card-gradient); 
@@ -449,18 +433,11 @@
             align-items: center;
             justify-content: space-between;
             min-height: 40px; 
-
-
-            /* إطار جامعي توضيحي */
             border: 1px solid var(--deep-blue-border); 
-
-
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-
-
             transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out; 
-
-
+            /* (جديد) 2. تغيير المؤشر للإشارة إلى النقر */
+            cursor: pointer;
         }
 
 
@@ -471,7 +448,6 @@
 
 
         body.dark-mode .service-card {
-            /* إطار توضيحي للبطاقات في وضع الهاتف (الليلي) */
             border: 1px solid #3d4a5b; 
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
         }
@@ -495,7 +471,6 @@
         }
 
 
-        /* حالة التفاعل مع اللمس (Active State) */
         .service-card:active {
             transform: scale(0.98); 
             box-shadow: 0 0 5px var(--primary-color), 
@@ -524,7 +499,6 @@
         }
 
 
-        /* نمط أيقونة البطاقة */
         .service-card .icon {
             font-size: 0.95rem; 
             color: white; 
@@ -536,14 +510,11 @@
             align-items: center;
             justify-content: center;
             margin-left: 6px; 
-
-
             border: 1px solid var(--gold-glow-color); 
             box-shadow: 0 0 2px var(--gold-glow-color), 0 0 1px rgba(255, 202, 40, 0.4) inset; 
         }
 
 
-        /* الإضاءة الليلي (كما هي - هادئة) */
         body.dark-mode .service-card .icon {
             border: 1px solid var(--gold-glow-color); 
             box-shadow: 0 0 2px rgba(255, 202, 40, 0.5); 
@@ -551,7 +522,6 @@
         }
 
 
-        /* الأنماط الخاصة بألوان الأيقونات... (كما هي) */
         .icon.blue { background: radial-gradient(circle, #007bff 40%, #0056b3 100%); }
         .icon.green { background: radial-gradient(circle, #28a745 40%, #1e7e34 100%); }
         .icon.purple { background: radial-gradient(circle, #8a2be2 40%, #6a1ba9 100%); }
@@ -566,19 +536,17 @@
 
 
 
-        /* 1. تكبير حجم النص الأساسي للبطاقة في وضع الهاتف */
         .service-card h3 {
-            font-size: 0.70rem; /* تم تكبيره من 0.75rem */
+            font-size: 0.70rem; 
             margin: 0;
             font-weight: 700;
             color: white; 
         }
 
 
-        /* 1. تكبير حجم النص الفرعي للبطاقة في وضع الهاتف */
         .service-card p {
             display: block; 
-            font-size: 0.55rem; /* تم تكبيره من 0.5rem */
+            font-size: 0.55rem; 
             color: rgba(255, 255, 255, 0.85); 
             margin-top: 1px; 
             white-space: normal;
@@ -587,9 +555,6 @@
         }
 
 
-
-
-        /* تصغير حجم زر "الدخول للموقع" في وضع الهاتف (الحجم كما هو بعد التصغير الأخير) */
         .service-card .direct-link-btn {
             margin: 0;
             padding: 1px 3px; 
@@ -612,24 +577,16 @@
 
 
         /* ==================================== */
-        /* البار السفلي (Footer) - تعديلات وضع الهاتف */
+        /* البار السفلي (Footer) */
         /* ==================================== */
         .footer {
             background-color: var(--footer-bg);
             color: var(--footer-color);
-            /* 2. تصغير حجم البار السفلي في وضع الهاتف */
             padding: 3px 0; 
             text-align: center;
-
-
             border-top: 1px solid var(--accent-color); 
             box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 193, 7, 0.6); 
-
-
-            /* 2. تصغير نص الفوتر في وضع الهاتف */
-            font-size: 0.7rem; /* تم تصغيره من 0.8rem */
-
-
+            font-size: 0.7rem; 
             position: fixed; 
             bottom: 0;
             left: 0;
@@ -650,9 +607,8 @@
         }
 
 
-        /* ضبط الحشوة السفلية لـ body لتتناسب مع حجم الفوتر الجديد في وضع الهاتف */
         body {
-            padding-bottom: 50px; /* تم تصغيره من 70px */
+            padding-bottom: 50px; 
         }
 
 
@@ -663,7 +619,6 @@
         /* ==================================== */
         #scrollToTopBtn {
             position: fixed; 
-            /* رفعه قليلاً ليتناسب مع الفوتر المصغر */
             bottom: 55px; 
             right: 20px; 
             z-index: 99; 
@@ -672,15 +627,11 @@
             background-color: var(--accent-color); 
             color: var(--primary-color); 
             cursor: pointer; 
-            
-            /* (مُعدل) 1. جعل الزر دائري وأصغر قليلاً */
             padding: 10px; 
             width: 40px;
             height: 40px;
-
             border-radius: 50%; 
-            font-size: 0.9rem; /* تصغير الأيقونة */
-
+            font-size: 0.9rem; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
             transition: opacity 0.3s, transform 0.3s; 
             opacity: 0;
@@ -694,47 +645,35 @@
         /* 2. و 3. زر وحاوية تثبيت التطبيق */
         /* ==================================== */
         
-        /* 2. حاوية زر التثبيت والنص */
         .install-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 5px; /* هامش من معلومات المصمم */
+            margin-top: 5px; 
         }
 
         #installAppBtn {
             background-color: var(--accent-color);
             color: var(--primary-color);
             border: none;
-            
-            /* جعله دائري وأيقونة فقط */
             width: 32px;
             height: 32px;
             padding: 0; 
             border-radius: 50%;
             font-size: 0.8rem; 
-            
             font-weight: bold;
             font-family: 'Cairo', sans-serif;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            
             display: flex; 
             align-items: center;
-            justify-content: center; /* لتوسيط الأيقونة */
-            
+            justify-content: center; 
             transition: opacity 0.3s, transform 0.3s;
-            margin-top: 0; /* 2. تم نقل الهامش للحاوية */
+            margin-top: 0; 
         }
         
-        /* إخفاء نص الزر المدمج (للموبايل) */
-        .install-btn-text {
-            display: none;
-        }
-
-        /* 3. النص الصغير تحت الزر */
         .install-btn-sub-label {
-            font-size: 0.4rem; /* حجم صغير جداً */
+            font-size: 0.4rem; 
             color: white;
             line-height: 1;
             margin-top: 2px;
@@ -743,17 +682,77 @@
 
         #installAppBtn i {
             font-size: 0.8rem;
-            margin: 0; /* إزالة أي هوامش */
+            margin: 0; 
         }
         #installAppBtn:hover {
             transform: scale(1.05);
         }
-        /* ستايل الزر عند التعطيل (بعد التثبيت) */
         #installAppBtn:disabled {
             background-color: #aaa;
             color: #555;
             cursor: not-allowed;
             opacity: 0.7;
+        }
+
+        /* ==================================== */
+        /* (جديد) 2. تنسيقات المتصفح الداخلي (iFrame) */
+        /* ==================================== */
+        .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* ارتفاع كامل 100vh */
+            background-color: #ffffff; 
+            z-index: 200;
+            
+            /* يبدأ مخفياً أسفل الشاشة */
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .iframe-container.active {
+            transform: translateY(0); /* يظهر عند إضافة كلاس 'active' */
+        }
+        
+        .iframe-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px; /* تقليل الحشو قليلاً */
+            background-color: var(--primary-color);
+            color: white;
+            flex-shrink: 0; /* ضمان عدم انكماش الهيدر */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        #iframe-back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        
+        #iframe-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin: 0;
+            padding: 0;
+            /* لضمان عدم خروج العنوان عن السطر */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        #iframe-content {
+            width: 100%;
+            flex-grow: 1; /* يأخذ باقي المساحة المتاحة */
+            border: none;
+            /* سيتم حساب الارتفاع تلقائياً بـ flex-grow */
         }
 
 
@@ -762,7 +761,6 @@
         /* ==================================== */
 
 
-        /* شاشات الأيباد والويب (من 600 بكسل وما فوق) */
         @media (min-width: 600px) {
             .container {
                 width: 90%; 
@@ -775,7 +773,6 @@
             }
 
 
-            /* تكبير البار العلوي في وضع الويب */
             .top-bar {
                 padding: 15px 25px 35px 25px; 
                 border-bottom: var(--border-style); 
@@ -784,7 +781,6 @@
             }
 
 
-            /* تكبير العناوين الرئيسية */
             .top-bar h1 {
                 font-size: 1.6rem; 
             }
@@ -793,23 +789,20 @@
             }
 
 
-            /* 3. تكبير زر التبديل في وضع الآيباد والويب */
             #darkModeToggle {
-                padding: 9px; /* زيادة في الحشوة */
-                font-size: 1.5rem; /* زيادة في الحجم */
+                padding: 9px; 
+                font-size: 1.5rem; 
             }
             #modeLabel {
-                font-size: 1rem; /* زيادة في حجم النص التوضيحي */
+                font-size: 1rem; 
             }
 
 
-            /* 3. تكبير نص المصمم والرقم في وضع الآيباد والويب */
             .designer-credit, .designer-phone {
-                font-size: 1rem; /* زيادة في الحجم */
+                font-size: 1rem; 
             }
 
 
-            /* حجم البطاقة في الويب/الآيباد */
             .service-card {
                 padding: 10px; 
                 min-height: 65px; 
@@ -820,7 +813,6 @@
             }
 
 
-            /* تكبير أيقونات البطاقات في وضع الويب */
             .service-card .icon {
                 font-size: 1.5rem; 
                 width: 47px; 
@@ -828,70 +820,57 @@
             }
 
 
-            /* حجم النص الأساسي للبطاقة في وضع الويب */
             .service-card h3 {
                 font-size: 1.25rem; 
             }
-            /* حجم النص الفرعي للبطاقة في وضع الويب */
             .service-card p {
                 font-size: 1.1rem; 
             }
 
 
-            /* زر "الدخول للموقع" في وضع الويب/الآيباد (الحجم الطبيعي) */
             .service-card .direct-link-btn {
                 padding: 9px 15px;
                 font-size: 0.80rem; 
             }
 
 
-            /* الفوتر في وضع الويب/الآيباد (الحجم الطبيعي) */
             .footer {
                 padding: 5px 0; 
                 font-size: 0.8rem;
             }
 
 
-             /* ضبط الحشوة السفلية لـ body لتتناسب مع الفوتر في وضع الويب */
             body {
                 padding-bottom: 70px; 
             }
 
 
-             /* زر الصعود للأعلى */
             #scrollToTopBtn {
                 bottom: 80px; 
-                width: 45px; /* تكبير بسيط للزر الدائري */
+                width: 45px; 
                 height: 45px;
                 font-size: 1rem;
             }
 
-            /* (مُعدل) 2. تنسيق حاوية التثبيت على الديسكتوب */
             .install-container {
                 margin-top: 0;
                 margin-left: 10px;
             }
 
-            /* (مُلغى) 2. تم إلغاء تغيير شكل الزر على الأيباد */
-            /*
-            #installAppBtn {
-                width: auto; 
-                height: auto;
-                border-radius: 50px; 
-                padding: 4px 10px; 
-            }
-            .install-btn-text {
-                display: inline;
-            }
-            .install-btn-sub-label {
-                display: none;
-            }
-            */
-
-            /* تعديل حاوية اليسار في وضع الويب */
             .top-bar-left {
-                flex-direction: row; /* جعل العناصر أفقية */
-                align-items: center; /* توسيط عمودي */
+                flex-direction: row; 
+                align-items: center; 
+            }
+            
+            /* (جديد) 2. تكبير الهيدر للـ iFrame على الديسكتوب */
+            .iframe-header {
+                 padding: 12px 15px;
+            }
+            #iframe-title {
+                font-size: 1.1rem;
+            }
+            #iframe-back-btn {
+                font-size: 1.4rem;
             }
         }
 
@@ -933,7 +912,7 @@
             <!-- 2. حاوية لزر التثبيت والنص */ -->
             <div class="install-container">
                 <button id="installAppBtn" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">
-                    <i class="fas fa-download"></i><span class="install-btn-text">&nbsp; تثبيت التطبيق</span>
+                    <i class="fas fa-download"></i>
                 </button>
                 <!-- 3. النص الصغير تحت الزر */ -->
                 <span id="installAppLabel" class="install-btn-sub-label">تنزيل التطبيق</span>
@@ -966,7 +945,6 @@
         <!-- مربع الترحيب وشريط البحث -->
         <div class="hero">
             <div class="search-container">
-                <!-- تمت إضافة aria-label لدعم سهولة الوصول -->
                 <input type="text" id="serviceSearch" placeholder="ابحث عن الخدمة المطلوبة " aria-label="خانة البحث عن الخدمات">
             </div>
         </div>
@@ -977,167 +955,151 @@
         <div class="services-grid" id="servicesGrid">
 
 
-            <!-- المنصة الرقمية للكتب والمصاريف -->
-            <a href="http://admincom.eps.zu.edu.eg/Views/StudentViews/StudentLogin" target="_blank" class="service-card" data-keywords="سداد مصروفات مالية كتب مقررات">
+            <!-- (مُعدل) 2. تم تحويل الـ <a> إلى <div> ليتم التحكم به عبر JS -->
+            <div class="service-card" data-href="http://admincom.eps.zu.edu.eg/Views/StudentViews/StudentLogin" data-keywords="سداد مصروفات مالية كتب مقررات">
                 <span class="icon blue"><i class="fas fa-desktop"></i></span>
                 <div class="service-content">
                     <h3>المنصة الرقمية للكتب والمصاريف</h3>
                     <p>البوابة الرسمية لسداد رسوم الكتب الجامعية.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع </span>
-            </a>
+            </div>
 
 
 
 
-            <!-- خدمات الطلاب والمصاريف الدراسية -->
-            <a href="https://militaryeducation.zu.edu.eg/Views/ED_Students/Login" target="_blank" class="service-card" data-keywords="خدمات طلابية تسجيل دخول عسكرية">
+            <div class="service-card" data-href="https://militaryeducation.zu.edu.eg/Views/ED_Students/Login" data-keywords="خدمات طلابية تسجيل دخول عسكرية">
                 <span class="icon green"><i class="fas fa-user-graduate"></i></span>
                 <div class="service-content">
                     <h3>البوابة الإلكترونية لخدمات الطلاب </h3>
                     <p>بوابة سداد المصروفات الدراسية والتربية العسكرية.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
-            <!-- الحصول على الكود الجامعي -->
-            <a href="https://militaryeducation.zu.edu.eg/Views/General/GetStudInfo" target="_blank" class="service-card" data-keywords="كود جامعي استعلام رقم جلوس">
+            <div class="service-card" data-href="https://militaryeducation.zu.edu.eg/Views/General/GetStudInfo" data-keywords="كود جامعي استعلام رقم جلوس">
                 <span class="icon purple"><i class="fas fa-id-card"></i></span>
                 <div class="service-content">
                     <h3>الحصول على الكود الجامعي</h3>
                     <p>استخراج الكود الجامعي الخاص بك للاستخدام في جميع المنصات.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
-            <!-- محول الصور إلى PDF وضاغط ملفات -->
-            <a href="https://shehabt1000-boop.github.io/pdf/" target="_blank" class="service-card" data-keywords="pdf ضغط صور تحويل">
+            <div class="service-card" data-href="https://shehabt1000-boop.github.io/pdf/" data-keywords="pdf ضغط صور تحويل">
                 <span class="icon red"><i class="fas fa-file-pdf"></i></span>
                 <div class="service-content">
                     <h3>محول الصور إلى PDF وضاغط ملفات</h3>
                     <p>أداة سريعة ومجانية لتحويل صور المحاضرات إلى ملف PDF موحد.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
 
 
-            <!-- منصة التعليم الإلكتروني (LMS) -->
-            <a href="https://lms.zu.edu.eg/" target="_blank" class="service-card" data-keywords="lms تعليم الكتروني محاضرات منصة">
+            <div class="service-card" data-href="https://lms.zu.edu.eg/" data-keywords="lms تعليم الكتروني محاضرات منصة">
                 <span class="icon dark-blue"><i class="fas fa-chalkboard-teacher"></i></span>
                 <div class="service-content">
                     <h3>منصة التعليم الإلكتروني (LMS)</h3>
                     <p>المنصة الرسمية لعرض المحاضرات، المقررات، وتفاصيل الحساب الأكاديمي.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
 
 
-            <!-- نتائج امتحانات الفرق الدراسية -->
-            <a href="http://www.studentactivities.zu.edu.eg/Students/Registration/ed_login.aspx" target="_blank" class="service-card" data-keywords="نتائج امتحانات فرق دراسية">
+            <div class="service-card" data-href="http://www.studentactivities.zu.edu.eg/Students/Registration/ed_login.aspx" data-keywords="نتائج امتحانات فرق دراسية">
                 <span class="icon yellow"><i class="fas fa-poll-h"></i></span>
                 <div class="service-content">
                     <h3>نتائج امتحانات الفرق الدراسية</h3>
                     <p>عرض نتائج الامتحانات وتفاصيل تسجيل المقررات.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
-            <!-- المجلس الاعلي للجامعات -->
-            <a href="https://scu.eg/" target="_blank" class="service-card" data-keywords="مكتبة رقمية مراجع بحث علمي">
+            <div class="service-card" data-href="https://scu.eg/" data-keywords="مكتبة رقمية مراجع بحث علمي">
                 <span class="icon cyan"><i class="fas fa-book"></i></span>
                 <div class="service-content">
                     <h3>المجلس الاعلي للجامعات</h3>
                     <p>الموقع الرسمي للمجلس الأعلي للجامعات.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
-            <!-- استمارة الكشف الطبي - رابط 1 -->
-            <a href="http://www.medical.zustudents.zu.edu.eg/" target="_blank" class="service-card" data-keywords="كشف طبي استمارة صحي رابط 1">
+            <div class="service-card" data-href="http://www.medical.zustudents.zu.edu.eg/" data-keywords="كشف طبي استمارة صحي رابط 1">
                 <span class="icon grey"><i class="fas fa-notes-medical"></i></span>
                 <div class="service-content">
                     <h3>استمارة الكشف الطبي - رابط 1</h3>
                     <p>رابط التسجيل الأول للكشف الطبي للطلاب الجدد.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
 
 
-            <!-- استمارة الكشف الطبي - رابط 2 -->
-            <a href="http://www.medical2.zustudents.zu.edu.eg/" target="_blank" class="service-card" data-keywords="كشف طبي استمارة صحي رابط 2">
+            <div class="service-card" data-href="http://www.medical2.zustudents.zu.edu.eg/" data-keywords="كشف طبي استمارة صحي رابط 2">
                 <span class="icon grey"><i class="fas fa-notes-medical"></i></span>
                 <div class="service-content">
                     <h3>استمارة الكشف الطبي - رابط 2</h3>
                     <p>رابط التسجيل الثاني للكشف الطبي.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
-            <!-- استمارة الكشف الطبي - رابط 3 -->
-            <a href="http://www.medical3.zustudents.zu.edu.eg/" target="_blank" class="service-card" data-keywords="كشف طبي استمارة صحي رابط 3">
+            <div class="service-card" data-href="http://www.medical3.zustudents.zu.edu.eg/" data-keywords="كشف طبي استمارة صحي رابط 3">
                 <span class="icon grey"><i class="fas fa-notes-medical"></i></span>
                 <div class="service-content">
                     <h3>استمارة الكشف الطبي - رابط 3</h3>
                     <p>رابط التسجيل الثالث للكشف الطبي.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
 
 
-            <!-- التقديم للمدن الجامعية -->
-            <a href="https://hostelstudreg.zu.edu.eg/" target="_blank" class="service-card" data-keywords="مدن جامعية سكن تقديم hostel">
+            <div class="service-card" data-href="https://hostelstudreg.zu.edu.eg/" data-keywords="مدن جامعية سكن تقديم hostel">
                 <span class="icon mint"><i class="fas fa-building"></i></span>
                 <div class="service-content">
                     <h3>التقديم للمدن الجامعية</h3>
                     <p>البوابة الرسمية لتقديم طلبات الالتحاق بالسكن الجامعي.</p>
                 </div>
                 <span class="direct-link-btn">الدخول للموقع</span>
-            </a>
+            </div>
 
 
-            <!-- جروب واتساب فرقة أولى -->
-            <a href="https://chat.whatsapp.com/D3fHA8WdKzELcYiLmJbrUU" target="_blank" class="service-card" data-keywords="واتساب whatsapp فرقة أولى">
+            <div class="service-card" data-href="https://chat.whatsapp.com/D3fHA8WdKzELcYiLmJbrUU" data-keywords="واتساب whatsapp فرقة أولى">
                 <span class="icon whatsapp"><i class="fab fa-whatsapp"></i></span>
                 <div class="service-content">
                     <h3>جروب واتساب فرقة أولى</h3>
                     <p>انضم لمجموعة الفرقة الأولى للتواصل والمناقشة.</p>
                 </div>
                 <span class="direct-link-btn">الانضمام</span>
-            </a>
+            </div>
 
 
-            <!-- جروب واتساب فرقة ثانية -->
-            <a href="https://chat.whatsapp.com/BVk8aNUajS0BPtVJb73jhO" target="_blank" class="service-card" data-keywords="واتساب whatsapp فرقة ثانية">
+            <div class="service-card" data-href="https://chat.whatsapp.com/BVk8aNUajS0BPtVJb73jhO" data-keywords="واتساب whatsapp فرقة ثانية">
                 <span class="icon whatsapp"><i class="fab fa-whatsapp"></i></span>
                 <div class="service-content">
                     <h3>جروب واتساب فرقة ثانية</h3>
                     <p>انضم لمجموعة الفرقة الثانية للتواصل والمناقشة.</p>
                 </div>
                 <span class="direct-link-btn">الانضمام</span>
-            </a>
+            </div>
 
 
 
 
         </div>
     </div>
-
-
-    <!-- (مُعدل) 4. تم نقل زر التثبيت إلى الشريط العلوي -->
-    <!-- <button id="installAppBtn">...</button> -->
 
 
     <!-- زر العودة للأعلى -->
@@ -1151,11 +1113,18 @@
         <p>بوابة الخدمات الإلكترونية | كلية التجارة - جامعة الزقازيق &copy; 2026</p>
     </div>
 
-
+    <!-- (جديد) 2. حاوية الـ iFrame للمتصفح الداخلي -->
+    <div id="iframe-viewer" class="iframe-container">
+        <div class="iframe-header">
+            <button id="iframe-back-btn" aria-label="رجوع"><i class="fas fa-arrow-right"></i></button>
+            <h3 id="iframe-title">جاري التحميل...</h3>
+        </div>
+        <iframe id="iframe-content" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+    </div>
 
 
     <script>
-        // الكود الأصلي الخاص بك
+        // الكود الأصلي الخاص بك (الوضع الليلي والبحث وزر الصعود)
         const darkModeToggleContainer = document.getElementById('darkModeToggleContainer');
         const darkModeToggle = document.getElementById('darkModeToggle');
         const modeLabel = document.getElementById('modeLabel');
@@ -1166,7 +1135,6 @@
 
 
 
-        // دالة تحديث النص بناءً على الوضع
         function updateModeLabel(isDarkMode) {
             if (isDarkMode) {
                 modeLabel.textContent = 'تبديل للوضع الفاتح';
@@ -1178,7 +1146,6 @@
         }
 
 
-        // Dark Mode Logic
         darkModeToggleContainer.addEventListener('click', () => {
             const isDarkMode = document.body.classList.toggle('dark-mode');
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
@@ -1188,7 +1155,6 @@
 
 
 
-        // Search Logic 
         searchInput.addEventListener('input', () => {
             const searchTerm = searchInput.value.trim().toLowerCase();
 
@@ -1197,14 +1163,9 @@
                 const cardTitle = card.querySelector('h3').textContent.toLowerCase();
                 const cardKeywords = card.getAttribute('data-keywords').toLowerCase();
                 const cardDescription = card.querySelector('p').textContent.toLowerCase();
-
-
-                // البحث في العنوان والكلمات المفتاحية والوصف
                 const isMatch = cardTitle.includes(searchTerm) || cardKeywords.includes(searchTerm) || cardDescription.includes(searchTerm);
 
 
-                // استخدام toggle لإضافة أو إزالة فئة 'hidden' بناءً على المطابقة
-                // يتم استخدام opacity 0 و pointer-events: none لضمان عدم إمكانية النقر على البطاقات المخفية 
                 if (!isMatch) {
                     card.classList.add('hidden');
                     card.style.opacity = '0';
@@ -1221,7 +1182,6 @@
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            // تطبيق الثيم المحفوظ وتحديث النص
             const isDarkMode = localStorage.getItem('theme') === 'dark';
             if (isDarkMode) {
                 document.body.classList.add('dark-mode');
@@ -1229,99 +1189,169 @@
             updateModeLabel(isDarkMode);
 
 
-
-
-            // منطق زر الصعود للأعلى (تم تبسيطه للاعتماد على opacity و transition)
             window.addEventListener('scroll', () => {
                 const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-
-                // إظهار الزر بعد تمرير 10 بكسل
                 if (scrollTop > 10) { 
                     scrollToTopBtn.style.opacity = '1';
-                    scrollToTopBtn.style.pointerEvents = 'auto'; // تفعيل النقرات
+                    scrollToTopBtn.style.pointerEvents = 'auto';
                 } else {
                     scrollToTopBtn.style.opacity = '0';
-                    scrollToTopBtn.style.pointerEvents = 'none'; // تعطيل النقرات
+                    scrollToTopBtn.style.pointerEvents = 'none';
                 }
             });
         });
     </script>
 
     <!-- ==================================== -->
-    <!-- (مُعدل) 1. و 2. كود تسجيل الـ PWA وزر التثبيت (مدمج) -->
+    <!-- (مُعدل) 1. و 2. كود PWA والمتصفح الداخلي -->
     <!-- ==================================== -->
     <script>
-        // PWA Installation Logic
-        let deferredPrompt;
+        // === PWA Installation Logic (V3 - Final) ===
+        
+        // Get elements
+        const installContainer = document.querySelector('.install-container');
         const installBtn = document.getElementById('installAppBtn');
-        const installBtnText = installBtn.querySelector('.install-btn-text'); 
-        const installLabel = document.getElementById('installAppLabel'); 
+        const installLabel = document.getElementById('installAppLabel');
+        let deferredPrompt;
 
-        // 3. دالة لتغيير حالة الزر والنص تحته
-        function setInstallButtonState(installed) {
-            
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        // (مُعدل) 1. تعديل دالة حالة الزر
+        function setInstallButtonState(installed, is_ios = false) {
+            if (!installContainer || !installBtn || !installLabel) return;
+
             if (installed) {
-                installBtn.innerHTML = '<i class="fas fa-check"></i><span class="install-btn-text">&nbsp; تم التثبيت</span>';
-                installBtn.disabled = true;
-                if (installLabel) installLabel.textContent = "تم التنزيل"; 
+                // (مُعدل) 1. إخفاء الحاوية بالكامل عند التثبيت
+                installContainer.style.display = 'none';
+            } else if (is_ios) {
+                // إظهار إرشادات آبل
+                installBtn.innerHTML = '<i class="fas fa-arrow-up-from-bracket"></i>';
+                installLabel.textContent = "للتثبيت اضغط مشاركة";
+                installBtn.disabled = true; 
+                installContainer.style.display = 'flex';
             } else {
-                 installBtn.innerHTML = '<i class="fas fa-download"></i><span class="install-btn-text">&nbsp; تثبيت التطبيق</span>';
-                 installBtn.disabled = false;
-                 if (installLabel) installLabel.textContent = "تنزيل التطبيق"; 
+                // إظهار زر التنزيل
+                installBtn.innerHTML = '<i class="fas fa-download"></i>';
+                installLabel.textContent = "تنزيل التطبيق";
+                installBtn.disabled = false;
+                installContainer.style.display = 'flex';
             }
         }
 
-        // (جديد) 1. متغير لتتبع حالة التثبيت الأولية
-        let appInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-        
-        // ضبط الحالة الأولية عند تحميل الصفحة
-        setInstallButtonState(appInstalled);
+        // 3. Main Logic on Page Load
+        const is_ios = isIOS();
+        const is_standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 
+        if (is_standalone) {
+            // (مُعدل) 1. إذا كان التطبيق مثبتاً، استدع الدالة لإخفاء الزر
+            setInstallButtonState(true);
+        } else if (is_ios) {
+            // على متصفح آبل، أظهر الإرشادات
+            setInstallButtonState(false, true);
+        } else {
+            // على متصفح أندرويد، إخفاء الزر وانتظار الحدث
+            if (installContainer) installContainer.style.display = 'none';
+        }
+
+        // 4. Listen for 'beforeinstallprompt' (Android/Chrome)
         window.addEventListener('beforeinstallprompt', (e) => {
-            // إذا ظهر هذا الحدث، فالتطبيق بالتأكيد غير مثبت
+            console.log('beforeinstallprompt event fired');
             e.preventDefault();
             deferredPrompt = e;
-            // عرض زر التثبيت (لأننا الآن متأكدون أنه غير مثبت)
-            setInstallButtonState(false);
+            
+            // إظهار زر "تنزيل" فقط إذا كان الحدث متاحاً والتطبيق غير مثبت
+            if (!is_standalone) {
+                setInstallButtonState(false, false);
+            }
         });
 
-        if (installBtn) {
+        // 5. Click listener for the install button
+        if (installBtn && !is_ios) { 
             installBtn.addEventListener('click', async () => {
-                // (مُعدل) 1. التحقق من وجود الحدث أولاً
                 if (deferredPrompt) {
                     deferredPrompt.prompt();
-                    // انتظار اختيار المستخدم
                     const { outcome } = await deferredPrompt.userChoice;
-                    
+                    deferredPrompt = null;
                     if (outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
-                        setInstallButtonState(true); // (مُعدل) 1. التغيير فقط عند القبول
                     } else {
                         console.log('User dismissed the A2HS prompt');
-                        setInstallButtonState(false); // (مُعدل) 1. يبقى كما هو (للتثبيت)
                     }
-                    // مسح الحدث (لا يمكن استخدامه إلا مرة واحدة)
-                    deferredPrompt = null; 
-                } 
-                // (مُلغى) 1. تم إلغاء جزء 'else' الذي كان يسبب الخطأ
+                }
             });
         }
-        
 
+        // 6. Listen for 'appinstalled' event
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            // (مُعدل) 1. عند اكتمال التثبيت، استدع الدالة لإخفاء الزر
+            setInstallButtonState(true);
+            deferredPrompt = null;
+        });
+        
+        // === (جديد) 2. In-App Browser (iFrame) Logic ===
+        
+        // الحصول على عناصر المتصفح الداخلي
+        const iframeViewer = document.getElementById('iframe-viewer');
+        const iframeBackBtn = document.getElementById('iframe-back-btn');
+        const iframeTitle = document.getElementById('iframe-title');
+        const iframeContent = document.getElementById('iframe-content');
+        
+        // إضافة مستمع لكل بطاقات الخدمة
+        serviceCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // منع السلوك الافتراضي (الذي كان <a>)
+                e.preventDefault(); 
+                
+                // الحصول على الرابط والعنوان من البطاقة
+                const url = card.getAttribute('data-href');
+                const title = card.querySelector('h3').textContent;
+                
+                if (url) {
+                    // إذا كان الرابط واتساب، افتحه في نافذة جديدة (لن يعمل في iFrame)
+                    if (url.startsWith('https://chat.whatsapp.com')) {
+                        window.open(url, '_blank');
+                        return;
+                    }
+                    
+                    // تعيين العنوان والرابط
+                    iframeTitle.textContent = title;
+                    iframeContent.src = url;
+                    
+                    // إظهار حاوية الـ iFrame (بالسلايد)
+                    iframeViewer.classList.add('active');
+                }
+            });
+        });
+        
+        // إضافة مستمع لزر الرجوع
+        iframeBackBtn.addEventListener('click', () => {
+            // إخفاء حاوية الـ iFrame (بالسلايد)
+            iframeViewer.classList.remove('active');
+            
+            // تفريغ الـ iFrame (لتوفير الموارد وإيقاف أي صوت/فيديو)
+            iframeContent.src = 'about:blank';
+            iframeTitle.textContent = 'جاري التحميل...';
+        });
+
+    </script>
+
+    <!-- ==================================== -->
+    <!-- كود الـ Service Worker (كما هو) -->
+    <!-- ==================================== -->
+    <script>
         // Service Worker Registration (Embedded)
         if ('serviceWorker' in navigator) {
-            // The Service Worker code as a string
-            // كود الـ Service Worker كـ نص
             const swCode = `
                 const CACHE_NAME = 'commerce-services-cache-v1';
-                // Cache the root and external assets
-                // تخزين الصفحة الرئيسية والملفات الخارجية مؤقتاً
                 const urlsToCache = [
                     './',
                     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
                     'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
                 ];
 
                 self.addEventListener('install', (event) => {
@@ -1336,8 +1366,6 @@
                 });
 
                 self.addEventListener('fetch', (event) => {
-                  // We only want to cache GET requests and not 'data' or 'chrome-extension' URIs
-                  // نريد فقط تخزين طلبات GET وليس روابط 'data:' أو 'chrome-extension:'
                   if (event.request.method !== 'GET' || 
                       event.request.url.startsWith('data:') ||
                       event.request.url.startsWith('chrome-extension:')) {
@@ -1350,24 +1378,18 @@
                     caches.match(event.request)
                       .then((response) => {
                         if (response) {
-                          return response; // Return from cache // إرجاع من الكاش
+                          return response; // Return from cache
                         }
                         
-                        // Not in cache, fetch from network
-                        // غير موجود في الكاش، اطلبه من الشبكة
                         return fetch(event.request).then((networkResponse) => {
-                            // Clone the response
-                            // نسخ الرد
                             const responseToCache = networkResponse.clone();
-                            
                             caches.open(CACHE_NAME)
                                 .then((cache) => {
                                     cache.put(event.request, responseToCache);
                                 });
-                            
                             return networkResponse;
                         })
-                        .catch(err => console.log('Fetch failed:', err)); // Handle fetch errors
+                        .catch(err => console.log('Fetch failed:', err)); 
                       }
                     )
                   );
@@ -1391,11 +1413,7 @@
             `;
             
             window.addEventListener('load', () => {
-                // Create a Blob from the SW code
-                // إنشاء Blob من كود الـ SW
                 const blob = new Blob([swCode], { type: 'application/javascript' });
-                // Create an object URL from the Blob
-                // إنشاء رابط URL من الـ Blob
                 const swUrl = URL.createObjectURL(blob);
 
                 navigator.serviceWorker.register(swUrl)
