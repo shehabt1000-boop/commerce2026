@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة خدمات طلاب كلية التجارة - جامعة الزقازيق</title>
 
-    <!-- [.. باقي الـ Head والـ Manifest ..] -->
+    <!-- ==================================== -->
+    <!-- إضافات PWA (تطبيق الويب التقدمي) -->
+    <!-- ==================================== -->
+    
+    <!-- رابط المانيفست المدمج -->
     <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82%22,%22short_name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%22,%22start_url%22:%22./%22,%22display%22:%22standalone%22,%22background_color%22:%22%23eceef1%22,%22theme_color%22:%22%23004c99%22,%22description%22:%22%D8%A8%D9%88%D8%A7%D8%A8%D8%A9%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B7%D9%84%D8%A7%D8%A8%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9%20%D9%84%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82.%22,%22icons%22:[{%22src%22:%22https://placehold.co/192x192/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22},{%22src%22:%22https://placehold.co/512x512/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22}]}">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="خدمات التجارة">
     <meta name="theme-color" content="#004c99">
+    <!-- ==================================== -->
+
+
+    <!-- تحميل الأيقونات والخطوط -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -19,23 +27,36 @@
 
 
     <style>
-        /* [.. نفس كود الـ CSS بالكامل ..] */
-        *, *::before, *::after { box-sizing: border-box; }
+        /* إضافة box-sizing: border-box; لجميع العناصر */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        /* ==================================== */
+        /* الألوان الرئيسية والتصميم العام */
+        /* ==================================== */
         body {
-            --primary-color: #004c99; 
-            --accent-color: #ffc107; 
-            --gold-glow-color: #ffca28; 
-            --deep-blue-border: #003a7a; 
+            /* جامعة الزقازيق (Deep Blue & Accent Yellow) */
+            --primary-color: #004c99; /* أزرق جامعي داكن */ 
+            --accent-color: #ffc107; /* أصفر مميز (للتفاعل فقط) */ 
+            --gold-glow-color: #ffca28; /* لون ذهبي/أصفر ناعم للإضاءة */
+            --deep-blue-border: #003a7a; /* لون الإطار العلوي للفوتر (أزرق غامق نقي) */
+
             --dark-blue-deep: #002244; 
             --card-gradient-light: linear-gradient(90deg, var(--dark-blue-deep) 0%, var(--primary-color) 70%, #001529 100%);
             --card-gradient: var(--card-gradient-light); 
+
             --top-bar-bg: var(--card-gradient-light); 
+
             --footer-bg: var(--primary-color);
             --footer-border-color: var(--accent-color);
             --footer-color: white; 
+
             --text-color: #212529; 
             --bg-color: #eceef1; 
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); 
+
+            /* الحد القياسي (للويب) */
             --border-color: var(--primary-color);
             --border-style: 2px solid var(--border-color); 
 
@@ -48,49 +69,88 @@
             color: var(--text-color);
             margin: 0;
             padding: 0;
+            /* ترك مسافة للفوتر - يتم تعديله في وضع الهاتف */
             padding-bottom: 70px; 
             position: relative;
             overflow-x: hidden;
         }
-        a { text-decoration: none; color: inherit; }
-        .container { width: 95%; max-width: 1200px; margin: 0 auto; padding: 0 10px; }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 95%; 
+            max-width: 1200px; 
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* ==================================== */
+        /* تطبيق تأثير الخلفية الزجاجية (الشبورة) */
+        /* ==================================== */
         .glass-background {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* خلفية محايدة هادئة */
             background-color: rgba(240, 240, 240, 0.8); 
             backdrop-filter: blur(8px); 
             -webkit-backdrop-filter: blur(8px);
             z-index: -1; 
         }
+
+        /* ==================================== */
+        /* Dark Mode Styles - الوضع الداكن */
+        /* ==================================== */
         body.dark-mode {
             --text-color: #e9ecef;
             --bg-color: #121212; 
+
             --card-gradient-dark: linear-gradient(90deg, #1f3044 0%, #1f3044 70%, #080808 100%); 
             --card-gradient: var(--card-gradient-dark); 
+
             --top-bar-bg: linear-gradient(90deg, #0f1d2b 0%, #1f3044 70%, #030303 100%); 
+
             --footer-bg: #0a0a0a; 
             --footer-border-color: #555; 
             --footer-color: #ccc; 
+
             --border-style: 2px solid transparent; 
             --card-shadow: 0 6px 15px rgba(255, 255, 255, 0.05);
         }
+
         body.dark-mode .glass-background {
             background-color: rgba(18, 18, 18, 0.85); 
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
-        body.dark-mode .service-card h3 { color: #cccccc; }
+
+        /* تهدئة اللون الأبيض في الوضع الداكن */
+        body.dark-mode .service-card h3 {
+            color: #cccccc; /* لون رمادي فاتح ناعم بدلاً من الأبيض الصارخ */
+        }
+        
         body.dark-mode #iframe-error h4 { color: var(--text-color); }
         body.dark-mode #iframe-error p { color: #aaa; }
+        
         body.dark-mode .admin-panel-content { background-color: #2c3e50; color: var(--text-color); }
         body.dark-mode .admin-service-item { border-bottom-color: #34495e; }
         body.dark-mode .admin-service-item select { background-color: #34495e; color: var(--text-color); border-color: #555; }
         body.dark-mode .admin-service-item select option[value="down"] { color: #ff8a80; }
         body.dark-mode .admin-service-item select option[value="up"] { color: #b9f6ca; }
 
+        /* ==================================== */
+        /* الشريط العلوي (Top Bar) */
+        /* ==================================== */
         .top-bar {
             background: var(--top-bar-bg);
             color: white;
             padding: 5px 10px 20px 10px; 
+            /* تهدئة ظل الشريط العلوي في الوضع النهاري */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
             display: flex;
             flex-direction: row; 
@@ -100,151 +160,326 @@
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 85% 100%, 15% 100%, 0 calc(100% - 10px)); 
             margin-bottom: 10px; 
             z-index: 5;
-            border: none;
+
+            border-bottom: none; 
+            border-right: none;
+            border-left: none;
+
             min-width: 0; 
         }
-        body.dark-mode .top-bar { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); }
+
+        body.dark-mode .top-bar {
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+        }
 
         .logo-container {
-            display: flex; flex-direction: column; 
-            align-items: center; justify-content: center;
-            flex-grow: 1; order: 2; 
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1; 
+            order: 2; 
         }
+
         .university-logo {
-            width: 30px; height: 30px; margin: 0 0 3px 0; 
-            background-color: #FFFFFF; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            width: 30px; 
+            height: 30px; 
+            margin: 0 0 3px 0; 
+            background-color: #FFFFFF; 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 2px solid var(--accent-color); 
-            color: var(--primary-color); font-size: 1rem; 
+            color: var(--primary-color); 
+            font-size: 1rem; 
+            /* تهدئة إضاءة الشعار في الوضع النهاري */
             box-shadow: 0 0 2px var(--accent-color), 0 0 2px rgba(255, 255, 255, 0.5) inset;
-            cursor: pointer; 
-            z-index: 1; 
+            cursor: pointer; /* جعله قابلاً للنقر */
+            z-index: 1; /* التأكد من أنه فوق العناصر الأخرى قليلاً */
         }
+
         body.dark-mode .university-logo {
              box-shadow: 0 0 3px var(--accent-color), 0 0 3px rgba(255, 255, 255, 0.1) inset;
         }
-        .top-bar h1 { font-size: 1rem; margin: 0; line-height: 1.2; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
-        .site-subtitle { font-size: 0.55rem; opacity: 0.9; margin-top: 1px; display: block; text-align: center; }
 
+        .top-bar h1 {
+            font-size: 1rem; 
+            margin: 0;
+            line-height: 1.2;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+        }
+
+        .site-subtitle {
+            font-size: 0.55rem; 
+            opacity: 0.9;
+            margin-top: 1px;
+            display: block;
+            text-align: center; 
+        }
+
+        /* حاوية المصمم وزر التثبيت (أقصى اليسار) */
         .top-bar-left {
-            order: 3; display: flex; flex-direction: column;
-            align-items: center; flex-shrink: 0; text-align: center; 
+            order: 3; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            text-align: center; 
         }
-        .designer-link { text-decoration: none; color: white; cursor: pointer; flex-shrink: 0; }
-        .designer-credit-container {
-            position: static; display: flex; flex-direction: column;
-            align-items: center; text-align: center;
-        }
-        .designer-credit, .designer-phone {
-            font-size: 0.45rem; opacity: 1; color: white; 
-            margin: 0; padding: 0; display: block;
+        
+        .designer-link {
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            flex-shrink: 0;
         }
 
-        #darkModeToggleContainer {
-            order: 1; display: flex; flex-direction: column; 
-            align-items: center; flex-shrink: 0; cursor: pointer; 
+        .designer-credit-container {
+            position: static; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
+
+        /* حجم المصمم والرقم في وضع الهاتف */
+        .designer-credit, .designer-phone {
+            font-size: 0.45rem; 
+            opacity: 1; 
+            color: white; 
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        /* حاوية زر التبديل (أقصى اليمين) */
+        #darkModeToggleContainer {
+            order: 1; 
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            flex-shrink: 0; 
+            cursor: pointer; 
+        }
+
         #darkModeToggle {
-            cursor: pointer; padding: 3px; 
-            background-color: white; color: var(--primary-color);
+            cursor: pointer; 
+            padding: 3px; 
+            background-color: white; 
+            color: var(--primary-color);
             border-radius: 50px; 
             box-shadow: 0 0 2px var(--accent-color), 0 0 2px rgba(255, 255, 255, 0.5) inset;
-            line-height: 1; font-size: 0.85rem; border: 1px solid white;
+            line-height: 1; 
+            font-size: 0.85rem; 
+            border: 1px solid white;
         }
+
         body.dark-mode #darkModeToggleContainer #darkModeToggle {
-            background-color: #ccc; color: #121212;
+            background-color: #ccc; 
+            color: #121212;
             box-shadow: 0 0 5px var(--accent-color); 
         }
+
         #modeLabel {
-            font-size: 0.4rem; color: white; margin-top: 2px; 
-            font-weight: 400; opacity: 0.9; text-align: center; line-height: 1;
+            font-size: 0.4rem; 
+            color: white; 
+            margin-top: 2px; 
+            font-weight: 400;
+            opacity: 0.9;
+            text-align: center;
+            line-height: 1;
         }
 
+        /* ==================================== */
+        /* مربع الترحيب وشريط البحث (Hero) */
+        /* ==================================== */
         .hero {
-            padding: 5px; margin-bottom: 12px; 
-            box-shadow: var(--card-shadow); border-radius: 8px; 
-            color: white; background: var(--card-gradient); 
-            border: none; box-shadow: 0 0 8px rgba(0, 76, 153, 0.6);
+            padding: 5px; 
+            margin-bottom: 12px; 
+            box-shadow: var(--card-shadow);
+            border-radius: 8px; 
+            color: white; 
+            background: var(--card-gradient); 
+            border: none; 
+            box-shadow: 0 0 8px rgba(0, 76, 153, 0.6);
         }
-        body.dark-mode .hero { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); }
 
-        .search-container { position: relative; display: flex; justify-content: center; }
-        .search-container::before {
-            content: "\f002"; font-family: 'Font Awesome 5 Free'; font-weight: 900;
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            color: var(--primary-color); font-size: 0.9rem; pointer-events: none; z-index: 2;
+        body.dark-mode .hero {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
         }
-        body.dark-mode .search-container::before { color: var(--accent-color); }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container::before {
+            content: "\f002"; 
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px; 
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color); 
+            font-size: 0.9rem; 
+            pointer-events: none; 
+            z-index: 2;
+        }
+
+        body.dark-mode .search-container::before {
+             color: var(--accent-color);
+        }
 
         #serviceSearch {
-            width: 90%; max-width: 500px; padding: 6px 45px 6px 12px; 
-            font-size: 0.85rem; border-radius: 50px; text-align: right;
-            background-color: #FFFFFF; color: #212529; border: 1px solid #ccc;
+            width: 90%;
+            max-width: 500px;
+            padding: 6px 45px 6px 12px; 
+            font-size: 0.85rem; 
+            border-radius: 50px; 
+            text-align: right;
+            background-color: #FFFFFF; 
+            color: #212529; 
+            border: 1px solid #ccc;
         }
+
         body.dark-mode #serviceSearch { 
-            background-color: #34495e; color: #e9ecef; border-color: var(--accent-color); 
+            background-color: #34495e; 
+            color: #e9ecef; 
+            border-color: var(--accent-color); 
         }
-        body.dark-mode #serviceSearch::placeholder { color: #f8f9fa; opacity: 0.8; }
-        body.dark-mode #serviceSearch:-ms-input-placeholder { color: #f8f9fa; opacity: 0.8; }
-        body.dark-mode #serviceSearch::-ms-input-placeholder { color: #f8f9fa; opacity: 0.8; }
+
+        body.dark-mode #serviceSearch::placeholder { 
+            color: #f8f9fa; 
+            opacity: 0.8; 
+        }
+        body.dark-mode #serviceSearch:-ms-input-placeholder {
+            color: #f8f9fa;
+            opacity: 0.8; 
+        }
+        body.dark-mode #serviceSearch::-ms-input-placeholder {
+            color: #f8f9fa;
+            opacity: 0.8; 
+        }
+
         #serviceSearch:focus {
-            outline: none; border-color: var(--accent-color);
+            outline: none;
+            border-color: var(--accent-color);
+            /* إضافة حلقة تركيز ناعمة لسهولة الوصول */
             box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.5); 
         }
-        body.dark-mode #serviceSearch:focus { box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3); }
 
-        .services-grid { display: flex; flex-direction: column; gap: 8px; }
+        body.dark-mode #serviceSearch:focus {
+             box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
+        }
+
+        /* ==================================== */
+        /* تنسيق البطاقات (الخدمات) */
+        /* ==================================== */
+        .services-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; 
+        }
+
         .service-card {
-            padding: 10px; border-radius: 20px; 
+            /* حجم البطاقة النهائي في وضع الهاتف */
+            padding: 10px; 
+            border-radius: 20px; 
             background: var(--card-gradient); 
-            color: white; display: flex; flex-direction: row;
-            align-items: center; justify-content: space-between;
-            min-height: 40px; border: 1px solid var(--deep-blue-border); 
+            color: white; 
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 40px; 
+
+            /* إطار جامعي توضيحي */
+            border: 1px solid var(--deep-blue-border); 
+
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+
             transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out; 
             cursor: pointer;
         }
-        .service-card.hidden { display: none; opacity: 0; }
+
+        .service-card.hidden {
+            display: none; 
+            opacity: 0;
+        }
+
         body.dark-mode .service-card {
+            /* إطار توضيحي للبطاقات في وضع الهاتف (الليلي) */
             border: 1px solid #3d4a5b; 
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
         }
+
         .service-card:hover {
-            box-shadow: 0 0 15px var(--primary-color), 0 8px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px var(--primary-color), 
+                        0 8px 20px rgba(0, 0, 0, 0.5);
             transform: translateY(-2px) scale(1.01); 
-            opacity: 1; transition: all 0.2s ease-in-out; 
+            opacity: 1;
+            transition: all 0.2s ease-in-out; 
         }
+
         body.dark-mode .service-card:hover {
-             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1), 0 8px 20px rgba(0, 0, 0, 0.7);
+             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1), 
+                         0 8px 20px rgba(0, 0, 0, 0.7);
             transform: translateY(-2px); 
         }
+
+        /* حالة التفاعل مع اللمس (Active State) */
         .service-card:active {
             transform: scale(0.98); 
-            box-shadow: 0 0 5px var(--primary-color), 0 3px 10px rgba(0, 0, 0, 0.5);
-            opacity: 0.9; transition: all 0.1s ease-in-out;
+            box-shadow: 0 0 5px var(--primary-color), 
+                        0 3px 10px rgba(0, 0, 0, 0.5);
+            opacity: 0.9;
+            transition: all 0.1s ease-in-out;
         }
+
         body.dark-mode .service-card:active {
-             box-shadow: 0 0 5px var(--accent-color), 0 3px 10px rgba(0, 0, 0, 0.7);
+             box-shadow: 0 0 5px var(--accent-color), 
+                         0 3px 10px rgba(0, 0, 0, 0.7);
         }
 
         .service-content {
-            flex-grow: 1; margin-right: 6px; display: flex;
-            flex-direction: column; justify-content: center;
-            align-items: flex-start; overflow: hidden;
+            flex-grow: 1;
+            margin-right: 6px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start; 
+            overflow: hidden;
         }
+
+        /* نمط أيقونة البطاقة */
         .service-card .icon {
-            font-size: 0.95rem; color: white; 
-            width: 30px; height: 30px; border-radius: 50%; 
-            flex-shrink: 0; display: flex; align-items: center;
-            justify-content: center; margin-left: 6px; 
+            font-size: 0.95rem; 
+            color: white; 
+            width: 30px; 
+            height: 30px; 
+            border-radius: 50%; 
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 6px; 
+
             border: 1px solid var(--gold-glow-color); 
             box-shadow: 0 0 2px var(--gold-glow-color), 0 0 1px rgba(255, 202, 40, 0.4) inset; 
         }
+
+        /* الإضاءة الليلي (كما هي - هادئة) */
         body.dark-mode .service-card .icon {
             border: 1px solid var(--gold-glow-color); 
             box-shadow: 0 0 2px rgba(255, 202, 40, 0.5); 
             background-clip: padding-box; 
         }
+
+        /* الأنماط الخاصة بألوان الأيقونات... */
         .icon.blue { background: radial-gradient(circle, #007bff 40%, #0056b3 100%); }
         .icon.green { background: radial-gradient(circle, #28a745 40%, #1e7e34 100%); }
         .icon.purple { background: radial-gradient(circle, #8a2be2 40%, #6a1ba9 100%); }
@@ -256,116 +491,229 @@
         .icon.mint { background: radial-gradient(circle, #20c997 40%, #159573 100%); }
         .icon.whatsapp { background: radial-gradient(circle, #25d366 40%, #1e7e34 100%); }
 
-        .service-card h3 { font-size: 0.70rem; margin: 0; font-weight: 700; color: white; }
-        .service-card p {
-            display: block; font-size: 0.55rem; 
-            color: rgba(255, 255, 255, 0.85); 
-            margin-top: 1px; white-space: normal;
-            line-height: 1.3; max-width: 100%; 
+        /* 1. تكبير حجم النص الأساسي للبطاقة في وضع الهاتف */
+        .service-card h3 {
+            font-size: 0.70rem; /* تم تكبيره من 0.75rem */
+            margin: 0;
+            font-weight: 700;
+            color: white; 
         }
+
+        /* 1. تكبير حجم النص الفرعي للبطاقة في وضع الهاتف */
+        .service-card p {
+            display: block; 
+            font-size: 0.55rem; /* تم تكبيره من 0.5rem */
+            color: rgba(255, 255, 255, 0.85); 
+            margin-top: 1px; 
+            white-space: normal;
+            line-height: 1.3;
+            max-width: 100%; 
+        }
+
+        /* تصغير حجم زر "الدخول للموقع" في وضع الهاتف */
         .service-card .direct-link-btn {
-            margin: 0; padding: 1px 3px; font-size: 0.5rem; 
-            flex-shrink: 0; background-color: var(--accent-color); 
-            color: var(--primary-color); border-radius: 50px; 
-            font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+            margin: 0;
+            padding: 1px 3px; 
+            font-size: 0.5rem; 
+            flex-shrink: 0;
+            background-color: var(--accent-color); 
+            color: var(--primary-color);
+            border-radius: 50px; 
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
             transition: background-color 0.2s;
         }
-        .service-card .direct-link-btn:hover { background-color: #e6b300; }
 
+        .service-card .direct-link-btn:hover {
+            background-color: #e6b300;
+        }
+
+        /* ==================================== */
+        /* البار السفلي (Footer) - تعديلات وضع الهاتف */
+        /* ==================================== */
         .footer {
-            background-color: var(--footer-bg); color: var(--footer-color);
-            padding: 3px 0; text-align: center;
+            background-color: var(--footer-bg);
+            color: var(--footer-color);
+            /* 2. تصغير حجم البار السفلي في وضع الهاتف */
+            padding: 3px 0; 
+            text-align: center;
+
             border-top: 1px solid var(--accent-color); 
             box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 193, 7, 0.6); 
-            font-size: 0.7rem; position: fixed; 
-            bottom: 0; left: 0; width: 100%; z-index: 10;
+
+            /* 2. تصغير نص الفوتر في وضع الهاتف */
+            font-size: 0.7rem; /* تم تصغيره من 0.8rem */
+
+            position: fixed; 
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 10;
         }
+
         body.dark-mode .footer {
              box-shadow: 0 0 5px rgba(255, 193, 7, 0.3); 
              border-top: 1px solid #ffca28; 
         }
-        .footer p { margin: 0; opacity: 0.9; }
-        body { padding-bottom: 50px; }
 
+        .footer p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* ضبط الحشوة السفلية لـ body لتتناسب مع حجم الفوتر الجديد في وضع الهاتف */
+        body {
+            padding-bottom: 50px; /* تم تصغيره من 70px */
+        }
+
+        /* ==================================== */
+        /* زر الصعود للأعلى */
+        /* ==================================== */
         #scrollToTopBtn {
-            position: fixed; bottom: 55px; right: 20px; z-index: 99; 
-            border: none; outline: none; background-color: var(--accent-color); 
-            color: var(--primary-color); cursor: pointer; 
-            padding: 10px; width: 40px; height: 40px;
-            border-radius: 50%; font-size: 0.9rem; 
+            position: fixed; 
+            /* رفعه قليلاً ليتناسب مع الفوتر المصغر */
+            bottom: 55px; 
+            right: 20px; 
+            z-index: 99; 
+            border: none; 
+            outline: none; 
+            background-color: var(--accent-color); 
+            color: var(--primary-color); 
+            cursor: pointer; 
+            padding: 10px; /* حجم موحد */
+            width: 40px; /* حجم موحد */
+            height: 40px; /* حجم موحد */
+            border-radius: 50%; 
+            font-size: 0.9rem; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
             transition: opacity 0.3s, transform 0.3s; 
-            opacity: 0; pointer-events: none; 
+            opacity: 0;
+            pointer-events: none; 
         }
-        #scrollToTopBtn:hover { transform: scale(1.1); }
-
+        #scrollToTopBtn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* ==================================== */
+        /* حاوية زر التثبيت */
+        /* ==================================== */
         .install-container {
-            display: flex; flex-direction: column;
-            align-items: center; margin-top: 5px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5px; /* مسافة بسيطة تحت رقم المصمم */
         }
+        
         #installAppBtn {
-            background-color: var(--accent-color); color: var(--primary-color);
-            border: none; width: 32px; height: 32px;
-            padding: 0; border-radius: 50%;
-            font-size: 0.8rem; font-weight: bold;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border: none;
+            width: 32px; /* حجم صغير */
+            height: 32px; /* حجم صغير */
+            padding: 0;
+            border-radius: 50%;
+            font-size: 0.8rem; /* حجم أيقونة مناسب */
+            font-weight: bold;
             font-family: 'Cairo', sans-serif;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            cursor: pointer; display: flex; 
-            align-items: center; justify-content: center; 
+            cursor: pointer;
+            display: flex; /* لتوسيط الأيقونة */
+            align-items: center;
+            justify-content: center;
             transition: opacity 0.3s, transform 0.3s;
             margin-top: 0; 
         }
         .install-btn-sub-label {
-            font-size: 0.4rem; color: white;
-            line-height: 1; margin-top: 2px; opacity: 0.9;
+            font-size: 0.4rem; /* خط صغير جداً */
+            color: white;
+            line-height: 1;
+            margin-top: 2px;
+            opacity: 0.9;
         }
-        #installAppBtn i { font-size: 0.8rem; margin: 0; }
-        #installAppBtn:hover { transform: scale(1.05); }
+        #installAppBtn i {
+            font-size: 0.8rem; /* حجم الأيقونة */
+            margin: 0; /* إزالة أي هوامش افتراضية */
+        }
+        #installAppBtn:hover {
+            transform: scale(1.05);
+        }
         #installAppBtn:disabled {
-            background-color: #aaa; color: #555;
-            cursor: not-allowed; opacity: 0.7;
+            background-color: #aaa;
+            color: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
+        /* ==================================== */
+        /* المتصفح الداخلي (Iframe Viewer) */
+        /* ==================================== */
         .iframe-container {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: #ffffff; z-index: 200;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 200;
             transform: translateY(100%);
             transition: transform 0.3s ease-in-out;
-            display: flex; flex-direction: column;
+            display: flex;
+            flex-direction: column;
         }
-        .iframe-container.active { transform: translateY(0); }
+        .iframe-container.active {
+            transform: translateY(0);
+        }
         
+        /* تصغير الشريط العلوي للمتصفح الداخلي */
         .iframe-header {
-            display: flex; align-items: center;
-            padding: 6px 8px;
+            display: flex;
+            align-items: center;
+            padding: 6px 8px; /* تصغير الحشو */
             background-color: var(--primary-color);
-            color: white; flex-shrink: 0; 
+            color: white;
+            flex-shrink: 0; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         
         #iframe-back-btn {
-            background: none; border: none; color: white;
-            font-size: 1.0rem; margin-left: 8px;
-            padding: 5px; cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.0rem; /* تصغير السهم */
+            margin-left: 8px;
+            padding: 5px;
+            cursor: pointer;
         }
         
         #iframe-title {
-            font-size: 0.8rem; font-weight: 700; margin: 0; padding: 0;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-size: 0.8rem; /* تصغير العنوان */
+            font-weight: 700;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .iframe-body {
-            flex-grow: 1; position: relative; background: #fff;
+            flex-grow: 1;
+            position: relative; /* مهم للـ loader */
+            background: #fff; /* خلفية بيضاء أثناء التحميل */
         }
 
+        /* اللودر (دائرة التحميل) */
         #iframe-loader {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex; /* يبدأ ظاهراً */
             flex-direction: column;
-            align-items: center; justify-content: center;
-            z-index: 10; color: var(--primary-color);
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: var(--primary-color);
             font-size: 0.9rem;
         }
         
@@ -373,7 +721,8 @@
             border: 4px solid #f3f3f3;
             border-top: 4px solid var(--primary-color);
             border-radius: 50%;
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
             margin-bottom: 10px;
         }
@@ -383,12 +732,17 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* رسالة الخطأ والتايم أوت */
         #iframe-error {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: none; /* يبدأ مخفياً */
             flex-direction: column;
-            align-items: center; justify-content: center;
+            align-items: center;
+            justify-content: center;
             z-index: 11; /* فوق اللودر */
             color: #777;
             text-align: center;
@@ -425,19 +779,27 @@
         }
 
         #iframe-content {
-            width: 100%; height: 100%;
-            border: none; position: absolute;
-            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             visibility: hidden; /* يبدأ مخفياً */
             z-index: 1;
         }
         
+        /* ==================================== */
+        /* لوحة التحكم (Admin Panel) */
+        /* ==================================== */
         #admin-panel-modal {
             display: none; /* مخفي افتراضياً */
             position: fixed;
             z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px);
@@ -516,7 +878,7 @@
             font-size: 0.9rem;
             cursor: pointer;
             width: 48%;
-            transition: background-color 0.2s; /* (جديد) */
+            transition: background-color 0.2s; /* إضافة حركة */
         }
         #admin-save-btn {
             background-color: var(--primary-color);
@@ -527,7 +889,7 @@
             color: white;
         }
 
-        /* (جديد) 1. تنسيق زر الحفظ وهو غير مفعل */
+        /* تنسيق زر الحفظ وهو غير مفعل */
         #admin-save-btn:disabled {
             background-color: #999;
             color: #eee;
@@ -535,7 +897,7 @@
             opacity: 0.7;
         }
 
-        /* (جديد) 2. تنسيق رسالة التنبيه (Toast) */
+        /* تنسيق رسالة التنبيه (Toast) */
         #toast-notification {
             position: fixed;
             bottom: -100px; /* يبدأ مخفي */
@@ -561,45 +923,129 @@
             background-color: #28a745; /* أخضر */
         }
 
+        /* ==================================== */
+        /* Media Queries للتحسين على جميع الشاشات */
+        /* ==================================== */
 
+        /* شاشات الأيباد والويب (من 600 بكسل وما فوق) */
         @media (min-width: 600px) {
-            .container { width: 90%; max-width: 1200px; }
+            .container {
+                width: 90%; 
+                max-width: 1200px; 
+            }
             .services-grid {
                 display: grid; 
                 grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
                 gap: 25px; 
             }
+
+            /* تكبير البار العلوي في وضع الويب */
             .top-bar {
                 padding: 15px 25px 35px 25px; 
                 border-bottom: var(--border-style); 
                 border-right: var(--border-style);
                 border-left: var(--border-style);
             }
-            .top-bar h1 { font-size: 1.6rem; }
-            .site-subtitle { font-size: 1.10rem; }
-            #darkModeToggle { padding: 9px; font-size: 1.5rem; }
-            #modeLabel { font-size: 1rem; }
-            .designer-credit, .designer-phone { font-size: 1rem; }
 
-            .service-card { padding: 10px; min-height: 65px; border: 2px solid var(--deep-blue-border); }
-            body.dark-mode .service-card { border: 2px solid #3d4a5b; }
-            .service-card .icon { font-size: 1.5rem; width: 47px; height: 47px; }
-            .service-card h3 { font-size: 1.25rem; }
-            .service-card p { font-size: 1.1rem; }
-            .service-card .direct-link-btn { padding: 9px 15px; font-size: 0.80rem; }
-            .footer { padding: 5px 0; font-size: 0.8rem; }
-            body { padding-bottom: 70px; }
-            #scrollToTopBtn { bottom: 80px; width: 45px; height: 45px; font-size: 1rem; }
-            .install-container { margin-top: 0; margin-left: 10px; }
-            .top-bar-left { flex-direction: row; align-items: center; }
+            /* تكبير العناوين الرئيسية */
+            .top-bar h1 {
+                font-size: 1.6rem; 
+            }
+            .site-subtitle {
+                font-size: 1.10rem; 
+            }
+
+            /* 3. تكبير زر التبديل في وضع الآيباد والويب */
+            #darkModeToggle {
+                padding: 9px; /* زيادة في الحشوة */
+                font-size: 1.5rem; /* زيادة في الحجم */
+            }
+            #modeLabel {
+                font-size: 1rem; /* زيادة في حجم النص التوضيحي */
+            }
+
+            /* 3. تكبير نص المصمم والرقم في وضع الآيباد والويب */
+            .designer-credit, .designer-phone {
+                font-size: 1rem; /* زيادة في الحجم */
+            }
+
+            /* حجم البطاقة في الويب/الآيباد */
+            .service-card {
+                padding: 10px; 
+                min-height: 65px; 
+                border: 2px solid var(--deep-blue-border); 
+            }
+            body.dark-mode .service-card {
+                 border: 2px solid #3d4a5b; 
+            }
+
+            /* تكبير أيقونات البطاقات في وضع الويب */
+            .service-card .icon {
+                font-size: 1.5rem; 
+                width: 47px; 
+                height: 47px; 
+            }
+
+            /* حجم النص الأساسي للبطاقة في وضع الويب */
+            .service-card h3 {
+                font-size: 1.25rem; 
+            }
+            /* حجم النص الفرعي للبطاقة في وضع الويب */
+            .service-card p {
+                font-size: 1.1rem; 
+            }
+
+            /* زر "الدخول للموقع" في وضع الويب/الآيباد (الحجم الطبيعي) */
+            .service-card .direct-link-btn {
+                padding: 9px 15px;
+                font-size: 0.80rem; 
+            }
+
+            /* الفوتر في وضع الويب/الآيباد (الحجم الطبيعي) */
+            .footer {
+                padding: 5px 0; 
+                font-size: 0.8rem;
+            }
+
+             /* ضبط الحشوة السفلية لـ body لتتناسب مع الفوتر في وضع الويب */
+            body {
+                padding-bottom: 70px; 
+            }
+
+             /* زر الصعود للأعلى */
+            #scrollToTopBtn {
+                bottom: 80px; 
+                width: 45px; /* حجم أكبر قليلاً */
+                height: 45px; /* حجم أكبر قليلاً */
+                font-size: 1rem;
+            }
             
-            .iframe-header { padding: 12px 15px; }
-            #iframe-title { font-size: 1.1rem; }
-            #iframe-back-btn { font-size: 1.4rem; margin-left: 15px; }
+            /* تعديل مكان زر التثبيت والمصمم في الويب */
+            .install-container {
+                margin-top: 0; /* إلغاء الهامش العلوي */
+                margin-left: 10px; /* مسافة بينه وبين المصمم */
+            }
+            .top-bar-left {
+                flex-direction: row; /* جعلهم بجانب بعض */
+                align-items: center;
+            }
+            
+            /* تكبير شريط المتصفح الداخلي */
+            .iframe-header {
+                padding: 12px 15px;
+            }
+            #iframe-title {
+                font-size: 1.1rem;
+            }
+            #iframe-back-btn {
+                font-size: 1.4rem;
+                margin-left: 15px;
+            }
             #iframe-error h4 { font-size: 1.2rem; }
             #iframe-error p { font-size: 0.8rem; }
             #iframe-retry-btn { padding: 10px 30px; font-size: 0.9rem; }
-
+            
+            /* تكبير لوحة التحكم */
             .admin-panel-content h2 { font-size: 1.5rem; }
             .admin-service-item span { font-size: 1rem; }
             .admin-service-item select { font-size: 1rem; }
@@ -608,15 +1054,18 @@
 </head>
 <body>
 
-    <!-- [.. نفس كود الـ HTML body بالكامل ..] -->
+    <!-- طبقة الخلفية الزجاجية الثلجية -->
     <div class="glass-background"></div>
 
+    <!-- الشريط العلوي -->
     <div class="top-bar">
+        <!-- حاوية تبديل الوضع (الزر والنص) (أقصى اليمين) -->
         <div id="darkModeToggleContainer" role="button" aria-label="تبديل الوضع الليلي والفاتح">
             <div id="darkModeToggle">☀️</div>
             <span id="modeLabel">تبديل للوضع الداكن</span>
         </div>
 
+        <!-- حاوية المصمم وزر التثبيت (أقصى اليسار) -->
         <div class="top-bar-left">
             <a href="https://wa.me/+201206244875" target="_blank" class="designer-link">
                 <div class="designer-credit-container">
@@ -624,6 +1073,7 @@
                     <span class="designer-phone">📲01206244875</span>
                 </div>
             </a>
+            <!-- حاوية زر التثبيت والنص تحته -->
             <div class="install-container">
                 <button id="installAppBtn" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">
                     <i class="fas fa-download"></i>
@@ -632,25 +1082,34 @@
             </div>
         </div>
 
+        <!-- الشعار والعنوان (في المنتصف) -->
         <div class="logo-container">
+            <!-- الشعار (زر لوحة التحكم) -->
             <div class="university-logo" id="admin-panel-trigger" title="لوحة التحكم">
                 <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <div class="title-group">
                 <h1>كلية التجارة - جامعة الزقازيق</h1>
+                <!-- العنوان الفرعي (يسمح بسطرين في وضع الهاتف) -->
                 <span class="site-subtitle"> الخدمات الطلابية والتعليمية في مكان واحد.</span>
             </div>
         </div>
     </div>
     
+    <!-- محتوى الصفحة -->
     <div class="container">
+
+        <!-- مربع الترحيب وشريط البحث -->
         <div class="hero">
             <div class="search-container">
+                <!-- تمت إضافة aria-label لدعم سهولة الوصول -->
                 <input type="text" id="serviceSearch" placeholder="ابحث عن الخدمة المطلوبة " aria-label="خانة البحث عن الخدمات">
             </div>
         </div>
 
+        <!-- شبكة الخدمات -->
         <div class="services-grid" id="servicesGrid">
+            <!-- البطاقات تم تحويلها من <a> إلى <div> مع data-href -->
             <div class="service-card" data-href="http://admincom.eps.zu.edu.eg/Views/StudentViews/StudentLogin" data-keywords="سداد مصروفات مالية كتب مقررات">
                 <span class="icon blue"><i class="fas fa-desktop"></i></span>
                 <div class="service-content">
@@ -767,35 +1226,43 @@
                 </div>
                 <span class="direct-link-btn">الانضمام</span>
             </div>
+
         </div>
     </div>
 
+    <!-- زر العودة للأعلى -->
     <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="scrollToTopBtn" title="العودة للأعلى" aria-label="العودة لأعلى الصفحة">⬆️</button>
 
+    <!-- الشريط السفلي (Footer) -->
     <div class="footer">
         <p>بوابة الخدمات الإلكترونية | كلية التجارة - جامعة الزقازيق &copy; 2026</p>
     </div>
 
+    <!-- حاوية المتصفح الداخلي -->
     <div id="iframe-viewer" class="iframe-container">
         <div class="iframe-header">
             <button id="iframe-back-btn" aria-label="رجوع"><i class="fas fa-arrow-right"></i></button>
             <h3 id="iframe-title">جاري التحميل...</h3>
         </div>
         <div class="iframe-body">
+            <!-- اللودر -->
             <div id="iframe-loader">
                 <div class="loader-spinner"></div>
                 <span>جاري التحميل...</span>
             </div>
+            <!-- رسالة الخطأ -->
             <div id="iframe-error">
                 <i class="fas fa-exclamation-triangle"></i>
                 <h4>الموقع لا يستجيب</h4>
                 <p>قد يكون الموقع تحت الصيانة أو يواجه ضغطاً شديداً حالياً.</p>
                 <button id="iframe-retry-btn">إعادة المحاولة 🔄</button>
             </div>
+            <!-- الـ Iframe -->
             <iframe id="iframe-content" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
         </div>
     </div>
 
+    <!-- حاوية لوحة التحكم -->
     <div id="admin-panel-modal">
         <div class="admin-panel-content">
             <h2>لوحة تحكم حالة المواقع</h2>
@@ -804,13 +1271,13 @@
             </div>
             <div class="admin-panel-buttons">
                 <button id="admin-cancel-btn">إلغاء</button>
-                <!-- (جديد) 1. إضافة "disabled" للزر افتراضياً -->
-                <button id="admin-save-btn" disabled>حفظ وإغلاق</button>
+                <!-- الزر يبدأ معطلاً -->
+                <button id="admin-save-btn" disabled>جاري الاتصال...</button>
             </div>
         </div>
     </div>
 
-    <!-- (جديد) 2. إضافة عنصر رسالة التنبيه (Toast) -->
+    <!-- رسالة التنبيه (Toast) -->
     <div id="toast-notification"></div>
 
     <!-- ==================================== -->
@@ -826,15 +1293,24 @@
         let db;
         let auth;
         let siteStatusDocRef;
-        let siteStatuses = {}; 
+        let siteStatuses = {}; // متغير عالمي لتخزين الحالات
 
-        // متغيرات التطبيق والـ ID
+        // متغيرات التطبيق والـ ID (يتم توفيرها من البيئة)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        // (مُعدل) التأكد من أن الكونفيج ليس نصاً فارغاً
+        const firebaseConfigStr = typeof __firebase_config !== 'undefined' && __firebase_config ? __firebase_config : '{}';
         const firebaseConfig = JSON.parse(firebaseConfigStr);
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // (جديد) 2. دالة إظهار رسالة التنبيه
+        // متغيرات لوحة التحكم
+        const adminPanelTrigger = document.getElementById('admin-panel-trigger');
+        const adminPanelModal = document.getElementById('admin-panel-modal');
+        const adminServiceList = document.getElementById('admin-service-list');
+        const adminSaveBtn = document.getElementById('admin-save-btn');
+        const adminCancelBtn = document.getElementById('admin-cancel-btn');
+        const allServiceCards = document.querySelectorAll('.service-card'); 
+
+        // دالة إظهار رسالة التنبيه (Toast)
         const toastEl = document.getElementById('toast-notification');
         function showToast(message, type = 'success') {
             if (!toastEl) return;
@@ -842,19 +1318,26 @@
             toastEl.className = type; // "success" or "error"
             toastEl.classList.add('show');
             
+            // إخفاء الرسالة بعد 3 ثواني
             setTimeout(() => {
                 toastEl.classList.remove('show');
-            }, 3000); // إخفاء الرسالة بعد 3 ثواني
+            }, 3000); 
         }
 
         // دالة بدء تشغيل Firebase
         async function initFirebase() {
             try {
+                // (مُعدل) التأكد من أن الكونفيج موجود قبل التهيئة
+                if (!firebaseConfig.apiKey) {
+                    throw new Error("Firebase config is missing or empty.");
+                }
+
                 setLogLevel('Debug');
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
                 
+                // تسجيل الدخول
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
                 } else {
@@ -864,6 +1347,7 @@
                 const userId = auth.currentUser ? auth.currentUser.uid : 'anonymous';
                 console.log('Firebase initialized. App ID:', appId, 'User ID:', userId);
 
+                // تحديد مسار ملف الإعدادات السحابي
                 const statusDocPath = `/artifacts/${appId}/public/data/site_status/config`;
                 siteStatusDocRef = doc(db, statusDocPath);
 
@@ -874,18 +1358,17 @@
                         console.log('Site statuses updated from cloud:', siteStatuses);
                     } else {
                         console.log('No status config found in cloud. Using defaults.');
-                        siteStatuses = {};
+                        siteStatuses = {}; // استخدام الافتراضي لو الملف مش موجود
                     }
                     
-                    // (جديد) 1. 
-                    // تفعيل زر الحفظ فقط بعد التأكد من الاتصال وجلب البيانات
+                    // (الأهم) تفعيل زر الحفظ بعد التأكد من الاتصال وجلب البيانات
                     if (adminSaveBtn) {
                         adminSaveBtn.disabled = false;
                         adminSaveBtn.textContent = 'حفظ وإغلاق';
                     }
                 }, (error) => {
                     console.error("Error listening to site status:", error);
-                    // (جديد) 1. تفعيل الزر حتى لو فشل، مع رسالة خطأ
+                    // تفعيل الزر حتى لو فشل، مع رسالة خطأ
                     if (adminSaveBtn) {
                         adminSaveBtn.disabled = false;
                         adminSaveBtn.textContent = 'حفظ وإغلاق';
@@ -895,32 +1378,33 @@
 
             } catch (error) {
                 console.error("Firebase initialization failed:", error);
-                if (adminSaveBtn) adminSaveBtn.disabled = true; // إبقاؤه معطلاً
+                // إظهار رسالة الفشل وإبقاء الزر معطلاً
                 showToast('فشل تهيئة التطبيق', 'error');
+                if (adminSaveBtn) {
+                    adminSaveBtn.disabled = true;
+                    adminSaveBtn.textContent = 'فشل الاتصال';
+                }
             }
         }
         
-        // --- ربط دوال لوحة التحكم بـ Firebase ---
-
-        const adminPanelTrigger = document.getElementById('admin-panel-trigger');
-        const adminPanelModal = document.getElementById('admin-panel-modal');
-        const adminServiceList = document.getElementById('admin-service-list');
-        const adminSaveBtn = document.getElementById('admin-save-btn');
-        const adminCancelBtn = document.getElementById('admin-cancel-btn');
-        const allServiceCards = document.querySelectorAll('.service-card'); 
+        // --- دوال لوحة التحكم ---
 
         function openAdminPanel() {
             if (!adminServiceList || !adminPanelModal) return;
             
             adminServiceList.innerHTML = '';
+            // قراءة الحالات مباشرة من المتغير العالمي
             const statuses = siteStatuses;
             
             let index = 1;
             allServiceCards.forEach(card => {
                 const title = card.querySelector('h3').textContent;
                 const url = card.getAttribute('data-href');
+                
+                // تجاهل روابط واتساب
                 if (!url || url.startsWith('https://chat.whatsapp.com')) return;
 
+                // الافتراضي "يعمل"
                 const currentStatus = statuses[url] || 'up'; 
                 
                 const item = document.createElement('div');
@@ -939,7 +1423,7 @@
             adminPanelModal.style.display = 'block';
         }
 
-        // (مُعدل) 3. تعديل دالة الحفظ لإظهار رسائل الحالة
+        // دالة الحفظ (مُعدلة مع رسائل الحالة)
         async function saveAdminStatus() {
             if (!adminServiceList || !siteStatusDocRef || !adminSaveBtn) {
                 console.error('Admin list or Firestore doc ref is not ready.');
@@ -973,9 +1457,11 @@
                 console.error("Error saving status to cloud:", error);
                 showToast('فشل الحفظ. حاول مرة أخرى.', 'error'); // رسالة الخطأ
             } finally {
-                // إعادة تفعيل الزر
-                adminSaveBtn.disabled = false;
-                adminSaveBtn.textContent = 'حفظ وإغلاق';
+                // إعادة تفعيل الزر (إلا إذا كان الاتصال مقطوعاً من الأساس)
+                if (auth.currentUser) { // تحقق بسيط من أن الاتصال تم أصلاً
+                    adminSaveBtn.disabled = false;
+                    adminSaveBtn.textContent = 'حفظ وإغلاق';
+                }
             }
         }
 
@@ -983,12 +1469,12 @@
             if (adminPanelModal) adminPanelModal.style.display = 'none';
         }
 
-        // ربط الأحداث
+        // ربط أحداث لوحة التحكم
         if (adminPanelTrigger) adminPanelTrigger.addEventListener('click', openAdminPanel);
         if (adminSaveBtn) adminSaveBtn.addEventListener('click', saveAdminStatus);
         if (adminCancelBtn) adminCancelBtn.addEventListener('click', closeAdminPanel);
 
-        // --- ربط منطق فتح البطاقات بـ Firebase ---
+        // --- منطق فتح البطاقات (المتصفح الداخلي) ---
         
         const iframeViewer = document.getElementById('iframe-viewer');
         const iframeBackBtn = document.getElementById('iframe-back-btn');
@@ -998,30 +1484,38 @@
         const iframeError = document.getElementById('iframe-error');
         const iframeRetryBtn = document.getElementById('iframe-retry-btn');
         
-        let iframeLoadTimer = null; 
-        let currentIframeConfig = { url: '', title: '' }; 
+        let iframeLoadTimer = null; // مؤقت للتايم أوت
+        let currentIframeConfig = { url: '', title: '' }; // لحفظ بيانات الرابط الحالي
 
+        // دالة إظهار رسالة الخطأ
         function showIframeError() {
             if (!iframeViewer.classList.contains('active')) return;
-            iframeContent.src = 'about:blank'; 
+            iframeContent.src = 'about:blank'; // إيقاف تحميل
             iframeLoader.style.display = 'none';
             iframeError.style.display = 'flex';
         }
 
+        // دالة تحميل الـ Iframe
         function loadIframe(url, title) {
-            currentIframeConfig = { url, title }; 
-            clearTimeout(iframeLoadTimer); 
+            currentIframeConfig = { url, title }; // حفظ الرابط لإعادة المحاولة
+            clearTimeout(iframeLoadTimer); // إلغاء أي تايم أوت قديم
+            
             iframeTitle.textContent = title;
-            iframeLoader.style.display = 'flex'; 
-            iframeError.style.display = 'none'; 
-            iframeContent.style.visibility = 'hidden';
-            iframeContent.src = url; 
+            iframeLoader.style.display = 'flex'; // إظهار اللودر
+            iframeError.style.display = 'none'; // إخفاء رسالة الخطأ
+            iframeContent.style.visibility = 'hidden'; // إخفاء الـ iframe
+            
+            iframeContent.src = url; // بدء التحميل
+            
             if (!iframeViewer.classList.contains('active')) {
-                iframeViewer.classList.add('active'); 
+                iframeViewer.classList.add('active'); // إظهار حاوية المتصفح
             }
+            
+            // بدء تايم أوت 15 ثانية
             iframeLoadTimer = setTimeout(showIframeError, 15000); 
         }
 
+        // ربط الأحداث لجميع البطاقات
         allServiceCards.forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault(); 
@@ -1029,55 +1523,63 @@
                 const title = card.querySelector('h3').textContent;
                 
                 if (url) {
+                    // فتح واتساب في نافذة جديدة
                     if (url.startsWith('https://chat.whatsapp.com')) {
                         window.open(url, '_blank');
                         return;
                     }
-                    
-                    // التحقق من الحالة السحابية
+
+                    // (الأهم) التحقق من حالة الصيانة من المتغير السحابي
                     if (siteStatuses[url] === 'down') {
                         currentIframeConfig = { url, title }; 
                         iframeTitle.textContent = title;
                         iframeLoader.style.display = 'none';
                         iframeContent.style.visibility = 'hidden';
                         iframeViewer.classList.add('active'); 
-                        showIframeError(); 
+                        showIframeError(); // إظهار الخطأ فوراً
                     } else {
+                        // لو الموقع "يعمل"، ابدأ التحميل
                         loadIframe(url, title);
                     }
                 }
             });
         });
         
+        // زر الرجوع في المتصفح الداخلي
         iframeBackBtn.addEventListener('click', () => {
             iframeViewer.classList.remove('active');
-            clearTimeout(iframeLoadTimer); 
-            iframeContent.src = 'about:blank';
+            clearTimeout(iframeLoadTimer); // إلغاء التايم أوت
+            iframeContent.src = 'about:blank'; // تفريغ الـ iframe
             iframeTitle.textContent = 'جاري التحميل...';
-            iframeLoader.style.display = 'flex';
-            iframeError.style.display = 'none';
+            iframeLoader.style.display = 'flex'; // إرجاع اللودر
+            iframeError.style.display = 'none'; // إخفاء الخطأ
             iframeContent.style.visibility = 'hidden';
         });
 
+        // زر إعادة المحاولة
         iframeRetryBtn.addEventListener('click', () => {
             const url = currentIframeConfig.url;
+            // التحقق من الحالة السحابية قبل إعادة المحاولة
             if (siteStatuses[url] === 'down') {
-                showIframeError(); 
+                showIframeError(); // لو لسه "لا يعمل"، اظهر الخطأ تاني
             } else {
+                // لو "يعمل"، حاول التحميل من جديد
                 loadIframe(url, currentIframeConfig.title);
             }
         });
 
+        // عند اكتمال تحميل الـ Iframe
         iframeContent.addEventListener('load', () => {
+            // تأكد أنه ليس "about:blank"
             if (iframeContent.src !== 'about:blank') {
-                clearTimeout(iframeLoadTimer); 
-                iframeLoader.style.display = 'none';
+                clearTimeout(iframeLoadTimer); // إلغاء التايم أوت (نجاح)
+                iframeLoader.style.display = 'none'; // إخفاء اللودر
                 iframeError.style.display = 'none';
-                iframeContent.style.visibility = 'visible';
+                iframeContent.style.visibility = 'visible'; // إظهار الموقع
             }
         });
 
-        // بدء تشغيل Firebase
+        // (الأهم) بدء تشغيل Firebase عند تحميل الصفحة
         initFirebase();
 
     </script>
@@ -1156,52 +1658,75 @@
 
         function setInstallButtonState(installed, is_ios = false) {
             if (!installContainer || !installBtn || !installLabel) return;
+            // لو التطبيق مثبت، اخفي الزر تماماً
             if (installed) {
                 installContainer.style.display = 'none';
             } else if (is_ios) {
+                // لو الجهاز آيفون، اظهر رسالة إرشادية
                 installBtn.innerHTML = '<i class="fas fa-arrow-up-from-bracket"></i>';
                 installLabel.textContent = "للتثبيت اضغط مشاركة";
-                installBtn.disabled = true; 
+                installBtn.disabled = true; // الزر معطل لأنه إرشادي
                 installContainer.style.display = 'flex';
             } else {
+                // لو أندرويد (وغير مثبت)، اظهر زر التنزيل
                 installBtn.innerHTML = '<i class="fas fa-download"></i>';
                 installLabel.textContent = "تنزيل التطبيق";
                 installBtn.disabled = false;
                 installContainer.style.display = 'flex';
             }
         }
+        
         const is_ios = isIOS();
+        // التحقق إذا كان التطبيق يعمل كتطبيق مثبت
         const is_standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-        if (is_standalone) { setInstallButtonState(true); } 
-        else if (is_ios) { setInstallButtonState(false, true); } 
-        else { if (installContainer) installContainer.style.display = 'none'; }
+        
+        if (is_standalone) {
+            setInstallButtonState(true); // مثبت -> اخفي الزر
+        } else if (is_ios) {
+            setInstallButtonState(false, true); // آيفون -> اظهر رسالة إرشادية
+        } else {
+            // أندرويد (متصفح) -> اخفي الزر مؤقتاً
+            if (installContainer) installContainer.style.display = 'none';
+        }
 
+        // الاستماع لحدث "جاهز للتثبيت"
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (!is_standalone) { setInstallButtonState(false, false); }
+            // لو الشروط متحققة، اظهر الزر
+            if (!is_standalone) {
+                setInstallButtonState(false, false);
+            }
         });
+        
+        // عند الضغط على زر التثبيت (أندرويد)
         if (installBtn && !is_ios) { 
             installBtn.addEventListener('click', async () => {
                 if (deferredPrompt) {
-                    deferredPrompt.prompt();
+                    deferredPrompt.prompt(); // إظهار نافذة التثبيت
                     const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null;
-                    if (outcome === 'accepted') { console.log('User accepted the A2HS prompt'); } 
-                    else { console.log('User dismissed the A2HS prompt'); }
+                    deferredPrompt = null; // لا يمكن استخدامه إلا مرة واحدة
+                    if (outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                    } else {
+                        console.log('User dismissed the A2HS prompt');
+                    }
                 }
             });
         }
+        
+        // عند اكتمال التثبيت
         window.addEventListener('appinstalled', () => {
             console.log('PWA was installed');
-            setInstallButtonState(true);
+            setInstallButtonState(true); // اخفي الزر
             deferredPrompt = null;
         });
     </script>
     
-    <!-- كود الـ Service Worker (كما هو) -->
+    <!-- كود الـ Service Worker (مدمج كـ Blob) -->
     <script>
         if ('serviceWorker' in navigator) {
+            // كود السيرفس وركر كـ نص
             const swCode = `
                 const CACHE_NAME = 'commerce-services-cache-v1';
                 const urlsToCache = [
@@ -1217,6 +1742,7 @@
                     caches.open(CACHE_NAME)
                       .then((cache) => {
                         console.log('Opened cache');
+                        // جلب وتخزين الملفات الأساسية
                         return cache.addAll(urlsToCache);
                       })
                       .catch(err => console.log('Cache addAll failed:', err))
@@ -1224,6 +1750,7 @@
                 });
 
                 self.addEventListener('fetch', (event) => {
+                  // تجاهل الطلبات التي ليست GET أو طلبات داخلية
                   if (event.request.method !== 'GET' || 
                       event.request.url.startsWith('data:') ||
                       event.request.url.startsWith('chrome-extension:')) {
@@ -1232,27 +1759,33 @@
                       return;
                   }
 
+                  // استراتيجية Cache-First
                   event.respondWith(
                     caches.match(event.request)
                       .then((response) => {
+                        // إذا وجد في الكاش، قم بإرجاعه
                         if (response) {
-                          return response; // Return from cache
+                          return response; 
                         }
                         
+                        // إذا لم يوجد، اطلبه من الشبكة
                         return fetch(event.request).then((networkResponse) => {
+                            // قم بنسخ الرد لوضعه في الكاش
                             const responseToCache = networkResponse.clone();
                             caches.open(CACHE_NAME)
                                 .then((cache) => {
+                                    // تخزين الرد الجديد في الكاش
                                     cache.put(event.request, responseToCache);
                                 });
                             return networkResponse;
                         })
-                        .catch(err => console.log('Fetch failed:', err)); 
+                        .catch(err => console.log('Fetch failed:', err)); // معالجة خطأ الشبكة
                       }
                     )
                   );
                 });
 
+                // تنظيف الكاش القديم
                 self.addEventListener('activate', (event) => {
                   const cacheWhitelist = [CACHE_NAME];
                   event.waitUntil(
@@ -1270,6 +1803,7 @@
                 });
             `;
             
+            // عند تحميل الصفحة، قم بإنشاء Blob وتسجيل السيرفس وركر
             window.addEventListener('load', () => {
                 const blob = new Blob([swCode], { type: 'application/javascript' });
                 const swUrl = URL.createObjectURL(blob);
@@ -1286,4 +1820,5 @@
     </script>
 </body>
 </html>
+
 
