@@ -1,1823 +1,1903 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة خدمات طلاب كلية التجارة - جامعة الزقازيق</title>
-
-    <!-- ==================================== -->
-    <!-- إضافات PWA (تطبيق الويب التقدمي) -->
-    <!-- ==================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>خدماتي - محافظة الشرقية</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- رابط المانيفست المدمج -->
-    <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82%22,%22short_name%22:%22%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%22,%22start_url%22:%22./%22,%22display%22:%22standalone%22,%22background_color%22:%22%23eceef1%22,%22theme_color%22:%22%23004c99%22,%22description%22:%22%D8%A8%D9%88%D8%A7%D8%A8%D8%A9%20%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B7%D9%84%D8%A7%D8%A8%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9%20%D9%84%D9%83%D9%84%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D8%A9%20%D8%AC%D8%A7%D9%85%D8%B9%D8%A9%20%D8%A7%D9%84%D8%B2%D9%82%D8%A7%D8%B2%D9%8A%D9%82.%22,%22icons%22:[{%22src%22:%22https://placehold.co/192x192/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22},{%22src%22:%22https://placehold.co/512x512/004c99/FFFFFF/png?text=shehab%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22,%22purpose%22:%22any%20maskable%22}]}">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="خدمات التجارة">
-    <meta name="theme-color" content="#004c99">
-    <!-- ==================================== -->
-
-
-    <!-- تحميل الأيقونات والخطوط -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
     <style>
-        /* إضافة box-sizing: border-box; لجميع العناصر */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        /* ==================================== */
-        /* الألوان الرئيسية والتصميم العام */
-        /* ==================================== */
+        /* استخدام خط Cairo كخط أساسي للمحتوى العربي */
         body {
-            /* جامعة الزقازيق (Deep Blue & Accent Yellow) */
-            --primary-color: #004c99; /* أزرق جامعي داكن */ 
-            --accent-color: #ffc107; /* أصفر مميز (للتفاعل فقط) */ 
-            --gold-glow-color: #ffca28; /* لون ذهبي/أصفر ناعم للإضاءة */
-            --deep-blue-border: #003a7a; /* لون الإطار العلوي للفوتر (أزرق غامق نقي) */
-
-            --dark-blue-deep: #002244; 
-            --card-gradient-light: linear-gradient(90deg, var(--dark-blue-deep) 0%, var(--primary-color) 70%, #001529 100%);
-            --card-gradient: var(--card-gradient-light); 
-
-            --top-bar-bg: var(--card-gradient-light); 
-
-            --footer-bg: var(--primary-color);
-            --footer-border-color: var(--accent-color);
-            --footer-color: white; 
-
-            --text-color: #212529; 
-            --bg-color: #eceef1; 
-            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); 
-
-            /* الحد القياسي (للويب) */
-            --border-color: var(--primary-color);
-            --border-style: 2px solid var(--border-color); 
-
-            font-family: 'Cairo', sans-serif;
-            direction: rtl;
-            text-align: right; 
-            line-height: 1.6;
-            min-height: 100vh;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            /* ترك مسافة للفوتر - يتم تعديله في وضع الهاتف */
-            padding-bottom: 70px; 
-            position: relative;
-            overflow-x: hidden;
+            font-family: 'Cairo', 'Inter', sans-serif;
+            direction: rtl; /* ضمان الاتجاه من اليمين لليسار */
         }
-
-        a {
-            text-decoration: none;
-            color: inherit;
+        /* تعديلات بسيطة لـ Tailwind لدعم RTL بشكل أفضل */
+        .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-x-reverse: 1;
         }
-
-        .container {
-            width: 95%; 
-            max-width: 1200px; 
-            margin: 0 auto;
-            padding: 0 10px;
+        /* إخفاء شريط التمرير مع الحفاظ على وظيفته */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-
-        /* ==================================== */
-        /* تطبيق تأثير الخلفية الزجاجية (الشبورة) */
-        /* ==================================== */
-        .glass-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* خلفية محايدة هادئة */
-            background-color: rgba(240, 240, 240, 0.8); 
-            backdrop-filter: blur(8px); 
-            -webkit-backdrop-filter: blur(8px);
-            z-index: -1; 
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
-
-        /* ==================================== */
-        /* Dark Mode Styles - الوضع الداكن */
-        /* ==================================== */
-        body.dark-mode {
-            --text-color: #e9ecef;
-            --bg-color: #121212; 
-
-            --card-gradient-dark: linear-gradient(90deg, #1f3044 0%, #1f3044 70%, #080808 100%); 
-            --card-gradient: var(--card-gradient-dark); 
-
-            --top-bar-bg: linear-gradient(90deg, #0f1d2b 0%, #1f3044 70%, #030303 100%); 
-
-            --footer-bg: #0a0a0a; 
-            --footer-border-color: #555; 
-            --footer-color: #ccc; 
-
-            --border-style: 2px solid transparent; 
-            --card-shadow: 0 6px 15px rgba(255, 255, 255, 0.05);
-        }
-
-        body.dark-mode .glass-background {
-            background-color: rgba(18, 18, 18, 0.85); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        /* تهدئة اللون الأبيض في الوضع الداكن */
-        body.dark-mode .service-card h3 {
-            color: #cccccc; /* لون رمادي فاتح ناعم بدلاً من الأبيض الصارخ */
+        /* أيقونات SVG للنجوم (للتقييم) */
+        .star-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: currentColor;
+            display: inline-block;
         }
         
-        body.dark-mode #iframe-error h4 { color: var(--text-color); }
-        body.dark-mode #iframe-error p { color: #aaa; }
-        
-        body.dark-mode .admin-panel-content { background-color: #2c3e50; color: var(--text-color); }
-        body.dark-mode .admin-service-item { border-bottom-color: #34495e; }
-        body.dark-mode .admin-service-item select { background-color: #34495e; color: var(--text-color); border-color: #555; }
-        body.dark-mode .admin-service-item select option[value="down"] { color: #ff8a80; }
-        body.dark-mode .admin-service-item select option[value="up"] { color: #b9f6ca; }
-
-        /* ==================================== */
-        /* الشريط العلوي (Top Bar) */
-        /* ==================================== */
-        .top-bar {
-            background: var(--top-bar-bg);
-            color: white;
-            padding: 5px 10px 20px 10px; 
-            /* تهدئة ظل الشريط العلوي في الوضع النهاري */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-            display: flex;
-            flex-direction: row; 
-            align-items: flex-start;
-            justify-content: space-between; 
-            position: relative;
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 85% 100%, 15% 100%, 0 calc(100% - 10px)); 
-            margin-bottom: 10px; 
-            z-index: 5;
-
-            border-bottom: none; 
-            border-right: none;
-            border-left: none;
-
-            min-width: 0; 
+        /* تنسيق فقاعات الشات المُحدَّث ليصبح دائرياً بالكامل (نقطة 2) */
+        .chat-bubble-sent {
+            /* الحافة في اتجاه الإرسال تكون حادة والباقي دائري */
+            @apply bg-blue-600 text-white p-3 rounded-xl rounded-bl-xl rounded-br-none max-w-[80%] md:max-w-[70%];
+            border-radius: 1.25rem 1.25rem 0 1.25rem; /* دائري أكثر */
         }
-
-        body.dark-mode .top-bar {
-             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-        }
-
-        .logo-container {
-            display: flex;
-            flex-direction: column; 
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1; 
-            order: 2; 
-        }
-
-        .university-logo {
-            width: 30px; 
-            height: 30px; 
-            margin: 0 0 3px 0; 
-            background-color: #FFFFFF; 
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--accent-color); 
-            color: var(--primary-color); 
-            font-size: 1rem; 
-            /* تهدئة إضاءة الشعار في الوضع النهاري */
-            box-shadow: 0 0 2px var(--accent-color), 0 0 2px rgba(255, 255, 255, 0.5) inset;
-            cursor: pointer; /* جعله قابلاً للنقر */
-            z-index: 1; /* التأكد من أنه فوق العناصر الأخرى قليلاً */
-        }
-
-        body.dark-mode .university-logo {
-             box-shadow: 0 0 3px var(--accent-color), 0 0 3px rgba(255, 255, 255, 0.1) inset;
-        }
-
-        .top-bar h1 {
-            font-size: 1rem; 
-            margin: 0;
-            line-height: 1.2;
-            font-weight: 700;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
-        }
-
-        .site-subtitle {
-            font-size: 0.55rem; 
-            opacity: 0.9;
-            margin-top: 1px;
-            display: block;
-            text-align: center; 
-        }
-
-        /* حاوية المصمم وزر التثبيت (أقصى اليسار) */
-        .top-bar-left {
-            order: 3; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex-shrink: 0;
-            text-align: center; 
+        .chat-bubble-received {
+            /* الحافة في اتجاه الاستقبال تكون حادة والباقي دائري */
+            @apply bg-gray-200 text-gray-800 p-3 rounded-xl rounded-bl-none rounded-br-xl max-w-[80%] md:max-w-[70%];
+            border-radius: 1.25rem 1.25rem 1.25rem 0; /* دائري أكثر */
         }
         
-        .designer-link {
-            text-decoration: none;
-            color: white;
-            cursor: pointer;
-            flex-shrink: 0;
+        /* truncate */
+        .truncate-1-line {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
         }
-
-        .designer-credit-container {
-            position: static; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* حجم المصمم والرقم في وضع الهاتف */
-        .designer-credit, .designer-phone {
-            font-size: 0.45rem; 
-            opacity: 1; 
-            color: white; 
-            margin: 0;
-            padding: 0;
-            display: block;
-        }
-
-        /* حاوية زر التبديل (أقصى اليمين) */
-        #darkModeToggleContainer {
-            order: 1; 
-            display: flex;
-            flex-direction: column; 
-            align-items: center;
-            flex-shrink: 0; 
-            cursor: pointer; 
-        }
-
-        #darkModeToggle {
-            cursor: pointer; 
-            padding: 3px; 
-            background-color: white; 
-            color: var(--primary-color);
-            border-radius: 50px; 
-            box-shadow: 0 0 2px var(--accent-color), 0 0 2px rgba(255, 255, 255, 0.5) inset;
-            line-height: 1; 
-            font-size: 0.85rem; 
-            border: 1px solid white;
-        }
-
-        body.dark-mode #darkModeToggleContainer #darkModeToggle {
-            background-color: #ccc; 
-            color: #121212;
-            box-shadow: 0 0 5px var(--accent-color); 
-        }
-
-        #modeLabel {
-            font-size: 0.4rem; 
-            color: white; 
-            margin-top: 2px; 
-            font-weight: 400;
-            opacity: 0.9;
-            text-align: center;
-            line-height: 1;
-        }
-
-        /* ==================================== */
-        /* مربع الترحيب وشريط البحث (Hero) */
-        /* ==================================== */
-        .hero {
-            padding: 5px; 
-            margin-bottom: 12px; 
-            box-shadow: var(--card-shadow);
-            border-radius: 8px; 
-            color: white; 
-            background: var(--card-gradient); 
-            border: none; 
-            box-shadow: 0 0 8px rgba(0, 76, 153, 0.6);
-        }
-
-        body.dark-mode .hero {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-        }
-
-        .search-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-        }
-
-        .search-container::before {
-            content: "\f002"; 
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
+        /* لإخفاء input[type=file] */
+        .sr-only {
             position: absolute;
-            right: 20px; 
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color); 
-            font-size: 0.9rem; 
-            pointer-events: none; 
-            z-index: 2;
-        }
-
-        body.dark-mode .search-container::before {
-             color: var(--accent-color);
-        }
-
-        #serviceSearch {
-            width: 90%;
-            max-width: 500px;
-            padding: 6px 45px 6px 12px; 
-            font-size: 0.85rem; 
-            border-radius: 50px; 
-            text-align: right;
-            background-color: #FFFFFF; 
-            color: #212529; 
-            border: 1px solid #ccc;
-        }
-
-        body.dark-mode #serviceSearch { 
-            background-color: #34495e; 
-            color: #e9ecef; 
-            border-color: var(--accent-color); 
-        }
-
-        body.dark-mode #serviceSearch::placeholder { 
-            color: #f8f9fa; 
-            opacity: 0.8; 
-        }
-        body.dark-mode #serviceSearch:-ms-input-placeholder {
-            color: #f8f9fa;
-            opacity: 0.8; 
-        }
-        body.dark-mode #serviceSearch::-ms-input-placeholder {
-            color: #f8f9fa;
-            opacity: 0.8; 
-        }
-
-        #serviceSearch:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            /* إضافة حلقة تركيز ناعمة لسهولة الوصول */
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.5); 
-        }
-
-        body.dark-mode #serviceSearch:focus {
-             box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
-        }
-
-        /* ==================================== */
-        /* تنسيق البطاقات (الخدمات) */
-        /* ==================================== */
-        .services-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px; 
-        }
-
-        .service-card {
-            /* حجم البطاقة النهائي في وضع الهاتف */
-            padding: 10px; 
-            border-radius: 20px; 
-            background: var(--card-gradient); 
-            color: white; 
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 40px; 
-
-            /* إطار جامعي توضيحي */
-            border: 1px solid var(--deep-blue-border); 
-
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-
-            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out; 
-            cursor: pointer;
-        }
-
-        .service-card.hidden {
-            display: none; 
-            opacity: 0;
-        }
-
-        body.dark-mode .service-card {
-            /* إطار توضيحي للبطاقات في وضع الهاتف (الليلي) */
-            border: 1px solid #3d4a5b; 
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
-        }
-
-        .service-card:hover {
-            box-shadow: 0 0 15px var(--primary-color), 
-                        0 8px 20px rgba(0, 0, 0, 0.5);
-            transform: translateY(-2px) scale(1.01); 
-            opacity: 1;
-            transition: all 0.2s ease-in-out; 
-        }
-
-        body.dark-mode .service-card:hover {
-             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1), 
-                         0 8px 20px rgba(0, 0, 0, 0.7);
-            transform: translateY(-2px); 
-        }
-
-        /* حالة التفاعل مع اللمس (Active State) */
-        .service-card:active {
-            transform: scale(0.98); 
-            box-shadow: 0 0 5px var(--primary-color), 
-                        0 3px 10px rgba(0, 0, 0, 0.5);
-            opacity: 0.9;
-            transition: all 0.1s ease-in-out;
-        }
-
-        body.dark-mode .service-card:active {
-             box-shadow: 0 0 5px var(--accent-color), 
-                         0 3px 10px rgba(0, 0, 0, 0.7);
-        }
-
-        .service-content {
-            flex-grow: 1;
-            margin-right: 6px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start; 
-            overflow: hidden;
-        }
-
-        /* نمط أيقونة البطاقة */
-        .service-card .icon {
-            font-size: 0.95rem; 
-            color: white; 
-            width: 30px; 
-            height: 30px; 
-            border-radius: 50%; 
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 6px; 
-
-            border: 1px solid var(--gold-glow-color); 
-            box-shadow: 0 0 2px var(--gold-glow-color), 0 0 1px rgba(255, 202, 40, 0.4) inset; 
-        }
-
-        /* الإضاءة الليلي (كما هي - هادئة) */
-        body.dark-mode .service-card .icon {
-            border: 1px solid var(--gold-glow-color); 
-            box-shadow: 0 0 2px rgba(255, 202, 40, 0.5); 
-            background-clip: padding-box; 
-        }
-
-        /* الأنماط الخاصة بألوان الأيقونات... */
-        .icon.blue { background: radial-gradient(circle, #007bff 40%, #0056b3 100%); }
-        .icon.green { background: radial-gradient(circle, #28a745 40%, #1e7e34 100%); }
-        .icon.purple { background: radial-gradient(circle, #8a2be2 40%, #6a1ba9 100%); }
-        .icon.red { background: radial-gradient(circle, #dc3545 40%, #c82333 100%); }
-        .icon.dark-blue { background: radial-gradient(circle, var(--primary-color) 40%, #003a7a 100%); }
-        .icon.yellow { background: radial-gradient(circle, #ffc107 40%, #e0a800 100%); color: #333; }
-        .icon.cyan { background: radial-gradient(circle, #17a2b8 40%, #117a8b 100%); }
-        .icon.grey { background: radial-gradient(circle, #6c757d 40%, #5a6268 100%); }
-        .icon.mint { background: radial-gradient(circle, #20c997 40%, #159573 100%); }
-        .icon.whatsapp { background: radial-gradient(circle, #25d366 40%, #1e7e34 100%); }
-
-        /* 1. تكبير حجم النص الأساسي للبطاقة في وضع الهاتف */
-        .service-card h3 {
-            font-size: 0.70rem; /* تم تكبيره من 0.75rem */
-            margin: 0;
-            font-weight: 700;
-            color: white; 
-        }
-
-        /* 1. تكبير حجم النص الفرعي للبطاقة في وضع الهاتف */
-        .service-card p {
-            display: block; 
-            font-size: 0.55rem; /* تم تكبيره من 0.5rem */
-            color: rgba(255, 255, 255, 0.85); 
-            margin-top: 1px; 
-            white-space: normal;
-            line-height: 1.3;
-            max-width: 100%; 
-        }
-
-        /* تصغير حجم زر "الدخول للموقع" في وضع الهاتف */
-        .service-card .direct-link-btn {
-            margin: 0;
-            padding: 1px 3px; 
-            font-size: 0.5rem; 
-            flex-shrink: 0;
-            background-color: var(--accent-color); 
-            color: var(--primary-color);
-            border-radius: 50px; 
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
-            transition: background-color 0.2s;
-        }
-
-        .service-card .direct-link-btn:hover {
-            background-color: #e6b300;
-        }
-
-        /* ==================================== */
-        /* البار السفلي (Footer) - تعديلات وضع الهاتف */
-        /* ==================================== */
-        .footer {
-            background-color: var(--footer-bg);
-            color: var(--footer-color);
-            /* 2. تصغير حجم البار السفلي في وضع الهاتف */
-            padding: 3px 0; 
-            text-align: center;
-
-            border-top: 1px solid var(--accent-color); 
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 193, 7, 0.6); 
-
-            /* 2. تصغير نص الفوتر في وضع الهاتف */
-            font-size: 0.7rem; /* تم تصغيره من 0.8rem */
-
-            position: fixed; 
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            z-index: 10;
-        }
-
-        body.dark-mode .footer {
-             box-shadow: 0 0 5px rgba(255, 193, 7, 0.3); 
-             border-top: 1px solid #ffca28; 
-        }
-
-        .footer p {
-            margin: 0;
-            opacity: 0.9;
-        }
-
-        /* ضبط الحشوة السفلية لـ body لتتناسب مع حجم الفوتر الجديد في وضع الهاتف */
-        body {
-            padding-bottom: 50px; /* تم تصغيره من 70px */
-        }
-
-        /* ==================================== */
-        /* زر الصعود للأعلى */
-        /* ==================================== */
-        #scrollToTopBtn {
-            position: fixed; 
-            /* رفعه قليلاً ليتناسب مع الفوتر المصغر */
-            bottom: 55px; 
-            right: 20px; 
-            z-index: 99; 
-            border: none; 
-            outline: none; 
-            background-color: var(--accent-color); 
-            color: var(--primary-color); 
-            cursor: pointer; 
-            padding: 10px; /* حجم موحد */
-            width: 40px; /* حجم موحد */
-            height: 40px; /* حجم موحد */
-            border-radius: 50%; 
-            font-size: 0.9rem; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-            transition: opacity 0.3s, transform 0.3s; 
-            opacity: 0;
-            pointer-events: none; 
-        }
-        #scrollToTopBtn:hover {
-            transform: scale(1.1);
-        }
-        
-        /* ==================================== */
-        /* حاوية زر التثبيت */
-        /* ==================================== */
-        .install-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 5px; /* مسافة بسيطة تحت رقم المصمم */
-        }
-        
-        #installAppBtn {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            border: none;
-            width: 32px; /* حجم صغير */
-            height: 32px; /* حجم صغير */
+            width: 1px;
+            height: 1px;
             padding: 0;
-            border-radius: 50%;
-            font-size: 0.8rem; /* حجم أيقونة مناسب */
-            font-weight: bold;
-            font-family: 'Cairo', sans-serif;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            display: flex; /* لتوسيط الأيقونة */
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.3s, transform 0.3s;
-            margin-top: 0; 
-        }
-        .install-btn-sub-label {
-            font-size: 0.4rem; /* خط صغير جداً */
-            color: white;
-            line-height: 1;
-            margin-top: 2px;
-            opacity: 0.9;
-        }
-        #installAppBtn i {
-            font-size: 0.8rem; /* حجم الأيقونة */
-            margin: 0; /* إزالة أي هوامش افتراضية */
-        }
-        #installAppBtn:hover {
-            transform: scale(1.05);
-        }
-        #installAppBtn:disabled {
-            background-color: #aaa;
-            color: #555;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        /* ==================================== */
-        /* المتصفح الداخلي (Iframe Viewer) */
-        /* ==================================== */
-        .iframe-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            z-index: 200;
-            transform: translateY(100%);
-            transition: transform 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-        }
-        .iframe-container.active {
-            transform: translateY(0);
-        }
-        
-        /* تصغير الشريط العلوي للمتصفح الداخلي */
-        .iframe-header {
-            display: flex;
-            align-items: center;
-            padding: 6px 8px; /* تصغير الحشو */
-            background-color: var(--primary-color);
-            color: white;
-            flex-shrink: 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        #iframe-back-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.0rem; /* تصغير السهم */
-            margin-left: 8px;
-            padding: 5px;
-            cursor: pointer;
-        }
-        
-        #iframe-title {
-            font-size: 0.8rem; /* تصغير العنوان */
-            font-weight: 700;
-            margin: 0;
-            padding: 0;
+            margin: -1px;
             overflow: hidden;
-            text-overflow: ellipsis;
+            clip: rect(0, 0, 0, 0);
             white-space: nowrap;
-        }
-        
-        .iframe-body {
-            flex-grow: 1;
-            position: relative; /* مهم للـ loader */
-            background: #fff; /* خلفية بيضاء أثناء التحميل */
-        }
-
-        /* اللودر (دائرة التحميل) */
-        #iframe-loader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex; /* يبدأ ظاهراً */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-        }
-        
-        .loader-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* رسالة الخطأ والتايم أوت */
-        #iframe-error {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none; /* يبدأ مخفياً */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 11; /* فوق اللودر */
-            color: #777;
-            text-align: center;
-            padding: 20px;
-        }
-        #iframe-error i {
-            font-size: 2.5rem;
-            color: #dc3545; /* أحمر */
-            margin-bottom: 15px;
-        }
-        #iframe-error h4 {
-            font-size: 1rem;
-            color: var(--text-color);
-            margin-bottom: 5px;
-        }
-        #iframe-error p {
-            font-size: 0.7rem; /* خط فرعي صغير جداً */
-            max-width: 90%;
-            line-height: 1.5;
-            margin-bottom: 20px; /* مسافة للزر */
-        }
-        
-        #iframe-retry-btn {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            border: none;
-            border-radius: 50px;
-            padding: 8px 25px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            font-family: 'Cairo', sans-serif;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        #iframe-content {
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            visibility: hidden; /* يبدأ مخفياً */
-            z-index: 1;
-        }
-        
-        /* ==================================== */
-        /* لوحة التحكم (Admin Panel) */
-        /* ==================================== */
-        #admin-panel-modal {
-            display: none; /* مخفي افتراضياً */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            padding-top: 60px;
-        }
-        .admin-panel-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            color: #333;
-        }
-        .admin-panel-content h2 {
-            text-align: center;
-            margin-top: 0;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-        #admin-service-list {
-            list-style: none;
-            padding: 0;
-            max-height: 60vh;
-            overflow-y: auto;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-        }
-        .admin-service-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 5px;
-            border-bottom: 1px solid #eee;
-        }
-        .admin-service-item:last-child {
-            border-bottom: none;
-        }
-        .admin-service-item span {
-            font-size: 0.8rem;
-            font-weight: bold;
-            flex-grow: 1;
-            margin-left: 10px;
-        }
-        .admin-service-item select {
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.8rem;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            flex-shrink: 0;
-            background-color: #fff;
-        }
-        .admin-service-item select option[value="down"] {
-            color: #dc3545; /* أحمر */
-            font-weight: bold;
-        }
-        .admin-service-item select option[value="up"] {
-            color: #28a745; /* أخضر */
-            font-weight: bold;
-        }
-        .admin-panel-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .admin-panel-buttons button {
-            font-family: 'Cairo', sans-serif;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            width: 48%;
-            transition: background-color 0.2s; /* إضافة حركة */
-        }
-        #admin-save-btn {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        #admin-cancel-btn {
-            background-color: #aaa;
-            color: white;
-        }
-
-        /* تنسيق زر الحفظ وهو غير مفعل */
-        #admin-save-btn:disabled {
-            background-color: #999;
-            color: #eee;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        /* تنسيق رسالة التنبيه (Toast) */
-        #toast-notification {
-            position: fixed;
-            bottom: -100px; /* يبدأ مخفي */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            z-index: 9999;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: bottom 0.5s ease;
-        }
-        #toast-notification.show {
-            bottom: 70px; /* يظهر فوق الفوتر */
-        }
-        #toast-notification.error {
-            background-color: #dc3545; /* أحمر */
-        }
-        #toast-notification.success {
-            background-color: #28a745; /* أخضر */
-        }
-
-        /* ==================================== */
-        /* Media Queries للتحسين على جميع الشاشات */
-        /* ==================================== */
-
-        /* شاشات الأيباد والويب (من 600 بكسل وما فوق) */
-        @media (min-width: 600px) {
-            .container {
-                width: 90%; 
-                max-width: 1200px; 
-            }
-            .services-grid {
-                display: grid; 
-                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
-                gap: 25px; 
-            }
-
-            /* تكبير البار العلوي في وضع الويب */
-            .top-bar {
-                padding: 15px 25px 35px 25px; 
-                border-bottom: var(--border-style); 
-                border-right: var(--border-style);
-                border-left: var(--border-style);
-            }
-
-            /* تكبير العناوين الرئيسية */
-            .top-bar h1 {
-                font-size: 1.6rem; 
-            }
-            .site-subtitle {
-                font-size: 1.10rem; 
-            }
-
-            /* 3. تكبير زر التبديل في وضع الآيباد والويب */
-            #darkModeToggle {
-                padding: 9px; /* زيادة في الحشوة */
-                font-size: 1.5rem; /* زيادة في الحجم */
-            }
-            #modeLabel {
-                font-size: 1rem; /* زيادة في حجم النص التوضيحي */
-            }
-
-            /* 3. تكبير نص المصمم والرقم في وضع الآيباد والويب */
-            .designer-credit, .designer-phone {
-                font-size: 1rem; /* زيادة في الحجم */
-            }
-
-            /* حجم البطاقة في الويب/الآيباد */
-            .service-card {
-                padding: 10px; 
-                min-height: 65px; 
-                border: 2px solid var(--deep-blue-border); 
-            }
-            body.dark-mode .service-card {
-                 border: 2px solid #3d4a5b; 
-            }
-
-            /* تكبير أيقونات البطاقات في وضع الويب */
-            .service-card .icon {
-                font-size: 1.5rem; 
-                width: 47px; 
-                height: 47px; 
-            }
-
-            /* حجم النص الأساسي للبطاقة في وضع الويب */
-            .service-card h3 {
-                font-size: 1.25rem; 
-            }
-            /* حجم النص الفرعي للبطاقة في وضع الويب */
-            .service-card p {
-                font-size: 1.1rem; 
-            }
-
-            /* زر "الدخول للموقع" في وضع الويب/الآيباد (الحجم الطبيعي) */
-            .service-card .direct-link-btn {
-                padding: 9px 15px;
-                font-size: 0.80rem; 
-            }
-
-            /* الفوتر في وضع الويب/الآيباد (الحجم الطبيعي) */
-            .footer {
-                padding: 5px 0; 
-                font-size: 0.8rem;
-            }
-
-             /* ضبط الحشوة السفلية لـ body لتتناسب مع الفوتر في وضع الويب */
-            body {
-                padding-bottom: 70px; 
-            }
-
-             /* زر الصعود للأعلى */
-            #scrollToTopBtn {
-                bottom: 80px; 
-                width: 45px; /* حجم أكبر قليلاً */
-                height: 45px; /* حجم أكبر قليلاً */
-                font-size: 1rem;
-            }
-            
-            /* تعديل مكان زر التثبيت والمصمم في الويب */
-            .install-container {
-                margin-top: 0; /* إلغاء الهامش العلوي */
-                margin-left: 10px; /* مسافة بينه وبين المصمم */
-            }
-            .top-bar-left {
-                flex-direction: row; /* جعلهم بجانب بعض */
-                align-items: center;
-            }
-            
-            /* تكبير شريط المتصفح الداخلي */
-            .iframe-header {
-                padding: 12px 15px;
-            }
-            #iframe-title {
-                font-size: 1.1rem;
-            }
-            #iframe-back-btn {
-                font-size: 1.4rem;
-                margin-left: 15px;
-            }
-            #iframe-error h4 { font-size: 1.2rem; }
-            #iframe-error p { font-size: 0.8rem; }
-            #iframe-retry-btn { padding: 10px 30px; font-size: 0.9rem; }
-            
-            /* تكبير لوحة التحكم */
-            .admin-panel-content h2 { font-size: 1.5rem; }
-            .admin-service-item span { font-size: 1rem; }
-            .admin-service-item select { font-size: 1rem; }
+            border-width: 0;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
 
-    <!-- طبقة الخلفية الزجاجية الثلجية -->
-    <div class="glass-background"></div>
 
-    <!-- الشريط العلوي -->
-    <div class="top-bar">
-        <!-- حاوية تبديل الوضع (الزر والنص) (أقصى اليمين) -->
-        <div id="darkModeToggleContainer" role="button" aria-label="تبديل الوضع الليلي والفاتح">
-            <div id="darkModeToggle">☀️</div>
-            <span id="modeLabel">تبديل للوضع الداكن</span>
-        </div>
-
-        <!-- حاوية المصمم وزر التثبيت (أقصى اليسار) -->
-        <div class="top-bar-left">
-            <a href="https://wa.me/+201206244875" target="_blank" class="designer-link">
-                <div class="designer-credit-container">
-                    <span class="designer-credit">تصميم شهاب طارق</span>
-                    <span class="designer-phone">📲01206244875</span>
-                </div>
-            </a>
-            <!-- حاوية زر التثبيت والنص تحته -->
-            <div class="install-container">
-                <button id="installAppBtn" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">
-                    <i class="fas fa-download"></i>
-                </button>
-                <span id="installAppLabel" class="install-btn-sub-label">تنزيل التطبيق</span>
-            </div>
-        </div>
-
-        <!-- الشعار والعنوان (في المنتصف) -->
-        <div class="logo-container">
-            <!-- الشعار (زر لوحة التحكم) -->
-            <div class="university-logo" id="admin-panel-trigger" title="لوحة التحكم">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <div class="title-group">
-                <h1>كلية التجارة - جامعة الزقازيق</h1>
-                <!-- العنوان الفرعي (يسمح بسطرين في وضع الهاتف) -->
-                <span class="site-subtitle"> الخدمات الطلابية والتعليمية في مكان واحد.</span>
-            </div>
-        </div>
+    <!-- الحاوية الرئيسية للتطبيق -->
+    <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg md:max-w-2xl lg:max-w-4xl">
+        <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
     </div>
-    
-    <!-- محتوى الصفحة -->
-    <div class="container">
 
-        <!-- مربع الترحيب وشريط البحث -->
-        <div class="hero">
-            <div class="search-container">
-                <!-- تمت إضافة aria-label لدعم سهولة الوصول -->
-                <input type="text" id="serviceSearch" placeholder="ابحث عن الخدمة المطلوبة " aria-label="خانة البحث عن الخدمات">
-            </div>
-        </div>
 
-        <!-- شبكة الخدمات -->
-        <div class="services-grid" id="servicesGrid">
-            <!-- البطاقات تم تحويلها من <a> إلى <div> مع data-href -->
-            <div class="service-card" data-href="http://admincom.eps.zu.edu.eg/Views/StudentViews/StudentLogin" data-keywords="سداد مصروفات مالية كتب مقررات">
-                <span class="icon blue"><i class="fas fa-desktop"></i></span>
-                <div class="service-content">
-                    <h3>المنصة الرقمية للكتب والمصاريف</h3>
-                    <p>البوابة الرسمية لسداد رسوم الكتب الجامعية.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع </span>
-            </div>
-
-            <div class="service-card" data-href="https://militaryeducation.zu.edu.eg/Views/ED_Students/Login" data-keywords="خدمات طلابية تسجيل دخول عسكرية">
-                <span class="icon green"><i class="fas fa-user-graduate"></i></span>
-                <div class="service-content">
-                    <h3>البوابة الإلكترونية لخدمات الطلاب </h3>
-                    <p>بوابة سداد المصروفات الدراسية والتربية العسكرية.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="https://militaryeducation.zu.edu.eg/Views/General/GetStudInfo" data-keywords="كود جامعي استعلام رقم جلوس">
-                <span class="icon purple"><i class="fas fa-id-card"></i></span>
-                <div class="service-content">
-                    <h3>الحصول على الكود الجامعي</h3>
-                    <p>استخراج الكود الجامعي الخاص بك للاستخدام في جميع المنصات.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="https://shehabt1000-boop.github.io/pdf/" data-keywords="pdf ضغط صور تحويل">
-                <span class="icon red"><i class="fas fa-file-pdf"></i></span>
-                <div class="service-content">
-                    <h3>محول الصور إلى PDF وضاغط ملفات</h3>
-                    <p>أداة سريعة ومجانية لتحويل صور المحاضرات إلى ملف PDF موحد.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="https://lms.zu.edu.eg/" data-keywords="lms تعليم الكتروني محاضرات منصة">
-                <span class="icon dark-blue"><i class="fas fa-chalkboard-teacher"></i></span>
-                <div class="service-content">
-                    <h3>منصة التعليم الإلكتروني (LMS)</h3>
-                    <p>المنصة الرسمية لعرض المحاضرات، المقررات، وتفاصيل الحساب الأكاديمي.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="http://www.studentactivities.zu.edu.eg/Students/Registration/ed_login.aspx" data-keywords="نتائج امتحانات فرق دراسية">
-                <span class="icon yellow"><i class="fas fa-poll-h"></i></span>
-                <div class="service-content">
-                    <h3>نتائج امتحانات الفرق الدراسية</h3>
-                    <p>عرض نتائج الامتحانات وتفاصيل تسجيل المقررات.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="https://scu.eg/" data-keywords="مكتبة رقمية مراجع بحث علمي">
-                <span class="icon cyan"><i class="fas fa-book"></i></span>
-                <div class="service-content">
-                    <h3>المجلس الاعلي للجامعات</h3>
-                    <p>الموقع الرسمي للمجلس الأعلي للجامعات.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="http://www.medical.zustudents.zu.edu.eg/" data-keywords="كشف طبي استمارة صحي رابط 1">
-                <span class="icon grey"><i class="fas fa-notes-medical"></i></span>
-                <div class="service-content">
-                    <h3>استمارة الكشف الطبي - رابط 1</h3>
-                    <p>رابط التسجيل الأول للكشف الطبي للطلاب الجدد.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="http://www.medical2.zustudents.zu.edu.eg/" data-keywords="كشف طبي استمارة صحي رابط 2">
-                <span class="icon grey"><i class="fas fa-notes-medical"></i></span>
-                <div class="service-content">
-                    <h3>استمارة الكشف الطبي - رابط 2</h3>
-                    <p>رابط التسجيل الثاني للكشف الطبي.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="http://www.medical3.zustudents.zu.edu.eg/" data-keywords="كشف طبي استمارة صحي رابط 3">
-                <span class="icon grey"><i class="fas fa-notes-medical"></i></span>
-                <div class="service-content">
-                    <h3>استمارة الكشف الطبي - رابط 3</h3>
-                    <p>رابط التسجيل الثالث للكشف الطبي.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="https://hostelstudreg.zu.edu.eg/" data-keywords="مدن جامعية سكن تقديم hostel">
-                <span class="icon mint"><i class="fas fa-building"></i></span>
-                <div class="service-content">
-                    <h3>التقديم للمدن الجامعية</h3>
-                    <p>البوابة الرسمية لتقديم طلبات الالتحاق بالسكن الجامعي.</p>
-                </div>
-                <span class="direct-link-btn">الدخول للموقع</span>
-            </div>
-
-            <div class="service-card" data-href="https://chat.whatsapp.com/D3fHA8WdKzELcYiLmJbrUU" data-keywords="واتساب whatsapp فرقة أولى">
-                <span class="icon whatsapp"><i class="fab fa-whatsapp"></i></span>
-                <div class="service-content">
-                    <h3>جروب واتساب فرقة أولى</h3>
-                    <p>انضم لمجموعة الفرقة الأولى للتواصل والمناقشة.</p>
-                </div>
-                <span class="direct-link-btn">الانضمام</span>
-            </div>
-
-            <div class="service-card" data-href="https://chat.whatsapp.com/BVk8aNUajS0BPtVJb73jhO" data-keywords="واتساب whatsapp فرقة ثانية">
-                <span class="icon whatsapp"><i class="fab fa-whatsapp"></i></span>
-                <div class="service-content">
-                    <h3>جروب واتساب فرقة ثانية</h3>
-                    <p>انضم لمجموعة الفرقة الثانية للتواصل والمناقشة.</p>
-                </div>
-                <span class="direct-link-btn">الانضمام</span>
-            </div>
-
+    <!-- مودال (نافذة منبثقة) عامة -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center p-4">
+        <div id="modal-content" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+            <!-- محتوى المودال سيتم حقنه هنا -->
         </div>
     </div>
 
-    <!-- زر العودة للأعلى -->
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="scrollToTopBtn" title="العودة للأعلى" aria-label="العودة لأعلى الصفحة">⬆️</button>
 
-    <!-- الشريط السفلي (Footer) -->
-    <div class="footer">
-        <p>بوابة الخدمات الإلكترونية | كلية التجارة - جامعة الزقازيق &copy; 2026</p>
-    </div>
 
-    <!-- حاوية المتصفح الداخلي -->
-    <div id="iframe-viewer" class="iframe-container">
-        <div class="iframe-header">
-            <button id="iframe-back-btn" aria-label="رجوع"><i class="fas fa-arrow-right"></i></button>
-            <h3 id="iframe-title">جاري التحميل...</h3>
-        </div>
-        <div class="iframe-body">
-            <!-- اللودر -->
-            <div id="iframe-loader">
-                <div class="loader-spinner"></div>
-                <span>جاري التحميل...</span>
-            </div>
-            <!-- رسالة الخطأ -->
-            <div id="iframe-error">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h4>الموقع لا يستجيب</h4>
-                <p>قد يكون الموقع تحت الصيانة أو يواجه ضغطاً شديداً حالياً.</p>
-                <button id="iframe-retry-btn">إعادة المحاولة 🔄</button>
-            </div>
-            <!-- الـ Iframe -->
-            <iframe id="iframe-content" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-        </div>
-    </div>
 
-    <!-- حاوية لوحة التحكم -->
-    <div id="admin-panel-modal">
-        <div class="admin-panel-content">
-            <h2>لوحة تحكم حالة المواقع</h2>
-            <div id="admin-service-list">
-                <!-- سيتم ملء القائمة هنا عبر الجافاسكريبت -->
-            </div>
-            <div class="admin-panel-buttons">
-                <button id="admin-cancel-btn">إلغاء</button>
-                <!-- الزر يبدأ معطلاً -->
-                <button id="admin-save-btn" disabled>جاري الاتصال...</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- رسالة التنبيه (Toast) -->
-    <div id="toast-notification"></div>
-
-    <!-- ==================================== -->
-    <!-- (مُعدل) كود Firebase واللوجيك الأساسي -->
-    <!-- ==================================== -->
+    <!-- ============================================= -->
+    <!-- ==== بداية كود جافاسكريبت و Firebase ==== -->
+    <!-- ============================================= -->
     <script type="module">
-        // استيراد الدوال المطلوبة من Firebase
+        // 1. استيراد وظائف Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { 
+            getAuth, 
+            signInAnonymously, 
+            signInWithCustomToken, 
+            onAuthStateChanged, 
+            signOut,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            setDoc, 
+            addDoc, 
+            collection, 
+            query, 
+            where, 
+            onSnapshot, 
+            Timestamp,
+            updateDoc,
+            runTransaction,
+            getDocs 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { 
+            getStorage, 
+            ref, 
+            uploadBytes, 
+            getDownloadURL,
+            deleteObject 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-        // متغيرات Firebase
-        let db;
-        let auth;
-        let siteStatusDocRef;
-        let siteStatuses = {}; // متغير عالمي لتخزين الحالات
 
-        // متغيرات التطبيق والـ ID (يتم توفيرها من البيئة)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        // (مُعدل) التأكد من أن الكونفيج ليس نصاً فارغاً
-        const firebaseConfigStr = typeof __firebase_config !== 'undefined' && __firebase_config ? __firebase_config : '{}';
-        const firebaseConfig = JSON.parse(firebaseConfigStr);
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // 2. إعدادات Firebase (من المستخدم)
+        const firebaseConfig = {
+          apiKey: "AIzaSyA5OiTcX95GBgiJoDHnY3y7N23o-j8hsQ8",
+          authDomain: "services-cef84.firebaseapp.com",
+          databaseURL: "https://services-cef84-default-rtdb.firebaseio.com",
+          projectId: "services-cef84",
+          storageBucket: "services-cef84.firebasestorage.app",
+          messagingSenderId: "902396219187",
+          appId: "1:902396219187:web:3ba084a724266afa8bb846"
+        };
 
-        // متغيرات لوحة التحكم
-        const adminPanelTrigger = document.getElementById('admin-panel-trigger');
-        const adminPanelModal = document.getElementById('admin-panel-modal');
-        const adminServiceList = document.getElementById('admin-service-list');
-        const adminSaveBtn = document.getElementById('admin-save-btn');
-        const adminCancelBtn = document.getElementById('admin-cancel-btn');
-        const allServiceCards = document.querySelectorAll('.service-card'); 
 
-        // دالة إظهار رسالة التنبيه (Toast)
-        const toastEl = document.getElementById('toast-notification');
-        function showToast(message, type = 'success') {
-            if (!toastEl) return;
-            toastEl.textContent = message;
-            toastEl.className = type; // "success" or "error"
-            toastEl.classList.add('show');
-            
-            // إخفاء الرسالة بعد 3 ثواني
-            setTimeout(() => {
-                toastEl.classList.remove('show');
-            }, 3000); 
+        // 3. تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        
+        // 4. متغيرات الحالة العامة
+        let userId = null;
+        let userProfile = null;
+        let currentUnsubscribe = null; 
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'services-cef84'; 
+        
+        let isRegistering = false; 
+        let allUsers = []; 
+        let previousPage = { page: 'home', params: {} };
+        let currentPage = { page: 'home', params: {} };
+        
+        // قائمة الخدمات الموسعة جداً
+        const SERVICES_LIST = [
+            { name: 'سباك', icon: '🔧', categorySearch: 'سباك' },
+            { name: 'كهربائي', icon: '💡', categorySearch: 'كهربائي' },
+            { name: 'نجار', icon: '🪚', categorySearch: 'نجار' },
+            { name: 'فني تبريد وتكييف', icon: '❄️', categorySearch: 'تكييف' },
+            { name: 'فني صيانة هواتف', icon: '📱', categorySearch: 'هواتف' },
+            { name: 'فني صيانة شاشات', icon: '📺', categorySearch: 'شاشات' },
+            { name: 'فني صيانة أجهزة', icon: '🔌', categorySearch: 'اجهزة' },
+            { name: 'فني صيانة دش', icon: '📡', categorySearch: 'دش' },
+            { name: 'عامل بناء / محارة', icon: '🧱', categorySearch: 'عامل بناء محارة' },
+            { name: 'نقاش / دهانات', icon: '🎨', categorySearch: 'نقاش دهانات' },
+            { name: 'مهندس مدني', icon: '🏗️', categorySearch: 'مهندس مدني' }, 
+            { name: 'مهندس معماري', icon: '📐', categorySearch: 'مهندس معماري' }, 
+            { name: 'مهندس زراعي', icon: '🌾', categorySearch: 'مهندس زراعي' }, 
+            { name: 'مهندس حاسبات / برمجة', icon: '💻', categorySearch: 'مهندس حاسبات برمجة' }, 
+            { name: 'مدرس / معلم', icon: '📚', categorySearch: 'مدرس معلم تعليمية' }, 
+            { name: 'سكرتير / سكرتارية', icon: '📁', categorySearch: 'سكرتير سكرتارية' }, 
+            { name: 'محاسب / كاتب حسابات', icon: '🧾', categorySearch: 'محاسب كاتب حسابات' }, 
+            { name: 'خدمات طبية / طبيب', icon: '🩺', categorySearch: 'طبية طبيب' },
+            { name: 'ممرض / تمريض منزلي', icon: '🩹', categorySearch: 'ممرض تمريض' },
+            { name: 'نقل وشحن / عفش', icon: '🚚', categorySearch: 'نقل شحن عفش' },
+            { name: 'خدمات قانونية / محامي', icon: '⚖️', categorySearch: 'قانونية محامي' },
+            { name: 'تنظيف منازل', icon: '🧹', categorySearch: 'تنظيف منازل' },
+            { name: 'طباخ / شيف', icon: '🧑‍🍳', categorySearch: 'طباخ شيف' },
+            { name: 'مصور', icon: '📸', categorySearch: 'مصور' },
+            { name: 'خياط / ترزي', icon: '🧵', categorySearch: 'خياط ترزي' },
+            { name: 'حداد', icon: '🔗', categorySearch: 'حداد' },
+            { name: 'مزارع / جنايني', icon: '🌿', categorySearch: 'مزارع جنايني زراعة' },
+            { name: 'خدمات عامة / أخرى', icon: '👥', categorySearch: 'خدمات عامة أخرى' },
+        ];
+
+
+        // 5. أيقونات SVG 
+        const ICONS = {
+            star: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>`,
+            starEmpty: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>`,
+            home: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>`,
+            users: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-3.741-5.582M11.995 12.75a9.004 9.004 0 0 1-5.214 0m-2.5 4.972a9.094 9.094 0 0 1 3.741-.479 3 3 0 0 1 3.741 5.582M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm-5.214 0a9.004 9.004 0 0 0 5.214 0M12 12a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Zm5.214 0a9.004 9.004 0 0 0-5.214 0" /></svg>`,
+            add: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`,
+            profile: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>`,
+            chat: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.72 3.72a.75.75 0 0 1-1.06 0l-3.72-3.72C9.847 17.1 9 16.136 9 15v-4.286c0-.97 0.616-1.813 1.5-2.097l6.75-3.375c.22-.11.459-.11.679 0l6.75 3.375Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5c.884-.284 1.5-1.128 1.5-2.097V7.116c0-1.136.847-2.1 1.98-2.193l3.72-3.72a.75.75 0 0 1 1.06 0l3.72 3.72C16.153 5.016 17 5.98 17 7.116v4.286c0 .97-.616 1.813-1.5 2.097l-6.75 3.375a.625.625 0 0 1-.679 0L3 13.5Z" /></svg>`,
+            logout: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg>`,
+            back: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" /></svg>`, // RTL back arrow
+            send: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L6 12Z" /></svg>`,
+            edit: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 18.07a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.862 4.487Zm0 0L19.5 7.125" /></svg>`,
+        };
+
+
+        // 6. الحاوية الرئيسية
+        const appContainer = document.getElementById('app');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+
+
+        // 7. وظائف مساعدة (Modal)
+        function showModal(html) {
+            modalContent.innerHTML = html;
+            modalBackdrop.classList.remove('hidden');
         }
 
-        // دالة بدء تشغيل Firebase
-        async function initFirebase() {
-            try {
-                // (مُعدل) التأكد من أن الكونفيج موجود قبل التهيئة
-                if (!firebaseConfig.apiKey) {
-                    throw new Error("Firebase config is missing or empty.");
+
+        function hideModal() {
+            modalBackdrop.classList.add('hidden');
+            modalContent.innerHTML = '';
+        }
+
+
+        function showLoading(message = 'جاري التحميل...') {
+            const html = `
+                <div class="flex flex-col items-center justify-center p-8">
+                    <svg class="animate-spin h-10 w-10 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-gray-700 font-medium">${message}</p>
+                </div>
+            `;
+            showModal(html);
+        }
+
+
+        function hideLoading() {
+            hideModal();
+        }
+
+        // دالة لعرض رسالة نجاح/خطأ قصيرة (بديل لـ alert)
+        function showMessageModal(title, message, isSuccess = true) {
+            const color = isSuccess ? 'text-green-600' : 'text-red-600';
+            const html = `
+                <h2 class="text-xl font-semibold text-center ${color} mb-4">${title}</h2>
+                <p class="text-center text-gray-700">${message}</p>
+                <button data-action="closeModal" class="mt-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">حسناً</button>
+            `;
+            showModal(html);
+        }
+
+        // 8. وظائف التوجيه (Routing) 
+        function navigateTo(page, params = {}) {
+            console.log(`Navigating to: ${page}`, params);
+            // إلغاء أي اشتراك حالي
+            if (currentUnsubscribe) {
+                currentUnsubscribe();
+                currentUnsubscribe = null;
+                console.log('Unsubscribed from real-time listener.');
+            }
+            appContainer.innerHTML = ''; // تنظيف الصفحة
+
+
+            // تحديث سجل التصفح
+            if (page !== 'loading' && page !== 'auth' && page !== 'register') {
+                if (currentPage.page !== page || JSON.stringify(currentPage.params) !== JSON.stringify(params)) {
+                    previousPage = currentPage;
+                    currentPage = { page, params };
                 }
+            } else if (page === 'auth' || page === 'register') {
+                previousPage = { page: 'home', params: {} };
+                currentPage = { page, params };
+            }
 
-                setLogLevel('Debug');
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                // تسجيل الدخول
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                
-                const userId = auth.currentUser ? auth.currentUser.uid : 'anonymous';
-                console.log('Firebase initialized. App ID:', appId, 'User ID:', userId);
 
-                // تحديد مسار ملف الإعدادات السحابي
-                const statusDocPath = `/artifacts/${appId}/public/data/site_status/config`;
-                siteStatusDocRef = doc(db, statusDocPath);
-
-                // الاستماع للتغييرات اللحظية
-                onSnapshot(siteStatusDocRef, (doc) => {
-                    if (doc.exists()) {
-                        siteStatuses = doc.data();
-                        console.log('Site statuses updated from cloud:', siteStatuses);
-                    } else {
-                        console.log('No status config found in cloud. Using defaults.');
-                        siteStatuses = {}; // استخدام الافتراضي لو الملف مش موجود
-                    }
-                    
-                    // (الأهم) تفعيل زر الحفظ بعد التأكد من الاتصال وجلب البيانات
-                    if (adminSaveBtn) {
-                        adminSaveBtn.disabled = false;
-                        adminSaveBtn.textContent = 'حفظ وإغلاق';
-                    }
-                }, (error) => {
-                    console.error("Error listening to site status:", error);
-                    // تفعيل الزر حتى لو فشل، مع رسالة خطأ
-                    if (adminSaveBtn) {
-                        adminSaveBtn.disabled = false;
-                        adminSaveBtn.textContent = 'حفظ وإغلاق';
-                    }
-                    showToast('فشل الاتصال بقاعدة البيانات', 'error');
-                });
-
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-                // إظهار رسالة الفشل وإبقاء الزر معطلاً
-                showToast('فشل تهيئة التطبيق', 'error');
-                if (adminSaveBtn) {
-                    adminSaveBtn.disabled = true;
-                    adminSaveBtn.textContent = 'فشل الاتصال';
-                }
+            switch (page) {
+                case 'loading':
+                    renderLoadingScreen();
+                    break;
+                case 'auth':
+                    renderAuthPage();
+                    break;
+                case 'register':
+                    renderRegisterPage();
+                    break;
+                case 'clientHome':
+                    renderClientHome();
+                    break;
+                case 'providerHome':
+                    renderProviderHome();
+                    break;
+                case 'category':
+                    renderCategoryPage(params.category);
+                    break;
+                case 'directory':
+                    renderDirectoryPage();
+                    break;
+                case 'chatList':
+                    renderChatListPage();
+                    break;
+                case 'profile':
+                    renderProfilePage(params.uid);
+                    break;
+                case 'editProfile': 
+                    renderEditProfilePage();
+                    break;
+                case 'chat':
+                    renderChatPage(params.otherUserId);
+                    break;
+                case 'newRequest':
+                    renderNewRequestPage();
+                    break;
+                default:
+                    renderAuthPage(); 
             }
         }
-        
-        // --- دوال لوحة التحكم ---
 
-        function openAdminPanel() {
-            if (!adminServiceList || !adminPanelModal) return;
-            
-            adminServiceList.innerHTML = '';
-            // قراءة الحالات مباشرة من المتغير العالمي
-            const statuses = siteStatuses;
-            
-            let index = 1;
-            allServiceCards.forEach(card => {
-                const title = card.querySelector('h3').textContent;
-                const url = card.getAttribute('data-href');
-                
-                // تجاهل روابط واتساب
-                if (!url || url.startsWith('https://chat.whatsapp.com')) return;
 
-                // الافتراضي "يعمل"
-                const currentStatus = statuses[url] || 'up'; 
-                
-                const item = document.createElement('div');
-                item.className = 'admin-service-item';
-                item.innerHTML = `
-                    <span>${index}. ${title}</span>
-                    <select data-url="${url}">
-                        <option value="up" ${currentStatus === 'up' ? 'selected' : ''}>يعمل</option>
-                        <option value="down" ${currentStatus === 'down' ? 'selected' : ''}>لا يعمل</option>
-                    </select>
-                `;
-                adminServiceList.appendChild(item);
-                index++;
-            });
-            
-            adminPanelModal.style.display = 'block';
+        // 9. وظائف عرض الصفحات (Render Functions)
+
+
+        function renderLoadingScreen() {
+            appContainer.innerHTML = `
+                <div class="flex items-center justify-center min-h-screen">
+                    <div class="flex flex-col items-center">
+                        <svg class="animate-spin h-12 w-12 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <h1 class="text-xl font-semibold text-gray-700">جاري تهيئة التطبيق...</h1>
+                    </div>
+                </div>
+            `;
         }
 
-        // دالة الحفظ (مُعدلة مع رسائل الحالة)
-        async function saveAdminStatus() {
-            if (!adminServiceList || !siteStatusDocRef || !adminSaveBtn) {
-                console.error('Admin list or Firestore doc ref is not ready.');
-                showToast('التطبيق غير جاهز، حاول مرة أخرى', 'error');
+
+        function renderAuthPage() {
+            appContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center min-h-screen p-8 bg-blue-600">
+                    <h1 class="text-4xl font-bold text-white mb-4">خدماتي</h1>
+                    <p class="text-lg text-blue-100 mb-12">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
+                    
+                    <div class="w-full max-w-sm bg-white rounded-lg shadow-xl p-8">
+                        <form id="login-form" class="space-y-4">
+                            <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">تسجيل الدخول</h2>
+                            <div id="login-error" class="text-red-500 text-sm text-center hidden"></div>
+                            
+                            <div>
+                                <label for="login-identifier" class="block text-sm font-medium text-gray-700">اسم المستخدم</label>
+                                <input type="text" id="login-identifier" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="ادخل اسم المستخدم">
+                            </div>
+                            <div>
+                                <label for="login-password" class="block text-sm font-medium text-gray-700">كلمة المرور</label>
+                                <input type="password" id="login-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="********">
+                            </div>
+                            <button type="submit" data-action="login" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                دخول
+                            </button>
+                        </form>
+                        
+                        <div class="my-6 flex items-center justify-center">
+                            <span class="border-t border-gray-300 flex-grow"></span>
+                            <span class="px-4 text-sm text-gray-500">أو</span>
+                            <span class="border-t border-gray-300 flex-grow"></span>
+                        </div>
+                        
+                        <button data-action="navigateTo" data-page="register" class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            إنشاء حساب جديد
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        // --- صفحة التسجيل المحدثة (بدون بريد إلكتروني) ---
+        function renderRegisterPage() {
+            // إنشاء خيارات القائمة المنسدلة
+            const serviceOptions = SERVICES_LIST.map(service => 
+                `<option value="${service.name}">${service.name}</option>`
+            ).join('');
+
+
+            appContainer.innerHTML = `
+                <div class="min-h-screen p-8 bg-gray-100">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">إنشاء حساب جديد</h1>
+                    <form id="register-form" class="space-y-6 bg-white p-8 rounded-lg shadow-md max-w-md mx-auto">
+                        <div id="register-error" class="text-red-500 text-sm text-center hidden"></div>
+                        
+                        <div>
+                            <label for="register-username" class="block text-sm font-medium text-gray-700">اسم المستخدم (يستخدم لتسجيل الدخول)</label>
+                            <input type="text" id="register-username" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="مثال: myname123">
+                        </div>
+                        
+                        <div>
+                            <label for="register-password" class="block text-sm font-medium text-gray-700">كلمة المرور (6 حروف أو أرقام على الأقل)</label>
+                            <input type="password" id="register-password" required minlength="6" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="********">
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div>
+                            <label for="register-name" class="block text-sm font-medium text-gray-700">الاسم الكامل</label>
+                            <input type="text" id="register-name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="مثال: محمد أحمد علي">
+                        </div>
+                        <div>
+                            <label for="register-phone" class="block text-sm font-medium text-gray-700">رقم الهاتف</label>
+                            <input type="tel" id="register-phone" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="مثال: 01012345678">
+                        </div>
+                        <div>
+                            <label for="register-address" class="block text-sm font-medium text-gray-700">العنوان (المدينة / المركز)</label>
+                            <input type="text" id="register-address" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="مثال: الزقازيق، القومية">
+                        </div>
+                        
+                        <!-- شكل الأفاتار الجديد -->
+                        <div>
+                            <label for="register-photo" class="block text-sm font-medium text-gray-700 text-center">الصورة الشخصية</label>
+                            <div class="mt-2 flex justify-center">
+                                <label for="register-photo" class="relative cursor-pointer">
+                                    <img id="photo-preview" class="w-24 h-24 rounded-full object-cover border-2 border-gray-300" 
+                                         src="https://placehold.co/100x100/EBF8FF/3182CE?text=اختيار+صورة" alt="معاينة الصورة">
+                                    <input type="file" id="register-photo" accept="image/*" class="sr-only">
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">أرغب في التسجيل كـ:</label>
+                            <div class="mt-2 flex space-x-4 space-x-reverse">
+                                <label class="flex items-center">
+                                    <input type="radio" name="role" value="client" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300" checked>
+                                    <span class="mr-2 text-gray-700">عميل (أبحث عن خدمة)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="role" value="provider" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                                    <span class="mr-2 text-gray-700">مقدم خدمة (أقدم خدمة)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- حقل الوظيفة المحدث (لمقدم الخدمة فقط) -->
+                        <div id="job-title-field" class="hidden space-y-4">
+                            <div>
+                                <label for="register-job-select" class="block text-sm font-medium text-gray-700">اختر وظيفتك / الخدمة:</label>
+                                <select id="register-job-select" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                    <option value="">اختر...</option>
+                                    ${serviceOptions}
+                                    <option value="أخرى">أخرى (اذكرها بالأسفل)</option>
+                                </select>
+                            </div>
+                            <div id="job-title-other-field" class="hidden">
+                                <label for="register-job-title" class="block text-sm font-medium text-gray-700">اذكر وظيفتك:</label>
+                                <input type="text" id="register-job-title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="مثال: مصمم جرافيك">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" data-action="register" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            إنشاء الحساب
+                        </button>
+                        
+                        <p class="text-center text-sm text-gray-600">
+                            هل لديك حساب بالفعل؟ 
+                            <button type="button" data-action="navigateTo" data-page="auth" class="font-medium text-blue-600 hover:text-blue-500">
+                                سجل الدخول
+                            </button>
+                        </p>
+                    </form>
+                </div>
+            `;
+        }
+        
+        // --- الصفحة الرئيسية للعميل ---
+        function renderClientHome() {
+            // استخدام القائمة الموسعة
+            const categoriesHtml = SERVICES_LIST.map(cat => `
+                <div data-action="navigateTo" data-page="category" data-category="${cat.categorySearch}" 
+                     class="flex flex-col items-center justify-center bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-gray-200 hover:border-blue-500">
+                    <span class="text-5xl mb-3">${cat.icon}</span>
+                    <h3 class="text-lg font-semibold text-gray-800 text-center">${cat.name}</h3>
+                </div>
+            `).join('');
+
+
+            appContainer.innerHTML = `
+                <div class="pb-24"> <!-- padding for bottom nav -->
+                    <!-- Header -->
+                    <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
+                        <h1 class="text-2xl font-bold">أهلاً بك، ${userProfile.name}</h1>
+                        <p class="text-blue-100">ابحث عن الخدمة التي تحتاجها في محافظة الشرقية</p>
+                    </header>
+                    
+                    <!-- Categories Grid -->
+                    <main class="p-4 md:p-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-6">أقسام الخدمات</h2>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                            ${categoriesHtml}
+                            <!-- زر "أخرى" للبحث العام -->
+                            <div data-action="navigateTo" data-page="category" data-category="" 
+                                class="flex flex-col items-center justify-center bg-gray-100 text-gray-700 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer border border-gray-200 hover:border-blue-500">
+                                <span class="text-5xl mb-3">➕</span>
+                                <h3 class="text-lg font-semibold text-center">خدمات عامة / أخرى</h3>
+                            </div>
+                        </div>
+                    </main>
+                    
+                    <!-- FAB for New Request -->
+                    <button data-action="navigateTo" data-page="newRequest" 
+                            class="fixed bottom-24 left-6 bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-blue-700 transition-colors">
+                        ${ICONS.add}
+                    </button>
+                    
+                    <!-- Bottom Navigation -->
+                    ${renderBottomNav('home')}
+                </div>
+            `;
+        }
+
+
+        // --- الصفحة الرئيسية لمقدم الخدمة ---
+        async function renderProviderHome() {
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-10">
+                        <h1 class="text-2xl font-bold">أهلاً بك، ${userProfile.name}</h1>
+                        <p class="text-blue-100">تصفح طلبات الخدمات المتاحة حالياً</p>
+                    </header>
+                    
+                    <!-- Service Requests List -->
+                    <main class="p-4 md:p-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-6">طلبات الخدمات المتاحة</h2>
+                        <div id="requests-list" class="space-y-4">
+                            <p class="text-gray-500">جاري تحميل الطلبات...</p>
+                        </div>
+                    </main>
+                    
+                    <!-- FAB for New Request (Provider can also request) -->
+                    <button data-action="navigateTo" data-page="newRequest" 
+                            class="fixed bottom-24 left-6 bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-blue-700 transition-colors">
+                        ${ICONS.add}
+                    </button>
+                    
+                    <!-- Bottom Navigation -->
+                    ${renderBottomNav('home')}
+                </div>
+            `;
+            
+            // جلب وعرض الطلبات
+            const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
+            currentUnsubscribe = onSnapshot(requestsColRef, (snapshot) => {
+                const requestsList = document.getElementById('requests-list');
+                if (snapshot.empty) {
+                    requestsList.innerHTML = '<p class="text-gray-500 text-center p-6">لا توجد طلبات خدمات متاحة حالياً.</p>';
+                    return;
+                }
+                
+                const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                requests.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
+
+
+                requestsList.innerHTML = requests.map(req => `
+                    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <img data-action="navigateTo" data-page="profile" data-uid="${req.requesterId}"
+                                     src="${req.requesterPhoto || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
+                                     alt="${req.requesterName}" class="w-12 h-12 rounded-full object-cover cursor-pointer">
+                                <div>
+                                    <h4 data-action="navigateTo" data-page="profile" data-uid="${req.requesterId}" 
+                                        class="font-semibold text-gray-800 cursor-pointer hover:text-blue-600">${req.requesterName}</h4>
+                                    <p class="text-sm text-gray-500">طلب خدمة: ${req.category}</p>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-400">${new Date(req.createdAt.toDate()).toLocaleDateString('ar-EG')}</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">${req.title}</h3>
+                        <p class="text-gray-600 mb-4">${req.description}</p>
+                        <button data-action="navigateTo" data-page="chat" data-otheruserid="${req.requesterId}"
+                                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                            تواصل مع العميل
+                        </button>
+                    </div>
+                `).join('');
+            }, (error) => {
+                console.error("Error fetching requests: ", error);
+                document.getElementById('requests-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الطلبات.</p>';
+            });
+        }
+        
+        // --- صفحة فئة الخدمات (لعرض مقدمي الخدمة) ---
+        async function renderCategoryPage(categoryName) {
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-white text-gray-800 p-4 shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold">مقدمو خدمة: ${categoryName || 'كل الخدمات'}</h1>
+                        <!-- زر الرجوع الذكي -->
+                        <button data-action="goBack" class="text-blue-600 font-medium">
+                            ${ICONS.back}
+                        </button>
+                    </header>
+                    
+                    <main class="p-4 md:p-8">
+                        <div id="providers-list" class="space-y-4">
+                            <p class="text-gray-500">جاري البحث عن مقدمي خدمات...</p>
+                        </div>
+                    </main>
+                    
+                    ${renderBottomNav('home')}
+                </div>
+            `;
+            
+            const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
+            const allProvidersQuery = query(usersColRef, where('role', '==', 'provider'));
+
+
+            currentUnsubscribe = onSnapshot(allProvidersQuery, (snapshot) => {
+                const providersListEl = document.getElementById('providers-list');
+                const providers = snapshot.docs
+                    .map(doc => ({ id: doc.id, ...doc.data() }))
+                    .filter(p => !categoryName || (p.jobTitleSearch && p.jobTitleSearch.includes(categoryName))); 
+
+
+                if (providers.length === 0) {
+                    providersListEl.innerHTML = '<p class="text-gray-500 text-center p-6">لا يوجد مقدمو خدمات مسجلون في هذا القسم حالياً.</p>';
+                    return;
+                }
+
+
+                providersListEl.innerHTML = providers.map(p => {
+                    const avgRating = p.avgRating ? p.avgRating.toFixed(1) : 'جديد';
+                    const ratingCount = p.ratings ? p.ratings.length : 0;
+                    
+                    return `
+                    <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 space-x-reverse">
+                        <img data-action="navigateTo" data-page="profile" data-uid="${p.uid}"
+                             src="${p.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
+                             alt="${p.name}" class="w-16 h-16 rounded-full object-cover cursor-pointer">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center">
+                                <h3 data-action="navigateTo" data-page="profile" data-uid="${p.uid}"
+                                    class="text-lg font-semibold text-gray-900 cursor-pointer hover:text-blue-600">${p.name}</h3>
+                                <div class="flex items-center text-yellow-500">
+                                    <span class="font-bold text-lg mr-1">${avgRating}</span>
+                                    ${ICONS.star}
+                                    <span class="text-xs text-gray-500 ms-1">(${ratingCount})</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600">${p.jobTitle}</p>
+                            <p class="text-sm text-gray-500">${p.address}</p>
+                        </div>
+                        <button data-action="navigateTo" data-page="chat" data-otheruserid="${p.uid}"
+                                class="flex-shrink-0 bg-blue-100 text-blue-700 py-2 px-4 rounded-lg font-medium hover:bg-blue-200 transition-colors">
+                            تواصل
+                        </button>
+                    </div>
+                `}).join('');
+            }, (error) => {
+                console.error("Error fetching providers: ", error);
+                document.getElementById('providers-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل مقدمي الخدمات.</p>';
+            });
+        }
+        
+        // --- صفحة دليل المستخدمين (تم إصلاح وظيفة البحث) ---
+        async function renderDirectoryPage() {
+            // Function to render the filtered list (moved inside for better encapsulation)
+            function renderUserList(users) {
+                const listEl = document.getElementById('directory-list');
+                const searchInput = document.getElementById('search-directory');
+                const searchText = searchInput ? searchInput.value.toLowerCase() : '';
+                
+                const filteredUsers = users.filter(user => 
+                    user.name.toLowerCase().includes(searchText) || 
+                    (user.jobTitle && user.jobTitle.toLowerCase().includes(searchText)) ||
+                    (user.username && user.username.toLowerCase().includes(searchText))
+                );
+
+                if (filteredUsers.length === 0) {
+                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6">لم يتم العثور على مستخدمين مطابقين لنتائج البحث.</p>';
+                    return;
+                }
+                
+                listEl.innerHTML = filteredUsers.map(user => {
+                    const userRole = user.role === 'provider' ? (user.jobTitle || 'مقدم خدمة') : 'عميل';
+                    const userColor = user.role === 'provider' ? 'text-blue-600' : 'text-green-600';
+                    return `
+                    <div data-action="navigateTo" data-page="profile" data-uid="${user.uid}" 
+                         class="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 space-x-reverse cursor-pointer hover:bg-gray-50 transition-colors">
+                        <img src="${user.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
+                             alt="${user.name}" class="w-14 h-14 rounded-full object-cover">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900">${user.name}</h3>
+                            <p class="text-gray-600 ${userColor} font-medium">${userRole}</p>
+                            <p class="text-sm text-gray-500">${user.phone}</p>
+                        </div>
+                    </div>
+                    `
+                }).join('');
+            }
+            
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-white p-4 shadow-md sticky top-0 z-10">
+                        <h1 class="text-2xl font-bold text-gray-900 mb-4">دليل المستخدمين</h1>
+                        <input type="text" id="search-directory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="ابحث بالاسم أو الوظيفة...">
+                    </header>
+                    
+                    <main class="p-4 md:p-8">
+                        <div id="directory-list" class="space-y-4">
+                            <p class="text-gray-500">جاري تحميل المستخدمين...</p>
+                        </div>
+                    </main>
+                    
+                    ${renderBottomNav('directory')}
+                </div>
+            `;
+            
+            const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
+            
+            // جلب المستخدمين أول مرة ثم تحديثهم عبر onSnapshot
+            const unsubscribeDirectory = onSnapshot(usersColRef, (snapshot) => {
+                allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderUserList(allUsers); 
+            }, (error) => {
+                console.error("Error fetching all users: ", error);
+                document.getElementById('directory-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل المستخدمين.</p>';
+            });
+
+            currentUnsubscribe = unsubscribeDirectory;
+
+            // إضافة مستمع البحث الفوري
+            document.getElementById('search-directory').addEventListener('input', () => {
+                renderUserList(allUsers);
+            });
+        }
+
+
+        // --- صفحة قائمة المحادثات ---
+        async function renderChatListPage() {
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-white p-4 shadow-md sticky top-0 z-10">
+                        <h1 class="text-2xl font-bold text-gray-900">المحادثات</h1>
+                    </header>
+                    
+                    <main class="p-4 md:p-8">
+                        <div id="chat-list-container" class="space-y-3">
+                            <p class="text-gray-500">جاري تحميل المحادثات...</p>
+                        </div>
+                    </main>
+                    
+                    ${renderBottomNav('chatList')}
+                </div>
+            `;
+            
+            const chatsColRef = collection(db, `artifacts/${appId}/public/data/chats`);
+            const q = query(chatsColRef, where('users', 'array-contains', userId));
+            
+            currentUnsubscribe = onSnapshot(q, (snapshot) => {
+                const listEl = document.getElementById('chat-list-container');
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6">لا توجد لديك محادثات حتى الآن.</p>';
+                    return;
+                }
+                
+                const chats = snapshot.docs.map(doc => doc.data());
+                chats.sort((a, b) => b.lastUpdate.toMillis() - a.lastUpdate.toMillis());
+                
+                listEl.innerHTML = chats.map(chat => {
+                    const otherUserId = chat.users.find(uid => uid !== userId);
+                    if (!chat.userDetails || !chat.userDetails[otherUserId]) {
+                        return ''; // تجاهل المحادثات القديمة بدون بيانات
+                    }
+                    const otherUser = chat.userDetails[otherUserId];
+                    
+                    return `
+                    <div data-action="navigateTo" data-page="chat" data-otheruserid="${otherUserId}"
+                         class="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex items-center space-x-4 space-x-reverse cursor-pointer hover:bg-gray-50 transition-colors">
+                        <img src="${otherUser.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
+                             alt="${otherUser.name}" class="w-14 h-14 rounded-full object-cover">
+                        <div class="flex-1 overflow-hidden">
+                            <h3 class="text-lg font-semibold text-gray-900 truncate-1-line">${otherUser.name}</h3>
+                            <p class="text-gray-600 truncate-1-line">${chat.lastMessage}</p>
+                        </div>
+                        <span class="text-xs text-gray-400 flex-shrink-0">${new Date(chat.lastUpdate.toDate()).toLocaleTimeString('ar-EG', {hour: '2-digit', minute: '2-digit'})}</span>
+                    </div>
+                    `;
+                }).join('');
+
+
+            }, (error) => {
+                console.error("Error fetching chat list: ", error);
+                document.getElementById('chat-list-container').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل المحادثات.</p>';
+            });
+        }
+        
+        // --- صفحة الملف الشخصي (البروفايل) ---
+        async function renderProfilePage(uid) {
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-white p-4 shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold text-gray-900">الملف الشخصي</h1>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            ${uid === userId ? `
+                                <button data-action="navigateTo" data-page="editProfile"
+                                        class="p-2 text-blue-600 hover:text-blue-700">
+                                    ${ICONS.edit}
+                                </button>
+                            ` : ''}
+                            <button data-action="goBack" class="text-blue-600 font-medium">
+                                ${ICONS.back}
+                            </button>
+                        </div>
+                    </header>
+                    
+                    <main id="profile-content" class="p-4 md:p-8">
+                        <p class="text-gray-500">جاري تحميل الملف الشخصي...</p>
+                    </main>
+                    
+                    ${renderBottomNav(uid === userId ? 'profile' : '')}
+                </div>
+            `;
+            
+            try {
+                const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (!userDoc.exists()) {
+                    document.getElementById('profile-content').innerHTML = '<p class="text-red-500">هذا المستخدم غير موجود.</p>';
+                    return;
+                }
+                
+                const profileData = userDoc.data();
+                
+                const ratings = profileData.ratings || [];
+                const avgRating = profileData.avgRating ? profileData.avgRating.toFixed(1) : 0;
+                const ratingCount = ratings.length;
+                
+                const profileContent = document.getElementById('profile-content');
+                profileContent.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <img src="${profileData.photoURL || 'https://placehold.co/150x150/EBF8FF/3182CE?text=User'}" 
+                             alt="${profileData.name}" class="w-32 h-32 rounded-full object-cover shadow-lg border-4 border-white mb-4">
+                        <h2 class="text-3xl font-bold text-gray-900">${profileData.name}</h2>
+                        ${profileData.role === 'provider' ? 
+                            `<p class="text-xl text-blue-600 font-medium mt-1">${profileData.jobTitle || 'مقدم خدمة'}</p>` : 
+                            '<p class="text-xl text-green-600 font-medium mt-1">عميل</p>'
+                        }
+                        
+                        ${uid !== userId ? `
+                            <button data-action="navigateTo" data-page="chat" data-otheruserid="${uid}"
+                                    class="mt-6 bg-blue-600 text-white py-3 px-8 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors">
+                                تواصل الآن
+                            </button>
+                        ` : ''}
+                    </div>
+                    
+                    <!-- بيانات التواصل الموضحة -->
+                    <div class="bg-white p-6 rounded-lg shadow-md mt-8 border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">بيانات التواصل</h3>
+                        <div class="space-y-4">
+                            <!-- عرض اسم المستخدم -->
+                            <div class="flex items-start">
+                                <span class="w-6 text-gray-500 mt-1">👤</span>
+                                <div class="mr-3">
+                                    <span class="block text-xs text-gray-500">اسم المستخدم</span>
+                                    <span class="text-gray-700 font-medium">${profileData.username || 'N/A'}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="w-6 text-gray-500 mt-1">📞</span>
+                                <div class="mr-3">
+                                    <span class="block text-xs text-gray-500">الرقم</span>
+                                    <span class="text-gray-700 font-medium">${profileData.phone}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="w-6 text-gray-500 mt-1">📍</span>
+                                <div class="mr-3">
+                                    <span class="block text-xs text-gray-500">العنوان</span>
+                                    <span class="text-gray-700 font-medium">${profileData.address}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- التقييمات (لمقدم الخدمة فقط) -->
+                    ${profileData.role === 'provider' ? `
+                    <div class="bg-white p-6 rounded-lg shadow-md mt-8 border border-gray-200">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">التقييمات (${ratingCount})</h3>
+                        <div class="flex items-center mb-6">
+                            <span class="text-4xl font-bold text-yellow-500">${avgRating}</span>
+                            <span class="text-2xl text-gray-400 mx-2">/</span>
+                            <span class="text-2xl text-gray-400">5</span>
+                            <div class="flex mr-4">
+                                ${renderStarRating(avgRating, 5, 'h-8 w-8 text-yellow-400')}
+                            </div>
+                        </div>
+                        
+                        <div id="ratings-list" class="space-y-4 max-h-60 overflow-y-auto no-scrollbar">
+                            ${ratings.length > 0 ? ratings.sort((a,b) => b.createdAt.toMillis() - a.createdAt.toMillis()).map(r => `
+                                <div class="border-t border-gray-200 pt-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold text-gray-800">${r.byName || 'مستخدم'}</span>
+                                        <div class="flex text-yellow-400">
+                                            ${renderStarRating(r.stars, 5, 'h-5 w-5')}
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 mt-1">${r.comment}</p>
+                                </div>
+                            `).join('') : '<p class="text-gray-500">لا توجد تقييمات بعد.</p>'}
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    ${uid === userId ? `
+                        <button data-action="logout" 
+                                class="mt-8 w-full bg-red-100 text-red-700 py-3 px-6 rounded-lg font-semibold text-lg hover:bg-red-200 transition-colors flex items-center justify-center space-x-2 space-x-reverse">
+                            ${ICONS.logout}
+                            <span>تسجيل الخروج</span>
+                        </button>
+                    ` : ''}
+                `;
+                
+            } catch (error) {
+                console.error("Error fetching profile: ", error);
+                document.getElementById('profile-content').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الملف الشخصي.</p>';
+            }
+        }
+
+        // --- صفحة تعديل الملف الشخصي ---
+        function renderEditProfilePage() {
+            if (!userProfile) {
+                navigateTo('auth');
+                return;
+            }
+
+            const serviceOptions = SERVICES_LIST.map(service => 
+                `<option value="${service.name}" ${userProfile.jobTitle === service.name ? 'selected' : ''}>${service.name}</option>`
+            ).join('');
+
+            const isCustomJobTitle = userProfile.role === 'provider' && userProfile.jobTitle && !SERVICES_LIST.some(s => s.name === userProfile.jobTitle);
+            
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-white p-4 shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold text-gray-900">تعديل الملف الشخصي</h1>
+                        <button data-action="goBack" class="text-blue-600 font-medium">
+                            ${ICONS.back}
+                        </button>
+                    </header>
+                    
+                    <main class="p-4 md:p-8">
+                        <form id="edit-profile-form" class="space-y-6 bg-white p-8 rounded-lg shadow-md max-w-md mx-auto">
+                            <div id="edit-error" class="text-red-500 text-sm text-center hidden"></div>
+                            
+                            <!-- صورة البروفايل -->
+                            <div>
+                                <label for="edit-photo" class="block text-sm font-medium text-gray-700 text-center">الصورة الشخصية (اتركها فارغة للإبقاء على الحالية)</label>
+                                <div class="mt-2 flex justify-center">
+                                    <label for="edit-photo" class="relative cursor-pointer">
+                                        <img id="edit-photo-preview" class="w-24 h-24 rounded-full object-cover border-2 border-blue-400 p-0.5" 
+                                             src="${userProfile.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" alt="معاينة الصورة">
+                                        <input type="file" id="edit-photo" accept="image/*" class="sr-only">
+                                        <span class="absolute bottom-0 right-0 p-1 bg-blue-600 rounded-full text-white border-2 border-white">
+                                            ${ICONS.edit}
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+                            
+                            <div>
+                                <label for="edit-name" class="block text-sm font-medium text-gray-700">الاسم الكامل</label>
+                                <input type="text" id="edit-name" value="${userProfile.name}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="edit-phone" class="block text-sm font-medium text-gray-700">رقم الهاتف</label>
+                                <input type="tel" id="edit-phone" value="${userProfile.phone}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="edit-address" class="block text-sm font-medium text-gray-700">العنوان (المدينة / المركز)</label>
+                                <input type="text" id="edit-address" value="${userProfile.address}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+                            
+                            ${userProfile.role === 'provider' ? `
+                                <div id="job-title-edit-field" class="space-y-4">
+                                    <div>
+                                        <label for="edit-job-select" class="block text-sm font-medium text-gray-700">اختر وظيفتك / الخدمة:</label>
+                                        <select id="edit-job-select" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                            <option value="" ${!userProfile.jobTitle ? 'selected' : ''}>اختر...</option>
+                                            ${serviceOptions}
+                                            <option value="other" ${isCustomJobTitle ? 'selected' : ''}>أخرى (اذكرها بالأسفل)</option>
+                                        </select>
+                                    </div>
+                                    <div id="edit-job-title-other-field" class="${isCustomJobTitle ? '' : 'hidden'}">
+                                        <label for="edit-job-title" class="block text-sm font-medium text-gray-700">اذكر وظيفتك:</label>
+                                        <input type="text" id="edit-job-title" value="${isCustomJobTitle ? userProfile.jobTitle : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="مثال: مصمم جرافيك">
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            <button type="submit" data-action="editProfile" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                حفظ التعديلات
+                            </button>
+                        </form>
+                    </main>
+                </div>
+            `;
+            
+             // إضافة مستمع معاينة الصورة لحقل التعديل
+            document.getElementById('edit-photo').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    const preview = document.getElementById('edit-photo-preview');
+                    reader.onload = (event) => {
+                        preview.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+             // إضافة مستمع لإظهار حقل "وظيفة أخرى" في صفحة التعديل
+            document.getElementById('edit-job-select')?.addEventListener('change', (e) => {
+                const otherField = document.getElementById('edit-job-title-other-field');
+                if (e.target.value === 'other') {
+                    otherField.classList.remove('hidden');
+                } else {
+                    otherField.classList.add('hidden');
+                    document.getElementById('edit-job-title').value = '';
+                }
+            });
+
+        }
+        
+        // --- صفحة الشات (الدردشة) ---
+        async function renderChatPage(otherUserId) {
+            let otherUserProfile = null;
+            try {
+                const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, otherUserId);
+                const userDoc = await getDoc(userDocRef);
+                if (userDoc.exists()) {
+                    otherUserProfile = userDoc.data();
+                } else {
+                    throw new Error('User not found');
+                }
+            } catch (e) {
+                console.error(e);
+                appContainer.innerHTML = `<p class="p-8 text-red-500">خطأ: لا يمكن العثور على المستخدم.</p>`;
                 return;
             }
             
-            // إظهار حالة التحميل
-            adminSaveBtn.disabled = true;
-            adminSaveBtn.textContent = 'جاري الحفظ...';
-            showToast('جاري الحفظ...', 'success'); // رسالة مؤقتة
-
-            const newStatuses = {};
-            const selects = adminServiceList.querySelectorAll('select');
-            
-            selects.forEach(select => {
-                const url = select.getAttribute('data-url');
-                const status = select.value;
-                newStatuses[url] = status;
-            });
-            
-            try {
-                // حفظ في السحاب
-                await setDoc(siteStatusDocRef, newStatuses);
-                console.log('Admin statuses saved to cloud:', newStatuses);
-                
-                showToast('تم الحفظ بنجاح!', 'success'); // رسالة النجاح
-                closeAdminPanel();
-
-            } catch (error) {
-                console.error("Error saving status to cloud:", error);
-                showToast('فشل الحفظ. حاول مرة أخرى.', 'error'); // رسالة الخطأ
-            } finally {
-                // إعادة تفعيل الزر (إلا إذا كان الاتصال مقطوعاً من الأساس)
-                if (auth.currentUser) { // تحقق بسيط من أن الاتصال تم أصلاً
-                    adminSaveBtn.disabled = false;
-                    adminSaveBtn.textContent = 'حفظ وإغلاق';
-                }
-            }
-        }
-
-        function closeAdminPanel() {
-            if (adminPanelModal) adminPanelModal.style.display = 'none';
-        }
-
-        // ربط أحداث لوحة التحكم
-        if (adminPanelTrigger) adminPanelTrigger.addEventListener('click', openAdminPanel);
-        if (adminSaveBtn) adminSaveBtn.addEventListener('click', saveAdminStatus);
-        if (adminCancelBtn) adminCancelBtn.addEventListener('click', closeAdminPanel);
-
-        // --- منطق فتح البطاقات (المتصفح الداخلي) ---
-        
-        const iframeViewer = document.getElementById('iframe-viewer');
-        const iframeBackBtn = document.getElementById('iframe-back-btn');
-        const iframeTitle = document.getElementById('iframe-title');
-        const iframeContent = document.getElementById('iframe-content');
-        const iframeLoader = document.getElementById('iframe-loader');
-        const iframeError = document.getElementById('iframe-error');
-        const iframeRetryBtn = document.getElementById('iframe-retry-btn');
-        
-        let iframeLoadTimer = null; // مؤقت للتايم أوت
-        let currentIframeConfig = { url: '', title: '' }; // لحفظ بيانات الرابط الحالي
-
-        // دالة إظهار رسالة الخطأ
-        function showIframeError() {
-            if (!iframeViewer.classList.contains('active')) return;
-            iframeContent.src = 'about:blank'; // إيقاف تحميل
-            iframeLoader.style.display = 'none';
-            iframeError.style.display = 'flex';
-        }
-
-        // دالة تحميل الـ Iframe
-        function loadIframe(url, title) {
-            currentIframeConfig = { url, title }; // حفظ الرابط لإعادة المحاولة
-            clearTimeout(iframeLoadTimer); // إلغاء أي تايم أوت قديم
-            
-            iframeTitle.textContent = title;
-            iframeLoader.style.display = 'flex'; // إظهار اللودر
-            iframeError.style.display = 'none'; // إخفاء رسالة الخطأ
-            iframeContent.style.visibility = 'hidden'; // إخفاء الـ iframe
-            
-            iframeContent.src = url; // بدء التحميل
-            
-            if (!iframeViewer.classList.contains('active')) {
-                iframeViewer.classList.add('active'); // إظهار حاوية المتصفح
-            }
-            
-            // بدء تايم أوت 15 ثانية
-            iframeLoadTimer = setTimeout(showIframeError, 15000); 
-        }
-
-        // ربط الأحداث لجميع البطاقات
-        allServiceCards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault(); 
-                const url = card.getAttribute('data-href');
-                const title = card.querySelector('h3').textContent;
-                
-                if (url) {
-                    // فتح واتساب في نافذة جديدة
-                    if (url.startsWith('https://chat.whatsapp.com')) {
-                        window.open(url, '_blank');
-                        return;
-                    }
-
-                    // (الأهم) التحقق من حالة الصيانة من المتغير السحابي
-                    if (siteStatuses[url] === 'down') {
-                        currentIframeConfig = { url, title }; 
-                        iframeTitle.textContent = title;
-                        iframeLoader.style.display = 'none';
-                        iframeContent.style.visibility = 'hidden';
-                        iframeViewer.classList.add('active'); 
-                        showIframeError(); // إظهار الخطأ فوراً
-                    } else {
-                        // لو الموقع "يعمل"، ابدأ التحميل
-                        loadIframe(url, title);
-                    }
-                }
-            });
-        });
-        
-        // زر الرجوع في المتصفح الداخلي
-        iframeBackBtn.addEventListener('click', () => {
-            iframeViewer.classList.remove('active');
-            clearTimeout(iframeLoadTimer); // إلغاء التايم أوت
-            iframeContent.src = 'about:blank'; // تفريغ الـ iframe
-            iframeTitle.textContent = 'جاري التحميل...';
-            iframeLoader.style.display = 'flex'; // إرجاع اللودر
-            iframeError.style.display = 'none'; // إخفاء الخطأ
-            iframeContent.style.visibility = 'hidden';
-        });
-
-        // زر إعادة المحاولة
-        iframeRetryBtn.addEventListener('click', () => {
-            const url = currentIframeConfig.url;
-            // التحقق من الحالة السحابية قبل إعادة المحاولة
-            if (siteStatuses[url] === 'down') {
-                showIframeError(); // لو لسه "لا يعمل"، اظهر الخطأ تاني
-            } else {
-                // لو "يعمل"، حاول التحميل من جديد
-                loadIframe(url, currentIframeConfig.title);
-            }
-        });
-
-        // عند اكتمال تحميل الـ Iframe
-        iframeContent.addEventListener('load', () => {
-            // تأكد أنه ليس "about:blank"
-            if (iframeContent.src !== 'about:blank') {
-                clearTimeout(iframeLoadTimer); // إلغاء التايم أوت (نجاح)
-                iframeLoader.style.display = 'none'; // إخفاء اللودر
-                iframeError.style.display = 'none';
-                iframeContent.style.visibility = 'visible'; // إظهار الموقع
-            }
-        });
-
-        // (الأهم) بدء تشغيل Firebase عند تحميل الصفحة
-        initFirebase();
-
-    </script>
-
-
-    <!-- ==================================== -->
-    <!-- باقي أكواد الجافاسكريبت (القديمة) -->
-    <!-- ==================================== -->
-    <script>
-        // الكود الأصلي الخاص بك (الوضع الليلي والبحث وزر الصعود)
-        const darkModeToggleContainer = document.getElementById('darkModeToggleContainer');
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const modeLabel = document.getElementById('modeLabel');
-        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-        const searchInput = document.getElementById('serviceSearch');
-
-        function updateModeLabel(isDarkMode) {
-            if (isDarkMode) {
-                modeLabel.textContent = 'تبديل للوضع الفاتح';
-                darkModeToggle.textContent = '🌙';
-            } else {
-                modeLabel.textContent = 'تبديل للوضع الداكن';
-                darkModeToggle.textContent = '☀️';
-            }
-        }
-        darkModeToggleContainer.addEventListener('click', () => {
-            const isDarkMode = document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            updateModeLabel(isDarkMode);
-        });
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            const allServiceCards = document.querySelectorAll('.service-card'); 
-            allServiceCards.forEach(card => {
-                const cardTitle = card.querySelector('h3').textContent.toLowerCase();
-                const cardKeywords = card.getAttribute('data-keywords').toLowerCase();
-                const cardDescription = card.querySelector('p').textContent.toLowerCase();
-                const isMatch = cardTitle.includes(searchTerm) || cardKeywords.includes(searchTerm) || cardDescription.includes(searchTerm);
-                if (!isMatch) {
-                    card.classList.add('hidden');
-                    card.style.opacity = '0';
-                    card.style.pointerEvents = 'none';
-                } else {
-                    card.classList.remove('hidden');
-                    card.style.opacity = '1';
-                    card.style.pointerEvents = 'auto';
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', () => {
-            const isDarkMode = localStorage.getItem('theme') === 'dark';
-            if (isDarkMode) { document.body.classList.add('dark-mode'); }
-            updateModeLabel(isDarkMode);
-            window.addEventListener('scroll', () => {
-                const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                if (scrollTop > 10) { 
-                    scrollToTopBtn.style.opacity = '1';
-                    scrollToTopBtn.style.pointerEvents = 'auto';
-                } else {
-                    scrollToTopBtn.style.opacity = '0';
-                    scrollToTopBtn.style.pointerEvents = 'none';
-                }
-            });
-        });
-    </script>
-
-    <!-- كود PWA والتثبيت (منفصل) -->
-    <script>
-        // === PWA Installation Logic ===
-        const installContainer = document.querySelector('.install-container');
-        const installBtn = document.getElementById('installAppBtn');
-        const installLabel = document.getElementById('installAppLabel');
-        let deferredPrompt;
-
-        function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; }
-
-        function setInstallButtonState(installed, is_ios = false) {
-            if (!installContainer || !installBtn || !installLabel) return;
-            // لو التطبيق مثبت، اخفي الزر تماماً
-            if (installed) {
-                installContainer.style.display = 'none';
-            } else if (is_ios) {
-                // لو الجهاز آيفون، اظهر رسالة إرشادية
-                installBtn.innerHTML = '<i class="fas fa-arrow-up-from-bracket"></i>';
-                installLabel.textContent = "للتثبيت اضغط مشاركة";
-                installBtn.disabled = true; // الزر معطل لأنه إرشادي
-                installContainer.style.display = 'flex';
-            } else {
-                // لو أندرويد (وغير مثبت)، اظهر زر التنزيل
-                installBtn.innerHTML = '<i class="fas fa-download"></i>';
-                installLabel.textContent = "تنزيل التطبيق";
-                installBtn.disabled = false;
-                installContainer.style.display = 'flex';
-            }
-        }
-        
-        const is_ios = isIOS();
-        // التحقق إذا كان التطبيق يعمل كتطبيق مثبت
-        const is_standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-        
-        if (is_standalone) {
-            setInstallButtonState(true); // مثبت -> اخفي الزر
-        } else if (is_ios) {
-            setInstallButtonState(false, true); // آيفون -> اظهر رسالة إرشادية
-        } else {
-            // أندرويد (متصفح) -> اخفي الزر مؤقتاً
-            if (installContainer) installContainer.style.display = 'none';
-        }
-
-        // الاستماع لحدث "جاهز للتثبيت"
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // لو الشروط متحققة، اظهر الزر
-            if (!is_standalone) {
-                setInstallButtonState(false, false);
-            }
-        });
-        
-        // عند الضغط على زر التثبيت (أندرويد)
-        if (installBtn && !is_ios) { 
-            installBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt(); // إظهار نافذة التثبيت
-                    const { outcome } = await deferredPrompt.userChoice;
-                    deferredPrompt = null; // لا يمكن استخدامه إلا مرة واحدة
-                    if (outcome === 'accepted') {
-                        console.log('User accepted the A2HS prompt');
-                    } else {
-                        console.log('User dismissed the A2HS prompt');
-                    }
-                }
-            });
-        }
-        
-        // عند اكتمال التثبيت
-        window.addEventListener('appinstalled', () => {
-            console.log('PWA was installed');
-            setInstallButtonState(true); // اخفي الزر
-            deferredPrompt = null;
-        });
-    </script>
-    
-    <!-- كود الـ Service Worker (مدمج كـ Blob) -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            // كود السيرفس وركر كـ نص
-            const swCode = `
-                const CACHE_NAME = 'commerce-services-cache-v1';
-                const urlsToCache = [
-                    './',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
-                    'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
-                ];
-
-                self.addEventListener('install', (event) => {
-                  event.waitUntil(
-                    caches.open(CACHE_NAME)
-                      .then((cache) => {
-                        console.log('Opened cache');
-                        // جلب وتخزين الملفات الأساسية
-                        return cache.addAll(urlsToCache);
-                      })
-                      .catch(err => console.log('Cache addAll failed:', err))
-                  );
-                });
-
-                self.addEventListener('fetch', (event) => {
-                  // تجاهل الطلبات التي ليست GET أو طلبات داخلية
-                  if (event.request.method !== 'GET' || 
-                      event.request.url.startsWith('data:') ||
-                      event.request.url.startsWith('chrome-extension:')) {
-                      
-                      event.respondWith(fetch(event.request));
-                      return;
-                  }
-
-                  // استراتيجية Cache-First
-                  event.respondWith(
-                    caches.match(event.request)
-                      .then((response) => {
-                        // إذا وجد في الكاش، قم بإرجاعه
-                        if (response) {
-                          return response; 
-                        }
+            appContainer.innerHTML = `
+                <div class="flex flex-col h-screen max-h-screen"> 
+                    <!-- Header -->
+                    <header class="bg-white text-gray-800 p-4 shadow-md sticky top-0 z-10 flex items-center justify-between space-x-4 space-x-reverse">
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <img data-action="navigateTo" data-page="profile" data-uid="${otherUserId}"
+                                 src="${otherUserProfile.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
+                                 alt="${otherUserProfile.name}" class="w-10 h-10 rounded-full object-cover cursor-pointer">
+                            <h1 class="text-lg font-bold">${otherUserProfile.name}</h1>
+                        </div>
                         
-                        // إذا لم يوجد، اطلبه من الشبكة
-                        return fetch(event.request).then((networkResponse) => {
-                            // قم بنسخ الرد لوضعه في الكاش
-                            const responseToCache = networkResponse.clone();
-                            caches.open(CACHE_NAME)
-                                .then((cache) => {
-                                    // تخزين الرد الجديد في الكاش
-                                    cache.put(event.request, responseToCache);
-                                });
-                            return networkResponse;
-                        })
-                        .catch(err => console.log('Fetch failed:', err)); // معالجة خطأ الشبكة
-                      }
-                    )
-                  );
-                });
-
-                // تنظيف الكاش القديم
-                self.addEventListener('activate', (event) => {
-                  const cacheWhitelist = [CACHE_NAME];
-                  event.waitUntil(
-                    caches.keys().then((cacheNames) => {
-                      return Promise.all(
-                        cacheNames.map((cacheName) => {
-                          if (cacheWhitelist.indexOf(cacheName) === -1) {
-                            console.log('Deleting old cache:', cacheName);
-                            return caches.delete(cacheName);
-                          }
-                        })
-                      );
-                    })
-                  );
-                });
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            ${(otherUserProfile.role === 'provider' && userProfile.role === 'client') ? `
+                                <button data-action="openRatingModal" data-providerid="${otherUserId}" data-providername="${otherUserProfile.name}"
+                                        class="p-2 text-yellow-500 hover:text-yellow-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
+                                </button>
+                            ` : ''}
+                            
+                            <!-- زر الرجوع الذكي -->
+                            <button data-action="goBack" class="p-2 text-blue-600">
+                                ${ICONS.back}
+                            </button>
+                        </div>
+                    </header>
+                    
+                    <!-- منطقة الرسائل القابلة للتمرير (تم إصلاح تنسيق الفقاعات عبر CSS في الـ <style>) -->
+                    <main id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-100 no-scrollbar">
+                        <p class="text-center text-gray-500">جاري تحميل الرسائل...</p>
+                    </main>
+                    
+                    <!-- حقل إرسال الرسالة -->
+                    <footer class="bg-white p-4 shadow-inner sticky bottom-0 z-10 border-t border-gray-200">
+                        <form id="chat-form" class="flex items-center space-x-2 space-x-reverse">
+                            <input type="text" id="message-input" class="flex-1 block w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="اكتب رسالتك..." required>
+                            <button type="submit" data-action="sendMessage" data-otheruserid="${otherUserId}"
+                                    class="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                ${ICONS.send}
+                            </button>
+                        </form>
+                    </footer>
+                </div>
             `;
             
-            // عند تحميل الصفحة، قم بإنشاء Blob وتسجيل السيرفس وركر
-            window.addEventListener('load', () => {
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-
-                navigator.serviceWorker.register(swUrl)
-                    .then(registration => {
-                        console.log('ServiceWorker registered from Blob: ', registration);
-                    })
-                    .catch(error => {
-                        console.log('ServiceWorker registration failed: ', error);
-                    });
+            const chatRoomId = [userId, otherUserId].sort().join('_');
+            const messagesColRef = collection(db, `artifacts/${appId}/public/data/chats/${chatRoomId}/messages`);
+            
+            // الاستماع للرسائل وفرزها (الأحدث بالأسفل)
+            currentUnsubscribe = onSnapshot(messagesColRef, (snapshot) => {
+                const messagesContainer = document.getElementById('messages-container');
+                if (snapshot.empty) {
+                    messagesContainer.innerHTML = '<p class="text-center text-gray-500">ابدأ المحادثة...</p>';
+                    return;
+                }
+                
+                const messages = snapshot.docs.map(doc => doc.data());
+                messages.sort((a, b) => a.createdAt.toMillis() - b.createdAt.toMillis());
+                
+                messagesContainer.innerHTML = messages.map(msg => {
+                    const isSent = msg.senderId === userId;
+                    // تطبيق ستايل الفقاعات (تم تعريف الـ CSS في <style>)
+                    const bubbleClass = isSent ? 'chat-bubble-sent' : 'chat-bubble-received';
+                    const alignmentClass = isSent ? 'justify-end' : 'justify-start'; // لـ flex container
+                    
+                    return `
+                        <div class="flex ${alignmentClass}">
+                            <div class="${bubbleClass}">
+                                <p class="text-base">${msg.text}</p>
+                                <span class="text-xs ${isSent ? 'text-blue-100' : 'text-gray-500'} block text-left mt-1">
+                                    ${new Date(msg.createdAt.toDate()).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // التمرير للأسفل
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, (error) => {
+                console.error("Error fetching messages: ", error);
+                document.getElementById('messages-container').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الرسائل.</p>';
             });
         }
+        
+        // --- صفحة طلب خدمة جديد ---
+        function renderNewRequestPage() {
+            // إنشاء خيارات القائمة المنسدلة للخدمات
+            const serviceOptions = SERVICES_LIST.map(service => 
+                `<option value="${service.name}">${service.name}</option>`
+            ).join('');
+
+
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <!-- Header -->
+                    <header class="bg-white p-4 shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold text-gray-900">طلب خدمة جديد</h1>
+                        <!-- زر الرجوع الذكي -->
+                        <button data-action="goBack" class="text-blue-600 font-medium">
+                            ${ICONS.back}
+                        </button>
+                    </header>
+                    
+                    <main class="p-4 md:p-8">
+                        <form id="new-request-form" class="space-y-6 bg-white p-8 rounded-lg shadow-md max-w-md mx-auto">
+                            <div id="request-error" class="text-red-500 text-sm text-center hidden"></div>
+                            
+                            <div>
+                                <label for="request-title" class="block text-sm font-medium text-gray-700">عنوان الطلب</label>
+                                <input type="text" id="request-title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="مثال: أحتاج سباك لإصلاح صنبور">
+                            </div>
+                            
+                            <div>
+                                <label for="request-category" class="block text-sm font-medium text-gray-700">القسم</label>
+                                <select id="request-category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                    <option value="">اختر القسم</option>
+                                    ${serviceOptions}
+                                    <option value="أخرى">أخرى</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="request-description" class="block text-sm font-medium text-gray-700">وصف الخدمة المطلوبة</label>
+                                <textarea id="request-description" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="يرجى كتابة تفاصيل الخدمة المطلوبة..."></textarea>
+                            </div>
+                            
+                            <button type="submit" data-action="submitRequest" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                نشر الطلب
+                            </button>
+                        </form>
+                    </main>
+                </div>
+            `;
+        }
+
+
+        // --- شريط التنقل السفلي ---
+        function renderBottomNav(activeTab) {
+            const activeClass = 'text-blue-600';
+            const inactiveClass = 'text-gray-500 hover:text-gray-700';
+            
+            return `
+                <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-white shadow-lg border-t border-gray-200 z-20">
+                    <div class="flex justify-around items-center h-16">
+                        <button data-action="navigateTo" data-page="home" 
+                                class="flex flex-col items-center justify-center ${activeTab === 'home' ? activeClass : inactiveClass}">
+                            ${ICONS.home}
+                            <span class="text-xs font-medium">الرئيسية</span>
+                        </button>
+                        
+                        <button data-action="navigateTo" data-page="directory" 
+                                class="flex flex-col items-center justify-center ${activeTab === 'directory' ? activeClass : inactiveClass}">
+                            ${ICONS.users}
+                            <span class="text-xs font-medium">الدليل</span>
+                        </button>
+                        
+                        <button data-action="navigateTo" data-page="chatList" 
+                                class="flex flex-col items-center justify-center ${activeTab === 'chatList' ? activeClass : inactiveClass}">
+                            ${ICONS.chat}
+                            <span class="text-xs font-medium">المحادثات</span>
+                        </button>
+                        
+                        <button data-action="navigateTo" data-page="profile" data-uid="${userId}"
+                                class="flex flex-col items-center justify-center ${activeTab === 'profile' ? activeClass : inactiveClass}">
+                            ${ICONS.profile}
+                            <span class="text-xs font-medium">ملفي</span>
+                        </button>
+                    </div>
+                </nav>
+            `;
+        }
+        
+        // --- وظيفة مساعدة لعرض النجوم ---
+        function renderStarRating(rating, maxStars = 5, cssClass = 'h-5 w-5') {
+            let html = '';
+            for (let i = 1; i <= maxStars; i++) {
+                if (i <= rating) {
+                    html += `<svg class="${cssClass}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>`;
+                } else {
+                    html += `<svg class="${cssClass}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>`;
+                }
+            }
+            return html;
+        }
+
+
+        // 10. وظائف معالجة الأحداث (Event Handlers)
+
+
+        // --- معالج تسجيل الدخول ---
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-identifier').value.trim(); 
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+            
+            showLoading('جاري تسجيل الدخول...');
+            errorEl.classList.add('hidden');
+            
+            try {
+                const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
+                const q = query(usersColRef, where('username', '==', username));
+                const snapshot = await getDocs(q); 
+                
+                if (snapshot.empty) {
+                    throw new Error('اسم المستخدم غير صحيح.');
+                }
+                
+                const userData = snapshot.docs[0].data();
+                const authEmail = userData.email; 
+
+                await signInWithEmailAndPassword(auth, authEmail, password);
+                
+                hideLoading();
+            } catch (error) {
+                console.error("Login Error: ", error);
+                let errorMessage = 'اسم المستخدم أو كلمة المرور غير صحيحة.';
+                if (error.message.includes('اسم المستخدم غير صحيح')) {
+                     errorMessage = error.message;
+                } else if (error.code === 'auth/invalid-credential') {
+                     errorMessage = 'كلمة المرور غير صحيحة.';
+                }
+                
+                errorEl.textContent = errorMessage;
+                errorEl.classList.remove('hidden');
+                hideLoading();
+            }
+        }
+
+
+        // --- معالج تسجيل حساب جديد (إصلاح التحميل) ---
+        async function handleRegister(e) {
+            e.preventDefault();
+            isRegistering = true; 
+            showLoading('جاري التحقق من البيانات...');
+            const errorEl = document.getElementById('register-error');
+            errorEl.classList.add('hidden');
+
+
+            try {
+                // 1. جلب البيانات من النموذج
+                const username = document.getElementById('register-username').value.trim(); 
+                const password = document.getElementById('register-password').value;
+                const name = document.getElementById('register-name').value;
+                const phone = document.getElementById('register-phone').value;
+                const address = document.getElementById('register-address').value;
+                const photoFile = document.getElementById('register-photo').files[0];
+                const role = document.querySelector('input[name="role"]:checked').value;
+                
+                const jobSelect = document.getElementById('register-job-select').value;
+                const jobTitleText = document.getElementById('register-job-title').value.trim();
+                const jobTitle = (jobSelect === 'أخرى') ? jobTitleText : jobSelect;
+                
+                if (role === 'provider' && (!jobTitle || jobTitle === '')) {
+                    throw new Error('يرجى اختيار أو إدخال الوظيفة لمقدم الخدمة.');
+                }
+                
+                // 2. التحقق من اسم المستخدم
+                const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
+                const q = query(usersColRef, where('username', '==', username));
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) {
+                    throw new Error('اسم المستخدم هذا محجوز بالفعل. يرجى اختيار اسم آخر.');
+                }
+                
+                // 3. توليد بريد إلكتروني وهمي لـ Firebase Auth (للاستخدام الداخلي فقط)
+                const dummyEmail = `${username}@zagazig.service`;
+
+                // 4. إنشاء المستخدم في Auth
+                const userCredential = await createUserWithEmailAndPassword(auth, dummyEmail, password);
+                const newUserId = userCredential.user.uid;
+                
+                // 5. رفع الصورة (إن وجدت) - هنا كان يحدث التجميد الظاهري
+                let photoURL = null;
+                if (photoFile) {
+                    showLoading('جاري رفع الصورة...'); // تحديث شاشة التحميل
+                    const storageRef = ref(storage, `profileImages/${newUserId}/${photoFile.name}`);
+                    const snapshot = await uploadBytes(storageRef, photoFile);
+                    photoURL = await getDownloadURL(snapshot.ref);
+                    showLoading('جاري حفظ البيانات...'); // تحديث شاشة التحميل
+                }
+                
+                // 6. تحديث ملف Auth
+                await updateProfile(userCredential.user, {
+                    displayName: name,
+                    photoURL: photoURL
+                });
+
+
+                // 7. إنشاء ملف المستخدم في Firestore
+                const jobTitleSearch = role === 'provider' ? SERVICES_LIST.find(s => s.name === jobTitle)?.categorySearch || jobTitle : null;
+
+                const newUserProfile = {
+                    uid: newUserId,
+                    username: username, 
+                    email: dummyEmail, 
+                    name: name,
+                    phone: phone,
+                    address: address,
+                    photoURL: photoURL,
+                    role: role,
+                    jobTitle: role === 'provider' ? jobTitle : null,
+                    jobTitleSearch: jobTitleSearch, 
+                    createdAt: Timestamp.now(),
+                    ratings: [],
+                    avgRating: 0
+                };
+                
+                const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, newUserId);
+                await setDoc(userDocRef, newUserProfile);
+                
+                // 8. تحديث الحالة المحلية والانتقال (هنا يكتمل التحميل)
+                userProfile = newUserProfile;
+                userId = newUserId;
+                hideLoading();
+                showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في خدماتي!', true);
+
+                // التأخير قليلا قبل الانتقال للسماح برؤية رسالة النجاح
+                setTimeout(() => {
+                    navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
+                }, 1500);
+                
+            } catch (error) {
+                console.error("Register Error: ", error);
+                let displayError = error.message || 'حدث خطأ. يرجى المحاولة مرة أخرى.';
+                if (error.message.includes('محجوز بالفعل')) {
+                    displayError = error.message;
+                }
+                
+                errorEl.textContent = displayError;
+                errorEl.classList.remove('hidden');
+                hideLoading();
+            } finally {
+                isRegistering = false; 
+            }
+        }
+        
+        // --- معالج تعديل الملف الشخصي (إصلاح التحميل) ---
+        async function handleEditProfile(e) {
+            e.preventDefault();
+            showLoading('جاري حفظ التعديلات...');
+            const errorEl = document.getElementById('edit-error');
+            errorEl.classList.add('hidden');
+
+            try {
+                // 1. جلب البيانات
+                const name = document.getElementById('edit-name').value;
+                const phone = document.getElementById('edit-phone').value;
+                const address = document.getElementById('edit-address').value;
+                const newPhotoFile = document.getElementById('edit-photo').files[0];
+                
+                let jobTitle = userProfile.jobTitle;
+                if (userProfile.role === 'provider') {
+                    const jobSelect = document.getElementById('edit-job-select').value;
+                    const jobTitleText = document.getElementById('edit-job-title')?.value.trim();
+                    jobTitle = (jobSelect === 'other') ? jobTitleText : jobSelect;
+                }
+
+                // 2. معالجة الصورة (هنا كان يحدث التجميد الظاهري)
+                let newPhotoURL = userProfile.photoURL;
+                if (newPhotoFile) {
+                    showLoading('جاري رفع الصورة الجديدة...'); // تحديث شاشة التحميل
+
+                    // حذف الصورة القديمة
+                    if (userProfile.photoURL) {
+                        try {
+                            const oldPhotoRef = ref(storage, userProfile.photoURL);
+                            await deleteObject(oldPhotoRef);
+                        } catch (e) {
+                            console.warn("Could not delete old photo, continuing:", e);
+                        }
+                    }
+
+                    // رفع الصورة الجديدة
+                    const storageRef = ref(storage, `profileImages/${userId}/${newPhotoFile.name}`);
+                    const snapshot = await uploadBytes(storageRef, newPhotoFile);
+                    newPhotoURL = await getDownloadURL(snapshot.ref);
+                }
+
+                // 3. تحديث Auth و Firestore
+                showLoading('جاري تحديث البيانات...'); // تحديث شاشة التحميل
+
+                const jobTitleSearch = userProfile.role === 'provider' ? SERVICES_LIST.find(s => s.name === jobTitle)?.categorySearch || jobTitle : null;
+
+                const updates = {
+                    name: name,
+                    phone: phone,
+                    address: address,
+                    photoURL: newPhotoURL,
+                    jobTitle: userProfile.role === 'provider' ? jobTitle : null,
+                    jobTitleSearch: jobTitleSearch,
+                };
+                
+                const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, userId);
+                await updateDoc(userDocRef, updates);
+                
+                await updateProfile(auth.currentUser, {
+                    displayName: name,
+                    photoURL: newPhotoURL
+                });
+
+                // 4. تحديث الحالة المحلية
+                userProfile = { ...userProfile, ...updates };
+                
+                hideLoading();
+                showMessageModal('تم الحفظ بنجاح', 'تم تحديث ملفك الشخصي.', true);
+                
+                // الانتقال إلى صفحة البروفايل بعد التعديل
+                setTimeout(() => {
+                    navigateTo('profile', { uid: userId });
+                }, 1500);
+
+            } catch (error) {
+                console.error("Edit Profile Error: ", error);
+                errorEl.textContent = error.message || 'حدث خطأ أثناء حفظ التعديلات.';
+                errorEl.classList.remove('hidden');
+                hideLoading();
+            }
+        }
+
+
+        // --- معالج تسجيل الخروج ---
+        async function handleLogout() {
+            showLoading('جاري تسجيل الخروج...');
+            await signOut(auth);
+            userId = null;
+            userProfile = null;
+            hideLoading();
+            navigateTo('auth');
+        }
+        
+        // --- معالج إرسال رسالة شات (مُحدّث) ---
+        async function handleSendMessage(otherUserId) {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            if (text === '') return;
+            
+            input.value = ''; // تفريغ الحقل
+            
+            const chatRoomId = [userId, otherUserId].sort().join('_');
+            const messagesColRef = collection(db, `artifacts/${appId}/public/data/chats/${chatRoomId}/messages`);
+            
+            try {
+                // إضافة الرسالة
+                await addDoc(messagesColRef, {
+                    text: text,
+                    senderId: userId,
+                    createdAt: Timestamp.now()
+                });
+                
+                // جلب بيانات المستخدم الآخر
+                const otherUserDoc = await getDoc(doc(db, `artifacts/${appId}/public/data/users`, otherUserId));
+                if (!otherUserDoc.exists()) { throw new Error("Other user not found"); }
+                const otherUserData = otherUserDoc.data();
+
+
+                // إنشاء/تحديث مستند الغرفة الرئيسي
+                const chatRoomDocRef = doc(db, `artifacts/${appId}/public/data/chats`, chatRoomId);
+                const chatRoomData = {
+                    users: [userId, otherUserId],
+                    userDetails: {
+                        [userId]: { name: userProfile.name, photoURL: userProfile.photoURL },
+                        [otherUserId]: { name: otherUserData.name, photoURL: otherUserData.photoURL }
+                    },
+                    lastMessage: text,
+                    lastSenderId: userId,
+                    lastUpdate: Timestamp.now()
+                };
+                await setDoc(chatRoomDocRef, chatRoomData, { merge: true });
+                
+            } catch (error) {
+                console.error("Error sending message: ", error);
+            }
+        }
+        
+        // --- معالج نشر طلب خدمة جديد ---
+        async function handleSubmitRequest(e) {
+            e.preventDefault();
+            showLoading('جاري نشر الطلب...');
+            const errorEl = document.getElementById('request-error');
+            errorEl.classList.add('hidden');
+            
+            try {
+                const title = document.getElementById('request-title').value;
+                const category = document.getElementById('request-category').value;
+                const description = document.getElementById('request-description').value;
+                
+                if (!title || !category || !description) {
+                    throw new Error('يرجى ملء جميع الحقول.');
+                }
+                
+                const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
+                await addDoc(requestsColRef, {
+                    title: title,
+                    category: category,
+                    description: description,
+                    requesterId: userId,
+                    requesterName: userProfile.name,
+                    requesterPhoto: userProfile.photoURL,
+                    status: 'open',
+                    createdAt: Timestamp.now()
+                });
+                
+                hideLoading();
+                navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
+                
+            } catch (error) {
+                console.error("Error submitting request: ", error);
+                errorEl.textContent = error.message || 'حدث خطأ أثناء نشر الطلب.';
+                errorEl.classList.remove('hidden');
+                hideLoading();
+            }
+        }
+        
+        // --- معالج فتح مودال التقييم ---
+        function handleOpenRatingModal(providerId, providerName) {
+            const modalHtml = `
+                <h2 class="text-2xl font-semibold text-center mb-4">تقييم ${providerName}</h2>
+                <div id="rating-stars" class="flex justify-center text-gray-300 space-x-2 space-x-reverse mb-4 cursor-pointer">
+                    ${[1,2,3,4,5].map(i => `<span data-action="setRating" data-value="${i}" class="star-icon hover:text-yellow-400">${ICONS.starEmpty}</span>`).join('')}
+                </div>
+                <input type="hidden" id="rating-value" value="0">
+                <textarea id="rating-comment" class="w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="اكتب تعليقك هنا..."></textarea>
+                <div class="flex justify-between mt-6 space-x-4 space-x-reverse">
+                    <button data-action="closeModal" class="flex-1 py-2 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                        إلغاء
+                    </button>
+                    <button data-action="submitRating" data-providerid="${providerId}" class="flex-1 py-2 px-4 border border-transparent rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                        إرسال التقييم
+                    </button>
+                </div>
+            `;
+            showModal(modalHtml);
+        }
+        
+        // --- معالج إرسال التقييم ---
+        async function handleSubmitRating(providerId) {
+            const stars = parseInt(document.getElementById('rating-value').value);
+            const comment = document.getElementById('rating-comment').value.trim();
+            
+            if (stars === 0) {
+                showMessageModal('خطأ', 'يرجى اختيار عدد النجوم لتقييم مقدم الخدمة.', false);
+                return;
+            }
+            
+            showLoading('جاري إرسال التقييم...');
+            
+            try {
+                const providerDocRef = doc(db, `artifacts/${appId}/public/data/users`, providerId);
+                
+                await runTransaction(db, async (transaction) => {
+                    const providerDoc = await transaction.get(providerDocRef);
+                    if (!providerDoc.exists()) {
+                        throw "Provider document does not exist!";
+                    }
+                    
+                    const data = providerDoc.data();
+                    const oldRatings = data.ratings || [];
+                    const filteredRatings = oldRatings.filter(r => r.by !== userId);
+                    
+                    const newRating = {
+                        by: userId,
+                        byName: userProfile.name,
+                        stars: stars,
+                        comment: comment,
+                        createdAt: Timestamp.now()
+                    };
+                    const newRatings = [...filteredRatings, newRating];
+                    
+                    const totalStars = newRatings.reduce((acc, r) => acc + r.stars, 0);
+                    const newAvgRating = totalStars / newRatings.length;
+                    
+                    transaction.update(providerDocRef, {
+                        ratings: newRatings,
+                        avgRating: newAvgRating
+                    });
+                });
+                
+                hideLoading();
+                hideModal();
+                showMessageModal('نجاح', 'شكراً لتقييمك لمقدم الخدمة!', true);
+
+
+            } catch (error) {
+                console.error("Error submitting rating: ", error);
+                hideLoading();
+                showMessageModal('خطأ', 'حدث خطأ أثناء إرسال التقييم. يرجى المحاولة مرة أخرى.', false);
+            }
+        }
+
+
+
+
+        // 11. Event Delegation (المستمع الرئيسي للأحداث)
+        appContainer.addEventListener('click', async (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target) return;
+
+
+            const action = target.dataset.action;
+            const page = target.dataset.page;
+            const uid = target.dataset.uid;
+            const category = target.dataset.category;
+            const otherUserId = target.dataset.otheruserid;
+            const providerId = target.dataset.providerid;
+            const providerName = target.dataset.providername;
+
+
+            switch (action) {
+                case 'navigateTo':
+                    if (page === 'profile') navigateTo(page, { uid });
+                    else if (page === 'category') navigateTo(page, { category });
+                    else if (page === 'chat') navigateTo(page, { otherUserId });
+                    else if (page === 'home') navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
+                    else navigateTo(page);
+                    break;
+                
+                // معالج الرجوع الذكي
+                case 'goBack':
+                    if (previousPage) {
+                        const tempPage = previousPage;
+                        previousPage = currentPage; 
+                        currentPage = tempPage; 
+                        
+                        navigateTo(currentPage.page, currentPage.params);
+                    } else {
+                         navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
+                    }
+                    break;
+                    
+                case 'login':
+                    e.preventDefault();
+                    await handleLogin(e); 
+                    break;
+                case 'register':
+                    e.preventDefault();
+                    await handleRegister(e);
+                    break;
+                case 'logout':
+                    await handleLogout();
+                    break;
+                case 'editProfile': 
+                    e.preventDefault();
+                    await handleEditProfile(e);
+                    break;
+                case 'sendMessage':
+                    e.preventDefault();
+                    await handleSendMessage(otherUserId);
+                    break;
+                case 'submitRequest':
+                    e.preventDefault();
+                    await handleSubmitRequest(e);
+                    break;
+                case 'openRatingModal':
+                    handleOpenRatingModal(providerId, providerName);
+                    break;
+            }
+        });
+        
+        // مستمع لأحداث المودال
+        modalBackdrop.addEventListener('click', (e) => {
+            const target = e.target.closest('[data-action]');
+            if (!target && e.target === modalBackdrop) {
+                return;
+            }
+            if(!target) return;
+
+
+            const action = target.dataset.action;
+            switch(action) {
+                case 'closeModal':
+                    hideModal();
+                    break;
+                case 'setRating':
+                    const value = parseInt(target.dataset.value);
+                    document.getElementById('rating-value').value = value;
+                    const stars = document.querySelectorAll('#rating-stars .star-icon');
+                    stars.forEach((star, index) => {
+                        if (index < value) {
+                            star.innerHTML = ICONS.star;
+                            star.classList.add('text-yellow-400');
+                        } else {
+                            star.innerHTML = ICONS.starEmpty;
+                            star.classList.remove('text-yellow-400');
+                        }
+                    });
+                    break;
+                case 'submitRating':
+                    const providerId = target.dataset.providerid;
+                    handleSubmitRating(providerId);
+                    break;
+            }
+        });
+
+
+        // مستمع لأحداث الإدخال
+        appContainer.addEventListener('input', (e) => {
+            // معاينة الصورة عند التسجيل
+            if (e.target.id === 'register-photo') {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    const preview = document.getElementById('photo-preview');
+                    reader.onload = (event) => {
+                        preview.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            // معاينة الصورة عند التعديل
+            if (e.target.id === 'edit-photo') {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    const preview = document.getElementById('edit-photo-preview');
+                    reader.onload = (event) => {
+                        preview.src = event.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            // البحث في دليل المستخدمين (يعمل الآن)
+            if (e.target.id === 'search-directory') {
+                // دالة renderDirectoryPage تقوم بتعيين مستمع البحث
+                // عند تحديث allUsers بواسطة onSnapshot
+                // يتم استدعاء renderUserList تلقائيا
+            }
+        });
+        
+        // مستمع لأحداث التغيير
+        appContainer.addEventListener('change', (e) => {
+            // إظهار حقل الوظيفة عند اختيار "مقدم خدمة"
+            if (e.target.name === 'role') {
+                const jobField = document.getElementById('job-title-field');
+                if (e.target.value === 'provider') {
+                    jobField.classList.remove('hidden');
+                } else {
+                    jobField.classList.add('hidden');
+                }
+            }
+            
+            // إظهار حقل "وظيفة أخرى" في صفحة التسجيل
+            if (e.target.id === 'register-job-select') {
+                const otherField = document.getElementById('job-title-other-field');
+                if (e.target.value === 'أخرى') {
+                    otherField.classList.remove('hidden');
+                } else {
+                    otherField.classList.add('hidden');
+                    document.getElementById('register-job-title').value = '';
+                }
+            }
+            
+            // إظهار حقل "وظيفة أخرى" في صفحة التعديل
+            if (e.target.id === 'edit-job-select') {
+                const otherField = document.getElementById('edit-job-title-other-field');
+                if (e.target.value === 'other') {
+                    otherField.classList.remove('hidden');
+                } else {
+                    otherField.classList.add('hidden');
+                    document.getElementById('edit-job-title').value = '';
+                }
+            }
+        });
+
+
+        // منع إرسال النماذج الافتراضي
+        appContainer.addEventListener('submit', (e) => {
+            e.preventDefault();
+        });
+        
+        // 12. نقطة البداية الرئيسية
+        window.onload = () => {
+            navigateTo('loading');
+
+
+            onAuthStateChanged(auth, async (user) => {
+                
+                if (isRegistering) {
+                    console.log('Registration in progress, onAuthStateChanged will wait.');
+                    return; 
+                }
+                
+                if (user) {
+                    console.log('User is signed in:', user.uid);
+                    userId = user.uid;
+                    
+                    const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, userId);
+                    const userDoc = await getDoc(userDocRef);
+                    
+                    if (userDoc.exists()) {
+                        userProfile = userDoc.data();
+                        console.log('User profile found:', userProfile);
+                        
+                        previousPage = { page: 'home', params: {} };
+                        currentPage = { page: userProfile.role === 'provider' ? 'providerHome' : 'clientHome', params: {} };
+                        
+                        navigateTo(currentPage.page);
+                    } else {
+                        console.log('No profile found, redirecting to register.');
+                        navigateTo('register');
+                    }
+                } else {
+                    console.log('User is signed out.');
+                    userId = null;
+                    userProfile = null;
+                    navigateTo('auth');
+                }
+            });
+
+
+            // محاولة تسجيل الدخول المبدئي (لبيئة Canvas)
+            (async () => {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        console.log("Signing in with custom token...");
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else if (!auth.currentUser) {
+                         console.log("No token, onAuthStateChanged will handle.");
+                    }
+                } catch (error) {
+                    console.error("Error during initial auth:", error);
+                    navigateTo('auth');
+                }
+            })();
+        };
+
+
     </script>
+    <!-- ============================================= -->
+    <!-- ==== نهاية كود جافاسكريبت و Firebase ===== -->
+    <!-- ============================================= -->
+
+
 </body>
 </html>
 
