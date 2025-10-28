@@ -1,0 +1,66 @@
+/* استخدام خط Cairo كخط أساسي للمحتوى العربي */
+body {
+    font-family: 'Cairo', 'Inter', sans-serif;
+    direction: rtl; /* ضمان الاتجاه من اليمين لليسار */
+}
+/* تعديلات بسيطة لـ Tailwind لدعم RTL بشكل أفضل */
+.space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+}
+/* إخفاء شريط التمرير مع الحفاظ على وظيفته */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+/* أيقونات SVG للنجوم (للتقييم) */
+.star-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+    display: inline-block;
+}
+
+/* تنسيق فقاعات الشات المُحدَّث ليصبح دائرياً بالكامل (نقطة 2) */
+.chat-bubble-sent {
+    /* الحافة في اتجاه الإرسال تكون حادة والباقي دائري */
+    /* يتم تطبيق خصائص Tailwind هنا */
+    background-color: #2563eb; /* bg-blue-600 */
+    color: white; /* text-white */
+    padding: 0.75rem; /* p-3 */
+    max-width: 80%;
+    /* border-radius مخصص لاستبدال rounded-xl rounded-bl-xl rounded-br-none */
+    border-radius: 1.25rem 1.25rem 0 1.25rem; /* دائري أكثر */
+}
+.chat-bubble-received {
+    /* الحافة في اتجاه الاستقبال تكون حادة والباقي دائري */
+    /* يتم تطبيق خصائص Tailwind هنا */
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #374151; /* text-gray-800 */
+    padding: 0.75rem; /* p-3 */
+    max-width: 80%;
+    /* border-radius مخصص لاستبدال rounded-xl rounded-bl-none rounded-br-xl */
+    border-radius: 1.25rem 1.25rem 1.25rem 0; /* دائري أكثر */
+}
+
+/* truncate */
+.truncate-1-line {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+/* لإخفاء input[type=file] */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
