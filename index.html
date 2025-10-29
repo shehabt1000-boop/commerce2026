@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدمات</title>
+    <title>خدمات الشرقية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font (Inter) -->
@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght=400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- PWA Manifest for installation prompt (Request 5) -->
+    <!-- PWA Manifest for installation prompt (إصلاح 2) -->
+    <!-- ملاحظة: ملف manifest.json يجب إنشاؤه بشكل منفصل ليحتوي على الاسم (خدمات الشرقية) والأيقونة (اسم مستقبل) والوصف -->
     <link rel="manifest" href="manifest.json">
     
     <style>
@@ -87,11 +88,11 @@
 </head>
 <body class="bg-gray-50">
 
-    <!-- PWA Install Prompt Banner (إصلاح 3) -->
+    <!-- PWA Install Prompt Banner (إصلاح 2) -->
     <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-800 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
         <div class="flex items-center space-x-3 space-x-reverse">
             <span class="text-lg">🛠️</span>
-            <p class="text-xs font-medium">ثبّت "خدمات" لتجربة تطبيق كاملة.</p>
+            <p class="text-xs font-medium">ثبّت "خدمات الشرقية" لتجربة تطبيق كاملة.</p>
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
             <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
@@ -108,6 +109,12 @@
     <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg md:max-w-2xl lg:max-w-4xl">
         <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
     </div>
+    
+    <!-- PWA Install Small Button (إصلاح 2) -->
+    <button id="mini-install-button" class="fixed bottom-24 right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
+        <span class="text-lg">⬇️</span>
+        <span>تثبيت</span>
+    </button>
 
 
     <!-- مودال (نافذة منبثقة) عامة -->
@@ -146,7 +153,8 @@
             Timestamp,
             updateDoc,
             runTransaction,
-            getDocs 
+            getDocs,
+            orderBy
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 
@@ -181,7 +189,7 @@
         let isBannerShown = false; // PWA Banner control
 
 
-        // === إصلاح 3: توسيع قائمة الخدمات (الوظائف) مع حذف الوصف ===
+        // === إصلاح 3: قائمة خدمات موسعة (الوظائف) ===
         const SERVICES_LIST = [
             { name: 'سباك', icon: '🔧' },
             { name: 'كهربائي منازل', icon: '💡' },
@@ -255,7 +263,8 @@
             back: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" /></svg>`, // RTL back arrow
             send: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L6 12Z" /></svg>`,
             edit: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 18.07a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.862 4.487Zm0 0L19.5 7.125" /></svg>`,
-            camera: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.322 2.322 0 0 1 5.86 7.5v10.375A2.322 2.322 0 0 0 8.182 20.25h8.375A2.322 2.322 0 0 0 18.916 18V7.5a2.322 2.322 0 0 1-1.077-1.325M12 9.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" /></svg>`
+            camera: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.322 2.322 0 0 1 5.86 7.5v10.375A2.322 2.322 0 0 0 8.182 20.25h8.375A2.322 2.322 0 0 0 18.916 18V7.5a2.322 2.322 0 0 1-1.077-1.325M12 9.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" /></svg>`,
+            job: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25M9 13.5h6" /></svg>`,
         };
 
 
@@ -264,6 +273,7 @@
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
         const installBanner = document.getElementById('install-banner');
+        const miniInstallButton = document.getElementById('mini-install-button');
 
 
         // 7. وظائف مساعدة (Modal)
@@ -352,14 +362,14 @@
             });
         }
         
-        // PWA Banner Controller
+        // PWA Banner Controller (إصلاح 2)
         function showInstallBanner() {
             if (deferredPrompt && !isBannerShown) {
                 installBanner.classList.remove('hidden');
                 installBanner.classList.add('flex');
                 setTimeout(() => {
                     installBanner.classList.remove('-translate-y-full');
-                }, 100); // زيادة المؤقت قليلاً لضمان عمل الـ transition
+                }, 100); 
                 isBannerShown = true;
                 
                 // إخفاء الإشعار بعد 12 ثانية تلقائياً
@@ -376,6 +386,29 @@
                 }, 300); 
                 isBannerShown = false;
             }
+        }
+        
+        // PWA Mini Button Controller (إصلاح 2)
+        function toggleMiniInstallButton(show) {
+            const displayMode = getDisplayMode();
+            const isInstalled = displayMode === 'standalone' || displayMode === 'fullscreen' || displayMode === 'minimal-ui';
+
+            if (show && deferredPrompt && !isInstalled) {
+                 miniInstallButton.classList.remove('hidden');
+            } else {
+                 miniInstallButton.classList.add('hidden');
+            }
+        }
+
+        function getDisplayMode() {
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                return 'standalone';
+            } else if (document.referrer.includes('android-app://')) {
+                return 'twa';
+            } else if (navigator.standalone) {
+                return 'ios-standalone';
+            }
+            return 'browser';
         }
 
 
@@ -404,6 +437,9 @@
             
             appContainer.innerHTML = ''; 
             window.scrollTo(0, 0);
+            
+            // إظهار زر التثبيت الصغير في الصفحة الرئيسية فقط (إصلاح 2)
+            toggleMiniInstallButton(page === 'clientHome' || page === 'providerHome');
 
 
             switch (page) {
@@ -417,12 +453,7 @@
                     renderRegisterPage();
                     break;
                 case 'clientHome':
-                case 'home': 
-                    if (userProfile && userProfile.role === 'provider') {
-                        renderProviderHome();
-                    } else {
-                         renderClientHome();
-                    }
+                    renderClientHome();
                     break;
                 case 'providerHome':
                     renderProviderHome();
@@ -447,6 +478,13 @@
                     break;
                 case 'newRequest':
                     renderNewRequestPage();
+                    break;
+                // === إصلاح 3: صفحات الوظائف ===
+                case 'jobListings':
+                    renderJobListingsPage();
+                    break;
+                case 'jobPosting':
+                    renderJobPostingPage();
                     break;
                 default:
                     renderAuthPage(); 
@@ -475,7 +513,7 @@
         function renderAuthPage() {
             appContainer.innerHTML = `
                 <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-indigo-800">
-                    <h1 class="text-4xl font-bold text-white mb-4">خدمات</h1>
+                    <h1 class="text-4xl font-bold text-white mb-4">خدمات الشرقية</h1>
                     <p class="text-lg text-indigo-100 mb-8 text-center">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
                     
                     <div class="w-full max-w-sm bg-white rounded-lg shadow-xl p-6">
@@ -564,6 +602,22 @@
                             <input type="tel" id="register-phone" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: 01012345678">
                         </div>
                         
+                        <!-- === إصلاح 3: اختيار الجنس === -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">الجنس</label>
+                            <div class="mt-1 flex space-x-4 space-x-reverse">
+                                <label class="flex items-center">
+                                    <input type="radio" name="gender" value="ذكر" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" required>
+                                    <span class="mr-2 text-gray-700 text-sm">ذكر</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="gender" value="أنثى" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" required>
+                                    <span class="mr-2 text-gray-700 text-sm">أنثى</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        
                         <!-- تقسيم العنوان -->
                         <div>
                             <label for="register-city" class="block text-sm font-medium text-gray-700">المركز / المدينة</label>
@@ -601,10 +655,6 @@
                                     ${serviceOptions}
                                 </select>
                             </div>
-                            <div id="job-title-other-field" class="hidden">
-                                <label for="register-job-title" class="block text-sm font-medium text-gray-700">اذكر وظيفتك:</label>
-                                <input type="text" id="register-job-title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: مصمم جرافيك">
-                            </div>
                         </div>
                         
                         <button type="submit" data-action="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -640,7 +690,6 @@
             });
         }
         
-        // === تعديل 1 و 2: الصفحة الرئيسية للعميل ===
         function renderClientHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
                 <div data-action="navigateTo" data-page="category" data-category="${cat.name.toLowerCase()}" 
@@ -676,39 +725,75 @@
         }
 
 
-        // === تعديل 1 و 2 و 3: الصفحة الرئيسية لمقدم الخدمة ===
+        // === إصلاح 1: الصفحة الرئيسية لمقدم الخدمة ===
         async function renderProviderHome() {
+            const categoriesHtml = SERVICES_LIST.map(cat => `
+                <div data-action="navigateTo" data-page="category" data-category="${cat.name.toLowerCase()}" 
+                     class="flex flex-col items-center justify-center bg-indigo-50 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-indigo-200 hover:border-indigo-500">
+                    <span class="text-3xl mb-1">${cat.icon}</span>
+                    <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
+                </div>
+            `).join('');
+
             appContainer.innerHTML = `
                 <div class="pb-24">
                     <header class="bg-indigo-800 text-white welcome-header shadow-md sticky top-0 z-10">
                         <h1 class="text-lg font-bold">أهلاً بك، ${userProfile.name}</h1>
-                        <p class="text-indigo-100 text-xs">تصفح طلبات الخدمات المتاحة حالياً</p>
+                        <p class="text-indigo-100 text-xs">تصفح طلبات الخدمات المتاحة أو اطلب خدمة بنفسك</p>
                     </header>
                     
                     <main class="main-padding bg-gray-50">
-                        <h2 class="text-base font-semibold text-gray-900 mb-4">طلبات الخدمات المتاحة</h2>
+                        <!-- طلبات الخدمات المتاحة (للوظيفة الخاصة به) -->
+                        <h2 class="text-base font-semibold text-gray-900 mb-4">طلبات وظيفة ${userProfile.jobTitle || 'غير محددة'} المتاحة</h2>
                         <div id="requests-list" class="space-y-3">
                             <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري تحميل الطلبات...</p>
                         </div>
+                        
+                        <!-- أقسام الخدمات (ليتمكن من طلب خدمة كعميل) -->
+                        <h2 class="text-base font-semibold text-gray-900 mt-6 mb-4 border-t pt-4">اطلب خدمة أو تصفح الأقسام</h2>
+                        <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+                            ${categoriesHtml}
+                        </div>
                     </main>
+                    
+                    <button data-action="navigateTo" data-page="newRequest" 
+                            class="fixed bottom-16 left-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
+                        ${ICONS.add}
+                    </button>
                     
                     ${renderBottomNav('home')}
                 </div>
             `;
             
             const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
-            currentUnsubscribe = onSnapshot(requestsColRef, (snapshot) => {
+            
+            // بحث عن الطلبات التي تتطابق مع وظيفة مقدم الخدمة
+            const jobSpecificQuery = query(requestsColRef, where('category', '==', userProfile.jobTitle), orderBy('createdAt', 'desc'));
+            
+            currentUnsubscribe = onSnapshot(jobSpecificQuery, (snapshot) => {
                 const requestsList = document.getElementById('requests-list');
-                if (snapshot.empty) {
-                    requestsList.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا توجد طلبات خدمات متاحة حالياً.</p>';
-                    return;
-                }
-                
                 const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                requests.sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis());
 
+                if (requests.length === 0) {
+                     // إذا لم يجد طلبات لوظيفته، يعرض كل الطلبات المتاحة
+                    const allRequestsQuery = query(requestsColRef, orderBy('createdAt', 'desc'));
+                    onSnapshot(allRequestsQuery, (allSnapshot) => {
+                        const allRequests = allSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        requestsList.innerHTML = generateRequestList(allRequests, requestsList, `لا توجد طلبات لوظيفة ${userProfile.jobTitle}، هذه كل الطلبات المتاحة.`);
+                    });
+                } else {
+                    requestsList.innerHTML = generateRequestList(requests, requestsList);
+                }
+            }, (error) => {
+                console.error("Error fetching requests: ", error);
+                document.getElementById('requests-list').innerHTML = '<p class="text-red-500 p-6 bg-white rounded-lg shadow-sm">حدث خطأ أثناء تحميل الطلبات.</p>';
+            });
 
-                requestsList.innerHTML = requests.map(req => `
+            function generateRequestList(requests, requestsListEl, emptyMessage = `لا توجد طلبات حالياً لوظيفة ${userProfile.jobTitle || 'غير محددة'}.`) {
+                 if (requests.length === 0) {
+                     return `<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">${emptyMessage}</p>`;
+                 }
+                return requests.map(req => `
                     <div class="bg-indigo-50 p-4 rounded-lg shadow-md border border-indigo-200">
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center space-x-3 space-x-reverse">
@@ -731,13 +816,9 @@
                         </button>
                     </div>
                 `).join('');
-            }, (error) => {
-                console.error("Error fetching requests: ", error);
-                document.getElementById('requests-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الطلبات.</p>';
-            });
+            }
         }
         
-        // === تعديل 1 و 2 و 3: صفحة تصنيف الخدمات ===
         async function renderCategoryPage(categoryName) {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -761,11 +842,10 @@
             const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
             const allProvidersQuery = query(usersColRef, where('role', '==', 'provider'));
 
-
             currentUnsubscribe = onSnapshot(allProvidersQuery, (snapshot) => {
                 const providersListEl = document.getElementById('providers-list');
                 
-                // === إصلاح 3: البحث باستخدام اسم الوظيفة في حقل jobTitleSearch ===
+                // === البحث باستخدام اسم الوظيفة في حقل jobTitleSearch ===
                 const providers = snapshot.docs
                     .map(doc => ({ id: doc.id, ...doc.data() }))
                     .filter(p => !categoryName || (p.jobTitle && p.jobTitle.toLowerCase().includes(categoryName))); 
@@ -776,8 +856,6 @@
                     return;
                 }
 
-
-                // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون نيلي هادئ ===
                 providersListEl.innerHTML = providers.map(p => {
                     const avgRating = p.avgRating ? p.avgRating.toFixed(1) : 'جديد';
                     const ratingCount = p.ratings ? p.ratings.length : 0;
@@ -812,7 +890,6 @@
             });
         }
         
-        // === تعديل 1 و 2 و 3: صفحة دليل المستخدمين ===
         async function renderDirectoryPage() {
             function renderUserList(users) {
                 const listEl = document.getElementById('directory-list');
@@ -831,7 +908,6 @@
                     return;
                 }
                 
-                // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون نيلي هادئ ===
                 listEl.innerHTML = filteredUsers.map(user => {
                     const userRole = user.role === 'provider' ? (user.jobTitle || 'مقدم خدمة') : 'عميل';
                     const userColor = user.role === 'provider' ? 'text-indigo-600' : 'text-green-600';
@@ -887,7 +963,6 @@
         }
 
 
-        // === تعديل 1 و 2 و 3: صفحة قائمة المحادثات ===
         async function renderChatListPage() {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -918,7 +993,6 @@
                 const chats = snapshot.docs.map(doc => doc.data());
                 chats.sort((a, b) => b.lastUpdate.toMillis() - a.lastUpdate.toMillis());
                 
-                // === إصلاح 3: تصميم بطاقة المحادثات مميز بمسافة ولون نيلي هادئ ===
                 listEl.innerHTML = chats.map(chat => {
                     const otherUserId = chat.users.find(uid => uid !== userId);
                     if (!chat.userDetails || !chat.userDetails[otherUserId]) {
@@ -947,7 +1021,6 @@
             });
         }
         
-        // === تعديل 1 و 2: صفحة الملف الشخصي ===
         async function renderProfilePage(uid) {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1018,6 +1091,14 @@
                                     <span class="text-gray-700 font-medium text-sm">${profileData.username || 'N/A'}</span>
                                 </div>
                             </div>
+                            <!-- === إصلاح 3: عرض الجنس === -->
+                            <div class="flex items-start">
+                                <span class="w-5 text-gray-500 mt-1">🚻</span>
+                                <div class="mr-3">
+                                    <span class="block text-xs text-gray-500">الجنس</span>
+                                    <span class="text-gray-700 font-medium text-sm">${profileData.gender || 'N/A'}</span>
+                                </div>
+                            </div>
                             <div class="flex items-start">
                                 <span class="w-5 text-gray-500 mt-1">📞</span>
                                 <div class="mr-3">
@@ -1080,7 +1161,6 @@
         }
 
 
-        // === تعديل 1 و 2: صفحة تعديل الملف الشخصي ===
         function renderEditProfilePage() {
             if (!userProfile) {
                 navigateTo('auth');
@@ -1092,8 +1172,6 @@
                 `<option value="${service.name}" ${userProfile.jobTitle === service.name ? 'selected' : ''}>${service.name}</option>`
             ).join('');
 
-
-            const isCustomJobTitle = userProfile.role === 'provider' && userProfile.jobTitle && !SERVICES_LIST.some(s => s.name === userProfile.jobTitle);
             
             const cityOptions = SHARQIA_CITIES.map(city => 
                 `<option value="${city}" ${userProfile.addressCity === city ? 'selected' : ''}>${city}</option>`
@@ -1137,6 +1215,21 @@
                                 <input type="tel" id="edit-phone" value="${userProfile.phone}" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                             </div>
                             
+                            <!-- === إصلاح 3: اختيار الجنس === -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">الجنس</label>
+                                <div class="mt-1 flex space-x-4 space-x-reverse">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="edit-gender" value="ذكر" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" ${userProfile.gender === 'ذكر' ? 'checked' : ''} required>
+                                        <span class="mr-2 text-gray-700 text-sm">ذكر</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="edit-gender" value="أنثى" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" ${userProfile.gender === 'أنثى' ? 'checked' : ''} required>
+                                        <span class="mr-2 text-gray-700 text-sm">أنثى</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
                             <!-- تقسيم العنوان -->
                             <div>
                                 <label for="edit-city" class="block text-sm font-medium text-gray-700">المركز / المدينة</label>
@@ -1171,11 +1264,7 @@
                 </div>
             `;
             
-            document.getElementById('edit-job-select')?.addEventListener('change', (e) => {
-                // إزالة منطق الإظهار/الإخفاء لحقل "أخرى" لأنه لم يعد موجودًا
-            });
-            
-             // تهيئة مستمع حدث رفع الصورة
+            // تهيئة مستمع حدث رفع الصورة
             document.getElementById('photo-upload-input').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -1194,7 +1283,6 @@
             });
         }
         
-        // === تعديل 1 و 2: صفحة المحادثة ===
         async function renderChatPage(otherUserId) {
             let otherUserProfile = null;
             try {
@@ -1293,7 +1381,6 @@
             });
         }
         
-        // === تعديل 1 و 2: صفحة طلب خدمة جديد ===
         function renderNewRequestPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
@@ -1339,6 +1426,117 @@
                 </div>
             `;
         }
+        
+        // === إصلاح 3: صفحة نشر إعلان وظيفة ===
+        function renderJobPostingPage() {
+            const serviceOptions = SERVICES_LIST.map(service => 
+                `<option value="${service.name}">${service.name}</option>`
+            ).join('');
+            
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold">نشر إعلان وظيفة</h1>
+                        <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
+                            ${ICONS.back}
+                        </button>
+                    </header>
+                    
+                    <main class="main-padding bg-gray-50">
+                        <form id="job-posting-form" class="space-y-4 bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+                            <div id="job-post-error" class="text-red-500 text-sm text-center hidden"></div>
+                            
+                            <div>
+                                <label for="job-title" class="block text-sm font-medium text-gray-700">عنوان الوظيفة</label>
+                                <input type="text" id="job-title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: مطلوب سكرتيرة تنفيذية">
+                            </div>
+                            
+                            <div>
+                                <label for="job-category" class="block text-sm font-medium text-gray-700">القسم</label>
+                                <select id="job-category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
+                                    <option value="">اختر القسم</option>
+                                    ${serviceOptions}
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="job-details" class="block text-sm font-medium text-gray-700">تفاصيل ومتطلبات الوظيفة</label>
+                                <textarea id="job-details" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="يرجى كتابة المهارات المطلوبة، والراتب المتوقع، والموقع..."></textarea>
+                            </div>
+                            
+                            <button type="submit" data-action="submitJobPost" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                نشر إعلان الوظيفة
+                            </button>
+                        </form>
+                    </main>
+                    
+                    ${renderBottomNav('jobListings')}
+                </div>
+            `;
+        }
+        
+        // === إصلاح 3: صفحة عرض إعلانات الوظائف ===
+        async function renderJobListingsPage() {
+            appContainer.innerHTML = `
+                <div class="pb-24">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold">الوظائف المتاحة</h1>
+                         <button data-action="navigateTo" data-page="jobPosting" 
+                            class="bg-indigo-600 text-white py-1 px-3 rounded-md text-xs font-medium hover:bg-indigo-700 transition-colors">
+                            + إعلان جديد
+                        </button>
+                    </header>
+                    
+                    <main class="main-padding bg-gray-50">
+                        <div id="job-listings-list" class="space-y-3">
+                            <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري تحميل إعلانات الوظائف...</p>
+                        </div>
+                    </main>
+                    
+                    ${renderBottomNav('jobListings')}
+                </div>
+            `;
+
+            const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
+            const q = query(jobPostingsColRef, orderBy('createdAt', 'desc'));
+
+            currentUnsubscribe = onSnapshot(q, (snapshot) => {
+                const listEl = document.getElementById('job-listings-list');
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا توجد إعلانات وظائف حالياً.</p>';
+                    return;
+                }
+                
+                const listings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                listEl.innerHTML = listings.map(job => `
+                    <div class="bg-indigo-50 p-4 rounded-lg shadow-md border border-indigo-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-lg font-bold text-gray-900">${job.title}</h3>
+                            <span class="text-xs text-gray-400">${new Date(job.createdAt.toDate()).toLocaleDateString('ar-EG')}</span>
+                        </div>
+                        <p class="text-sm text-indigo-600 mb-2 font-medium">${job.category}</p>
+                        <p class="text-sm text-gray-700 mb-3">${job.details.substring(0, 150)}...</p>
+                        
+                        <div class="flex items-center space-x-3 space-x-reverse">
+                            <img data-action="navigateTo" data-page="profile" data-uid="${job.posterId}"
+                                 src="${job.posterPhoto || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
+                                 alt="${job.posterName}" class="w-8 h-8 rounded-full object-cover cursor-pointer">
+                            <p data-action="navigateTo" data-page="profile" data-uid="${job.posterId}" 
+                               class="text-xs text-gray-600 cursor-pointer hover:text-indigo-600">الناشر: ${job.posterName}</p>
+                        </div>
+                        
+                        <button data-action="navigateTo" data-page="chat" data-otheruserid="${job.posterId}"
+                                class="mt-3 w-full bg-indigo-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors">
+                            تواصل للتقديم
+                        </button>
+                    </div>
+                `).join('');
+            }, (error) => {
+                console.error("Error fetching job listings: ", error);
+                document.getElementById('job-listings-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل إعلانات الوظائف.</p>';
+            });
+        }
 
 
         // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
@@ -1365,6 +1563,12 @@
                                 class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'chatList' ? activeClass : inactiveClass}">
                             ${ICONS.chat}
                             <span class="text-xs font-medium">المحادثات</span>
+                        </button>
+                        
+                        <button data-action="navigateTo" data-page="jobListings" 
+                                class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'jobListings' ? activeClass : inactiveClass}">
+                            ${ICONS.job}
+                            <span class="text-xs font-medium">وظائف</span>
                         </button>
                         
                         <button data-action="navigateTo" data-page="profile" data-uid="${userId}"
@@ -1447,13 +1651,14 @@
                 const password = document.getElementById('register-password').value;
                 const name = document.getElementById('register-name').value;
                 const phone = document.getElementById('register-phone').value;
+                const gender = document.querySelector('input[name="gender"]:checked').value; // === إصلاح 3 ===
                 const city = document.getElementById('register-city').value;
                 const area = document.getElementById('register-area').value.trim();
                 const role = document.querySelector('input[name="role"]:checked').value;
                 const photoURL = document.getElementById('photo-base64').value || null; 
                 
                 const jobSelect = document.getElementById('register-job-select')?.value;
-                const jobTitle = jobSelect === 'أخرى' ? document.getElementById('register-job-title').value.trim() : jobSelect;
+                const jobTitle = jobSelect; // لا يوجد حقل "أخرى" الآن
                 
                 // التحقق من رقم الهاتف والعنوان
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
@@ -1463,7 +1668,7 @@
                     throw new Error('يرجى اختيار المدينة/المركز وإدخال تفاصيل المنطقة.');
                 }
                 if (role === 'provider' && (!jobTitle || jobTitle === '')) {
-                    throw new Error('يرجى اختيار أو إدخال الوظيفة لمقدم الخدمة.');
+                    throw new Error('يرجى اختيار الوظيفة لمقدم الخدمة.');
                 }
                 
                 const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
@@ -1481,8 +1686,6 @@
                     displayName: name,
                 });
 
-
-                // === إصلاح 3: استخدام اسم الوظيفة للبحث ===
                 const jobTitleSearch = role === 'provider' ? jobTitle.toLowerCase() : null;
 
 
@@ -1492,6 +1695,7 @@
                     email: dummyEmail, 
                     name: name,
                     phone: phone,
+                    gender: gender, // === إصلاح 3 ===
                     addressCity: city, 
                     addressArea: area, 
                     address: `${city}, ${area}`, 
@@ -1510,7 +1714,7 @@
                 userProfile = newUserProfile;
                 userId = newUserId;
                 hideLoading();
-                showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في خدماتي!', true);
+                showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في خدمات الشرقية!', true);
 
 
                 setTimeout(() => {
@@ -1546,6 +1750,7 @@
             try {
                 const name = document.getElementById('edit-name').value;
                 const phone = document.getElementById('edit-phone').value;
+                const gender = document.querySelector('input[name="edit-gender"]:checked').value; // === إصلاح 3 ===
                 const city = document.getElementById('edit-city').value;
                 const area = document.getElementById('edit-area').value.trim();
                 const photoURL = document.getElementById('photo-base64').value || null; 
@@ -1561,17 +1766,17 @@
                 let jobTitle = userProfile.jobTitle;
                 if (userProfile.role === 'provider') {
                     const jobSelect = document.getElementById('edit-job-select').value;
-                    jobTitle = jobSelect === 'other' ? document.getElementById('edit-job-title').value.trim() : jobSelect;
+                    jobTitle = jobSelect;
                 }
                 
                 showLoading('جاري تحديث البيانات...');
-                // === إصلاح 3: استخدام اسم الوظيفة للبحث ===
                 const jobTitleSearch = userProfile.role === 'provider' ? jobTitle.toLowerCase() : null;
 
 
                 const updates = {
                     name: name,
                     phone: phone,
+                    gender: gender, // === إصلاح 3 ===
                     addressCity: city, 
                     addressArea: area, 
                     address: `${city}, ${area}`,
@@ -1698,7 +1903,48 @@
             }
         }
         
-        // === استعادة وظائف التقييم ===
+        // === إصلاح 3: إرسال إعلان وظيفة ===
+        async function handleSubmitJobPost(e) {
+            e.preventDefault();
+            showLoading('جاري نشر إعلان الوظيفة...');
+            const errorEl = document.getElementById('job-post-error');
+            errorEl.classList.add('hidden');
+            
+            try {
+                const title = document.getElementById('job-title').value;
+                const category = document.getElementById('job-category').value;
+                const details = document.getElementById('job-details').value;
+                
+                if (!title || !category || !details) {
+                    throw new Error('يرجى ملء جميع الحقول.');
+                }
+                
+                const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
+                await addDoc(jobPostingsColRef, {
+                    title: title,
+                    category: category,
+                    details: details,
+                    posterId: userId,
+                    posterName: userProfile.name,
+                    posterPhoto: userProfile.photoURL,
+                    createdAt: Timestamp.now()
+                });
+                
+                hideLoading();
+                showMessageModal('تم نشر الإعلان', 'تم نشر إعلان الوظيفة بنجاح.', true);
+                
+                setTimeout(() => {
+                    navigateTo('jobListings');
+                }, 1500);
+                
+            } catch (error) {
+                console.error("Error submitting job post: ", error);
+                errorEl.textContent = error.message || 'حدث خطأ أثناء نشر الإعلان.';
+                errorEl.classList.remove('hidden');
+                hideLoading();
+            }
+        }
+        
         function handleOpenRatingModal(providerId, providerName) {
             const modalHtml = `
                 <h2 class="text-2xl font-semibold text-center mb-4">تقييم ${providerName}</h2>
@@ -1834,6 +2080,10 @@
                     e.preventDefault();
                     await handleSubmitRequest(e);
                     break;
+                case 'submitJobPost': // === إصلاح 3 ===
+                    e.preventDefault();
+                    await handleSubmitJobPost(e);
+                    break;
                 case 'openRatingModal':
                     handleOpenRatingModal(providerId, providerName);
                     break;
@@ -1873,6 +2123,18 @@
                     break;
             }
         });
+        
+        // === حدث خاص لزر التثبيت الصغير (إصلاح 2) ===
+        miniInstallButton.addEventListener('click', async () => {
+             if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                     toggleMiniInstallButton(false);
+                }
+                deferredPrompt = null;
+            }
+        });
 
 
         appContainer.addEventListener('change', (e) => {
@@ -1884,16 +2146,6 @@
                     jobField.classList.add('hidden');
                 }
             }
-            
-            // Register Job Title Logic (تم تبسيطها)
-            if (e.target.id === 'register-job-select') {
-                // إزالة حقل "أخرى"
-            }
-            
-            // Edit Job Title Logic (تم تبسيطها)
-            if (e.target.id === 'edit-job-select') {
-                // إزالة حقل "أخرى"
-            }
         });
 
 
@@ -1901,12 +2153,20 @@
             e.preventDefault();
         });
         
-        // 12. PWA Logic 
+        // 12. PWA Logic (إصلاح 2)
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             deferredPrompt = e; 
-            showInstallBanner(); 
+            if (userId) { // أظهر البانر والإشعار فقط إذا كان المستخدم مسجلاً الدخول
+                showInstallBanner(); 
+            }
             console.log("PWA install prompt deferred.");
+        });
+        
+        // إخفاء زر التثبيت إذا تم التثبيت بالفعل (متصفحات Chromium)
+        window.addEventListener('appinstalled', () => {
+             toggleMiniInstallButton(false);
+             hideInstallBanner();
         });
         
         document.getElementById('install-button')?.addEventListener('click', async () => {
@@ -1946,6 +2206,11 @@
                         userProfile = userDoc.data();
                         console.log('User profile found:', userProfile);
                         
+                        // إظهار زر التثبيت الصغير عند تسجيل الدخول
+                        if (!getDisplayMode().includes('standalone')) {
+                            toggleMiniInstallButton(true);
+                        }
+                        
                         // إعادة التوجيه للصفحة المناسبة
                         if(navigationHistory.length <= 1 || navigationHistory[navigationHistory.length - 1].page === 'auth' || navigationHistory[navigationHistory.length - 1].page === 'register') {
                             navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
@@ -1961,6 +2226,7 @@
                     console.log('User is signed out.');
                     userId = null;
                     userProfile = null;
+                    toggleMiniInstallButton(false); // إخفاء زر التثبيت عند تسجيل الخروج
                     navigateTo('auth');
                 }
             });
