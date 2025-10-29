@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -212,43 +212,59 @@
 
 
 
-        // === إصلاح 2: توسيع قائمة الخدمات (الوظائف) ===
+        // === تعديل قائمة الخدمات (إصلاح 3) ===
         const SERVICES_LIST = [
+            // مهن حرفية
             { name: 'سباك', icon: '🔧' },
             { name: 'كهربائي منازل', icon: '💡' },
             { name: 'نجار موبيليا', icon: '🪚' },
             { name: 'فني تبريد وتكييف', icon: '❄️' },
+            { name: 'نقاش ودهانات', icon: '🎨' },
+            { name: 'فني صيانة أجهزة كهربائية', icon: '🔌' },
             { name: 'فني صيانة غسالات', icon: '🧺' },
             { name: 'فني صيانة ثلاجات', icon: '🧊' },
-            { name: 'فني صيانة أجهزة كهربائية', icon: '🔌' },
-            { name: 'نقاش ودهانات', icon: '🎨' },
+            
+            // مهن هندسية وتقنية
             { name: 'مهندس مدني (تنفيذ)', icon: '🏗️' },
             { name: 'مهندس معماري (تصميم)', icon: '📐' },
             { name: 'مهندس شبكات', icon: '📶' },
             { name: 'مهندس برمجيات', icon: '💻' },
-            { name: 'محامي (قضايا مدنية)', icon: '⚖️' },
-            { name: 'محامي (قضايا أسرية)', icon: '📜' },
-            { name: 'طبيب بشري', icon: '⚕️' },
-            { name: 'ممرض منزلي', icon: '🩺' },
-            { name: 'مدرس خصوصي (لغة عربية)', icon: '✍️' },
-            { name: 'مدرس خصوصي (علوم/رياضيات)', icon: '🧠' },
+            { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
+            { name: 'فني كاميرات مراقبة', icon: '📹' },
+            
+            // مهن مالية وقانونية
             { name: 'محاسب قانوني', icon: '🧾' },
             { name: 'محاسب شركات', icon: '🧮' },
             { name: 'محاسب تكاليف', icon: '💰' },
-            { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
-            { name: 'تركيب دش وستالايت', icon: '📡' },
+            { name: 'محامي (قضايا مدنية)', icon: '⚖️' },
+            { name: 'محامي (قضايا أسرية)', icon: '📜' },
+
+            // مهن طبية وتمريض
+            { name: 'طبيب بشري', icon: '⚕️' },
+            { name: 'ممرض منزلي', icon: '🩺' },
+            { name: 'صيادلي', icon: '💊' },
+            { name: 'مسعف', icon: '🩹' },
+
+            // مهن تعليمية
+            { name: 'مدرس خصوصي', icon: '✍️' },
+            
+            // مهن البناء والتشييد
             { name: 'عامل بناء', icon: '🧱' },
             { name: 'مبيض محارة', icon: '⬜' },
             { name: 'مركب سيراميك ورخام', icon: '🔨' },
             { name: 'حداد مسلح', icon: '🔗' },
             { name: 'حداد كريتال', icon: '🛡️' },
             { name: 'ألوميتال وزجاج', icon: '🪟' },
-            { name: 'فني كاميرات مراقبة', icon: '📹' },
-            { name: 'فني مصاعد', icon: '⬆️' },
+            
+            // مهن السيارات
+            { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
+            { name: 'فني كهرباء سيارات', icon: '🔋' },
+            { name: 'معلم دهان سيارات', icon: '🖌️' },
+
+            // مهن خدمات عامة
             { name: 'مصور فوتوغرافي', icon: '📸' },
             { name: 'مصور فيديو', icon: '🎥' },
-            { name: 'خياط / ترزي (ملابس رجالي)', icon: '👔' },
-            { name: 'خياط / ترزي (ملابس حريمي)', icon: '👗' },
+            { name: 'خياط / ترزي', icon: '👔' },
             { name: 'طباخ مناسبات', icon: '🧑‍🍳' },
             { name: 'شيف مطعم', icon: '🍽️' },
             { name: 'تنظيف منازل ومكاتب', icon: '🧹' },
@@ -263,24 +279,20 @@
             { name: 'مترجم', icon: '🌐' },
             { name: 'مدرب رياضي', icon: '💪' },
             { name: 'مصفف شعر (كوافير)', icon: '💇' },
-            { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
-            { name: 'فني كهرباء سيارات', icon: '🔋' },
-            { name: 'صيادلي', icon: '💊' },
-            { name: 'موظف استقبال', icon: '🛎️' },
-            { name: 'أمين مخزن', icon: '📦' },
-            { name: 'خدمات سياحية وحجز', icon: '✈️' },
-            { name: 'معلم دهان سيارات', icon: '🖌️' },
+            { name: 'فني مصاعد', icon: '⬆️' },
             { name: 'فني غلايات', icon: '🔥' },
             { name: 'مراقب جودة', icon: '🔎' },
             { name: 'حارس أمن', icon: '🔒' },
             { name: 'بائع/كاشير', icon: '🛒' },
-            { name: 'مسعف', icon: '🩹' },
             { name: 'مذيع/معلق صوتي', icon: '🎤' },
             { name: 'مدرب كلاب', icon: '🐕' },
             { name: 'مزارع/جنايني', icon: '🌿' },
             { name: 'فني ميكانيكا إنتاج', icon: '🏭' },
             { name: 'فني طباعة وتصوير', icon: '🖨️' },
             { name: 'فني مختبرات', icon: '🔬' },
+            { name: 'موظف استقبال', icon: '🛎️' },
+            { name: 'أمين مخزن', icon: '📦' },
+            { name: 'خدمات سياحية وحجز', icon: '✈️' },
             { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
         ];
 
@@ -824,7 +836,7 @@
 
 
 
-        // === إصلاح 1: الصفحة الرئيسية لمقدم الخدمة ===
+        // === إصلاح 1: الصفحة الرئيسية لمقدم الخدمة (تم تعديل منطق عرض الطلبات) ===
         async function renderProviderHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
                 <div data-action="navigateTo" data-page="category" data-category="${cat.name.toLowerCase()}" 
@@ -869,7 +881,7 @@
             const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
 
 
-            // بحث عن الطلبات التي تتطابق مع وظيفة مقدم الخدمة
+            // 1. بحث عن الطلبات التي تتطابق مع وظيفة مقدم الخدمة
             const jobSpecificQuery = query(requestsColRef, where('category', '==', userProfile.jobTitle), orderBy('createdAt', 'desc'));
 
 
@@ -879,11 +891,11 @@
 
 
                 if (requests.length === 0) {
-                     // إذا لم يجد طلبات لوظيفته، يعرض كل الطلبات المتاحة
+                     // 2. إذا لم يجد طلبات لوظيفته، يعرض كل الطلبات المتاحة (كخيار بديل)
                     const allRequestsQuery = query(requestsColRef, orderBy('createdAt', 'desc'));
                     onSnapshot(allRequestsQuery, (allSnapshot) => {
                         const allRequests = allSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        requestsList.innerHTML = generateRequestList(allRequests, `لا توجد طلبات لوظيفة ${userProfile.jobTitle || 'غير محددة'}، هذه كل الطلبات المتاحة.`);
+                        requestsList.innerHTML = generateRequestList(allRequests, `لا توجد طلبات لوظيفة ${userProfile.jobTitle || 'غير محددة'} حالياً. هذه كل الطلبات المتاحة:`);
                     });
                 } else {
                     requestsList.innerHTML = generateRequestList(requests);
@@ -898,7 +910,9 @@
                  if (requests.length === 0) {
                      return `<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">${emptyMessage}</p>`;
                  }
-                return requests.map(req => `
+                return requests.map(req => {
+                    const dateString = req.createdAt && req.createdAt.toDate ? new Date(req.createdAt.toDate()).toLocaleDateString('ar-EG') : 'تاريخ غير محدد';
+                    return `
                     <div class="bg-indigo-50 p-4 rounded-lg shadow-md border border-indigo-200">
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center space-x-3 space-x-reverse">
@@ -911,7 +925,7 @@
                                     <p class="text-xs text-gray-500">طلب خدمة: ${req.category}</p>
                                 </div>
                             </div>
-                            <span class="text-xs text-gray-400">${new Date(req.createdAt.toDate()).toLocaleDateString('ar-EG')}</span>
+                            <span class="text-xs text-gray-400">${dateString}</span>
                         </div>
                         <h3 class="text-base font-semibold text-gray-900 mb-1">${req.title}</h3>
                         <p class="text-sm text-gray-600 mb-3">${req.description.substring(0, 100)}...</p>
@@ -920,7 +934,7 @@
                             تواصل مع العميل
                         </button>
                     </div>
-                `).join('');
+                `}).join('');
             }
         }
 
@@ -1732,11 +1746,13 @@
                 const listings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
 
-                listEl.innerHTML = listings.map(job => `
+                listEl.innerHTML = listings.map(job => {
+                    const dateString = job.createdAt && job.createdAt.toDate ? new Date(job.createdAt.toDate()).toLocaleDateString('ar-EG') : 'تاريخ غير محدد';
+                    return `
                     <div class="bg-indigo-50 p-4 rounded-lg shadow-md border border-indigo-200">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-lg font-bold text-gray-900">${job.title}</h3>
-                            <span class="text-xs text-gray-400">${new Date(job.createdAt.toDate()).toLocaleDateString('ar-EG')}</span>
+                            <span class="text-xs text-gray-400">${dateString}</span>
                         </div>
                         <p class="text-sm text-indigo-600 mb-2 font-medium">${job.category}</p>
                         <p class="text-sm text-gray-700 mb-3">${job.details.substring(0, 150)}...</p>
@@ -1754,7 +1770,7 @@
                             تواصل للتقديم
                         </button>
                     </div>
-                `).join('');
+                `}).join('');
             }, (error) => {
                 console.error("Error fetching job listings: ", error);
                 document.getElementById('job-listings-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل إعلانات الوظائف.</p>';
@@ -2371,11 +2387,11 @@
 
 
                 case 'goBack':
+                    // === إصلاح منطق زر الرجوع ===
                     if (navigationHistory.length > 1) {
-                        navigationHistory.pop(); 
-                        const previousRoute = navigationHistory[navigationHistory.length - 1];
-                        navigateTo(previousRoute.page, previousRoute.params); 
-                        navigationHistory.pop(); 
+                        navigationHistory.pop(); // 1. إزالة الصفحة الحالية من السجل
+                        const previousRoute = navigationHistory[navigationHistory.length - 1]; // 2. الحصول على الصفحة السابقة
+                        navigateTo(previousRoute.page, previousRoute.params); // 3. الانتقال إليها (لن يتم إضافتها مرة أخرى بسبب منطق navigateTo)
                     } else if (userId) {
                          navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                     } else {
@@ -2614,4 +2630,4 @@
 
 
 </body>
-</html>
+</html>ظ. 
