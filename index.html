@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدمات الشرقية</title>
+    <title>خدمات</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font (Inter) -->
@@ -43,14 +43,14 @@
         /* === تعديل فقاعات الشات === */
         .chat-bubble-sent {
             background-color: #1e40af; /* bg-blue-800 */
-            color: white; /* text-white */
+            color: white; 
             padding: 0.6rem 0.75rem; 
             border-radius: 1.25rem 1.25rem 0 1.25rem; 
             word-wrap: break-word; 
         }
         .chat-bubble-received {
             background-color: #e5e7eb; /* bg-gray-200 */
-            color: #1f2937; /* text-gray-800 */
+            color: #1f2937; 
             padding: 0.6rem 0.75rem; 
             border-radius: 1.25rem 1.25rem 1.25rem 0; 
             word-wrap: break-word; 
@@ -80,24 +80,24 @@
         }
         /* === إصلاح 1: تصغير ارتفاع بار الترحيب === */
         .welcome-header {
-            padding: 0.75rem 1rem; 
+            padding: 0.6rem 1rem; 
         }
         
     </style>
 </head>
 <body class="bg-gray-50">
 
-    <!-- PWA Install Prompt Banner -->
-    <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-700 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
+    <!-- PWA Install Prompt Banner (إصلاح 3) -->
+    <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-800 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
         <div class="flex items-center space-x-3 space-x-reverse">
             <span class="text-lg">🛠️</span>
-            <p class="text-xs font-medium">ثبّت "خدمات الشرقية" لتجربة تطبيق كاملة.</p>
+            <p class="text-xs font-medium">ثبّت "خدمات" لتجربة تطبيق كاملة.</p>
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
             <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
                 &times;
             </button>
-            <button id="install-button" class="bg-white text-indigo-700 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
+            <button id="install-button" class="bg-white text-indigo-800 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
                 تثبيت
             </button>
         </div>
@@ -181,32 +181,57 @@
         let isBannerShown = false; // PWA Banner control
 
 
-        // === إصلاح 4: قائمة خدمات موسعة بمهن مصرية شائعة ===
+        // === إصلاح 3: توسيع قائمة الخدمات (الوظائف) مع حذف الوصف ===
         const SERVICES_LIST = [
-            { name: 'سباك / مواسير', icon: '🔧', categorySearch: 'سباك مواسير' },
-            { name: 'كهربائي منازل', icon: '💡', categorySearch: 'كهربائي منازل' },
-            { name: 'نجار / موبيليا', icon: '🪚', categorySearch: 'نجار موبيليا' },
-            { name: 'فني تبريد وتكييف', icon: '❄️', categorySearch: 'تكييف' },
-            { name: 'نقاش / دهانات', icon: '🎨', categorySearch: 'نقاش دهانات' },
-            { name: 'محارة / بناء', icon: '🧱', categorySearch: 'محارة بناء عامل بناء' },
-            { name: 'تركيب سيراميك / رخام', icon: '🔨', categorySearch: 'سيراميك رخام' },
-            { name: 'حداد كريتال / لحام', icon: '🔗', categorySearch: 'حداد كريتال لحام' },
-            { name: 'ألوميتال وشبابيك', icon: '🪟', categorySearch: 'ألوميتال شبابيك' },
-            { name: 'فني دش / ستالايت', icon: '📡', categorySearch: 'دش ستالايت' },
-            { name: 'صيانة أجهزة منزلية', icon: '🔌', categorySearch: 'اجهزة منزلية' },
-            { name: 'صيانة هواتف / كمبيوتر', icon: '📱', categorySearch: 'هواتف كمبيوتر برمجة' },
-            { name: 'محامي / خدمات قانونية', icon: '⚖️', categorySearch: 'قانونية محامي' },
-            { name: 'محاسب / مراجعة حسابات', icon: '🧾', categorySearch: 'محاسب كاتب حسابات' },
-            { name: 'تدريس (خصوصي)', icon: '📚', categorySearch: 'مدرس معلم تعليمية' }, 
-            { name: 'خدمات طبية / تمريض منزلي', icon: '🩺', categorySearch: 'طبية طبيب ممرض تمريض' },
-            { name: 'طباخ / شيف مناسبات', icon: '🧑‍🍳', categorySearch: 'طباخ شيف' },
-            { name: 'تنظيف منازل / مربية', icon: '🧹', categorySearch: 'تنظيف منازل مربية' },
-            { name: 'سائق / نقل عفش', icon: '🚚', categorySearch: 'سائق نقل شحن عفش' },
-            { name: 'مصور فوتوغرافي / فيديو', icon: '📸', categorySearch: 'مصور' },
-            { name: 'خياط / ترزي', icon: '🧵', categorySearch: 'خياط ترزي' },
-            { name: 'مهندس مدني / معماري', icon: '🏗️', categorySearch: 'مهندس مدني معماري' }, 
-            { name: 'مندوب مبيعات / تسويق', icon: '💼', categorySearch: 'مندوب مبيعات تسويق' }, 
-            { name: 'خدمات عامة / أخرى', icon: '👥', categorySearch: 'خدمات عامة أخرى' },
+            { name: 'سباك', icon: '🔧' },
+            { name: 'كهربائي منازل', icon: '💡' },
+            { name: 'نجار موبيليا', icon: '🪚' },
+            { name: 'فني تبريد وتكييف', icon: '❄️' },
+            { name: 'نقاش ودهانات', icon: '🎨' },
+            { name: 'مهندس مدني / معماري', icon: '🏗️' },
+            { name: 'محامي', icon: '⚖️' },
+            { name: 'طبيب/ممرض منزلي', icon: '🩺' },
+            { name: 'مدرس خصوصي', icon: '📚' },
+            { name: 'محاسب قانوني', icon: '🧾' },
+            { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
+            { name: 'صيانة أجهزة منزلية', icon: '🔌' },
+            { name: 'تركيب دش وستالايت', icon: '📡' },
+            { name: 'عامل بناء / محارة', icon: '🧱' },
+            { name: 'حداد', icon: '🔗' },
+            { name: 'ألوميتال وزجاج', icon: '🪟' },
+            { name: 'مركب سيراميك ورخام', icon: '🔨' },
+            { name: 'مبيض محارة', icon: '⬜' },
+            { name: 'فني كاميرات مراقبة', icon: '📹' },
+            { name: 'فني مصاعد', icon: '⬆️' },
+            { name: 'مصور فوتوغرافي/فيديو', icon: '📸' },
+            { name: 'خياط / ترزي', icon: '🧵' },
+            { name: 'طباخ / شيف', icon: '🧑‍🍳' },
+            { name: 'تنظيف منازل ومكاتب', icon: '🧹' },
+            { name: 'مربية أطفال', icon: '👶' },
+            { name: 'جليس مسنين', icon: '🧓' },
+            { name: 'سائق خاص / نقل عفش', icon: '🚚' },
+            { name: 'مهندس زراعي', icon: '🌾' },
+            { name: 'مدير مكتب/سكرتير', icon: '📁' },
+            { name: 'مندوب مبيعات', icon: '💼' },
+            { name: 'أخصائي تسويق رقمي', icon: '💻' },
+            { name: 'مترجم', icon: '🌐' },
+            { name: 'مدرب رياضي', icon: '💪' },
+            { name: 'مصفف شعر (كوافير)', icon: '💇' },
+            { name: 'فني سيارات/ميكانيكي', icon: '🚗' },
+            { name: 'صيادلي', icon: '💊' },
+            { name: 'موظف استقبال', icon: '🛎️' },
+            { name: 'أمين مخزن', icon: '📦' },
+            { name: 'خدمات سياحية', icon: '✈️' },
+            { name: 'فني شبكات', icon: '📶' },
+            { name: 'معلم دهان سيارات', icon: '🖌️' },
+            { name: 'فني غلايات', icon: '🔥' },
+            { name: 'مراقب جودة', icon: '🔎' },
+            { name: 'حارس أمن', icon: '🛡️' },
+            { name: 'بائع/كاشير', icon: '🛒' },
+            { name: 'مسعف', icon: '🩹' },
+            { name: 'مذيع/معلق صوتي', icon: '🎤' },
+            { name: 'مدرب كلاب', icon: '🐕' },
+            { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
         ];
         
         // قائمة مراكز ومدن الشرقية
@@ -258,7 +283,7 @@
             // استخدام Modal للتحميل
             const html = `
                 <div class="flex flex-col items-center justify-center p-6">
-                    <svg class="animate-spin h-10 w-10 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin h-10 w-10 text-indigo-800 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -279,7 +304,7 @@
             const html = `
                 <h2 class="text-xl font-semibold text-center ${color} mb-4">${title}</h2>
                 <p class="text-center text-gray-700">${message}</p>
-                <button data-action="closeModal" class="mt-4 w-full py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">حسناً</button>
+                <button data-action="closeModal" class="mt-4 w-full py-2 bg-indigo-800 text-white rounded-md hover:bg-indigo-700">حسناً</button>
             `;
             showModal(html);
         }
@@ -334,11 +359,11 @@
                 installBanner.classList.add('flex');
                 setTimeout(() => {
                     installBanner.classList.remove('-translate-y-full');
-                }, 10);
+                }, 100); // زيادة المؤقت قليلاً لضمان عمل الـ transition
                 isBannerShown = true;
                 
-                // إخفاء الإشعار بعد 10 ثواني تلقائياً
-                setTimeout(hideInstallBanner, 10000); 
+                // إخفاء الإشعار بعد 12 ثانية تلقائياً
+                setTimeout(hideInstallBanner, 12000); 
             }
         }
         
@@ -436,7 +461,7 @@
             appContainer.innerHTML = `
                 <div class="flex items-center justify-center min-h-screen">
                     <div class="flex flex-col items-center">
-                        <svg class="animate-spin h-12 w-12 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg class="animate-spin h-12 w-12 text-indigo-800 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -449,8 +474,8 @@
 
         function renderAuthPage() {
             appContainer.innerHTML = `
-                <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-indigo-600">
-                    <h1 class="text-4xl font-bold text-white mb-4">خدمات الشرقية</h1>
+                <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-indigo-800">
+                    <h1 class="text-4xl font-bold text-white mb-4">خدمات</h1>
                     <p class="text-lg text-indigo-100 mb-8 text-center">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
                     
                     <div class="w-full max-w-sm bg-white rounded-lg shadow-xl p-6">
@@ -574,7 +599,6 @@
                                 <select id="register-job-select" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                     <option value="">اختر...</option>
                                     ${serviceOptions}
-                                    <option value="أخرى">أخرى (اذكرها بالأسفل)</option>
                                 </select>
                             </div>
                             <div id="job-title-other-field" class="hidden">
@@ -616,10 +640,10 @@
             });
         }
         
-        // === تعديل 1 و 2 و 4: الصفحة الرئيسية للعميل ===
+        // === تعديل 1 و 2: الصفحة الرئيسية للعميل ===
         function renderClientHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
-                <div data-action="navigateTo" data-page="category" data-category="${cat.categorySearch}" 
+                <div data-action="navigateTo" data-page="category" data-category="${cat.name.toLowerCase()}" 
                      class="flex flex-col items-center justify-center bg-indigo-50 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-indigo-200 hover:border-indigo-500">
                     <span class="text-3xl mb-1">${cat.icon}</span>
                     <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
@@ -629,7 +653,7 @@
 
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white welcome-header shadow-md sticky top-0 z-10">
+                    <header class="bg-indigo-800 text-white welcome-header shadow-md sticky top-0 z-10">
                         <h1 class="text-lg font-bold">أهلاً بك، ${userProfile.name}</h1>
                         <p class="text-indigo-100 text-xs">ابحث عن الخدمة التي تحتاجها في محافظة الشرقية</p>
                     </header>
@@ -656,7 +680,7 @@
         async function renderProviderHome() {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white welcome-header shadow-md sticky top-0 z-10">
+                    <header class="bg-indigo-800 text-white welcome-header shadow-md sticky top-0 z-10">
                         <h1 class="text-lg font-bold">أهلاً بك، ${userProfile.name}</h1>
                         <p class="text-indigo-100 text-xs">تصفح طلبات الخدمات المتاحة حالياً</p>
                     </header>
@@ -717,7 +741,7 @@
         async function renderCategoryPage(categoryName) {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
                         <h1 class="text-lg font-bold">مقدمو خدمة: ${categoryName || 'كل الخدمات'}</h1>
                         <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             ${ICONS.back}
@@ -740,9 +764,11 @@
 
             currentUnsubscribe = onSnapshot(allProvidersQuery, (snapshot) => {
                 const providersListEl = document.getElementById('providers-list');
+                
+                // === إصلاح 3: البحث باستخدام اسم الوظيفة في حقل jobTitleSearch ===
                 const providers = snapshot.docs
                     .map(doc => ({ id: doc.id, ...doc.data() }))
-                    .filter(p => !categoryName || (p.jobTitleSearch && p.jobTitleSearch.includes(categoryName))); 
+                    .filter(p => !categoryName || (p.jobTitle && p.jobTitle.toLowerCase().includes(categoryName))); 
 
 
                 if (providers.length === 0) {
@@ -751,6 +777,7 @@
                 }
 
 
+                // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون نيلي هادئ ===
                 providersListEl.innerHTML = providers.map(p => {
                     const avgRating = p.avgRating ? p.avgRating.toFixed(1) : 'جديد';
                     const ratingCount = p.ratings ? p.ratings.length : 0;
@@ -804,7 +831,7 @@
                     return;
                 }
                 
-                // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون ===
+                // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون نيلي هادئ ===
                 listEl.innerHTML = filteredUsers.map(user => {
                     const userRole = user.role === 'provider' ? (user.jobTitle || 'مقدم خدمة') : 'عميل';
                     const userColor = user.role === 'provider' ? 'text-indigo-600' : 'text-green-600';
@@ -825,7 +852,7 @@
             
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10">
                         <h1 class="text-xl font-bold mb-0">دليل المستخدمين</h1>
                         <input type="text" id="search-directory" class="w-full px-4 py-1.5 border border-indigo-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-white focus:border-white text-sm text-gray-900 mt-2" placeholder="ابحث بالاسم أو الوظيفة...">
                     </header>
@@ -864,7 +891,7 @@
         async function renderChatListPage() {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10">
                         <h1 class="text-xl font-bold">المحادثات</h1>
                     </header>
                     
@@ -891,7 +918,7 @@
                 const chats = snapshot.docs.map(doc => doc.data());
                 chats.sort((a, b) => b.lastUpdate.toMillis() - a.lastUpdate.toMillis());
                 
-                // === إصلاح 3: تصميم بطاقة المحادثات مميز بمسافة ولون ===
+                // === إصلاح 3: تصميم بطاقة المحادثات مميز بمسافة ولون نيلي هادئ ===
                 listEl.innerHTML = chats.map(chat => {
                     const otherUserId = chat.users.find(uid => uid !== userId);
                     if (!chat.userDetails || !chat.userDetails[otherUserId]) {
@@ -901,7 +928,7 @@
                     
                     return `
                     <div data-action="navigateTo" data-page="chat" data-otheruserid="${otherUserId}"
-                         class="bg-indigo-50 p-3 rounded-lg shadow-md border border-indigo-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-indigo-100 transition-colors">
+                         class="bg-indigo-50 p-3 rounded-lg shadow-sm border border-indigo-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-indigo-100 transition-colors">
                         <img src="${otherUser.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
                              alt="${otherUser.name}" class="w-12 h-12 rounded-full object-cover">
                         <div class="flex-1 overflow-hidden">
@@ -924,7 +951,7 @@
         async function renderProfilePage(uid) {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
                         <h1 class="text-xl font-bold">الملف الشخصي</h1>
                         <div class="flex items-center space-x-2 space-x-reverse">
                             ${uid === userId ? `
@@ -1074,7 +1101,7 @@
             
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
                         <h1 class="text-xl font-bold">تعديل الملف الشخصي</h1>
                         <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             ${ICONS.back}
@@ -1130,12 +1157,7 @@
                                         <select id="edit-job-select" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                             <option value="" ${!userProfile.jobTitle ? 'selected' : ''}>اختر...</option>
                                             ${serviceOptions}
-                                            <option value="other" ${isCustomJobTitle ? 'selected' : ''}>أخرى (اذكرها بالأسفل)</option>
                                         </select>
-                                    </div>
-                                    <div id="edit-job-title-other-field" class="${isCustomJobTitle ? '' : 'hidden'}">
-                                        <label for="edit-job-title" class="block text-sm font-medium text-gray-700">اذكر وظيفتك:</label>
-                                        <input type="text" id="edit-job-title" value="${isCustomJobTitle ? userProfile.jobTitle : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: مصمم جرافيك">
                                     </div>
                                 </div>
                             ` : ''}
@@ -1150,13 +1172,7 @@
             `;
             
             document.getElementById('edit-job-select')?.addEventListener('change', (e) => {
-                const otherField = document.getElementById('edit-job-title-other-field');
-                if (e.target.value === 'other') {
-                    otherField.classList.remove('hidden');
-                } else {
-                    otherField.classList.add('hidden');
-                    document.getElementById('edit-job-title').value = '';
-                }
+                // إزالة منطق الإظهار/الإخفاء لحقل "أخرى" لأنه لم يعد موجودًا
             });
             
              // تهيئة مستمع حدث رفع الصورة
@@ -1197,7 +1213,7 @@
             
             appContainer.innerHTML = `
                 <div class="flex flex-col h-screen max-h-screen"> 
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between space-x-3 space-x-reverse">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between space-x-3 space-x-reverse">
                         <div class="flex items-center space-x-3 space-x-reverse">
                             <img data-action="navigateTo" data-page="profile" data-uid="${otherUserId}"
                                  src="${otherUserProfile.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
@@ -1286,7 +1302,7 @@
 
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                    <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
                         <h1 class="text-xl font-bold">طلب خدمة جديد</h1>
                         <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             ${ICONS.back}
@@ -1327,11 +1343,11 @@
 
         // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
         function renderBottomNav(activeTab) {
-            const activeClass = 'text-white bg-indigo-800';
-            const inactiveClass = 'text-indigo-200 hover:text-white';
+            const activeClass = 'text-white bg-indigo-700';
+            const inactiveClass = 'text-indigo-300 hover:text-white';
             
             return `
-                <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-indigo-600 shadow-lg border-t border-indigo-700 z-20">
+                <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-indigo-800 shadow-lg border-t border-indigo-700 z-20">
                     <div class="flex justify-around items-center h-12">
                         <button data-action="navigateTo" data-page="home" 
                                 class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'home' ? activeClass : inactiveClass}">
@@ -1437,8 +1453,7 @@
                 const photoURL = document.getElementById('photo-base64').value || null; 
                 
                 const jobSelect = document.getElementById('register-job-select')?.value;
-                const jobTitleText = document.getElementById('register-job-title')?.value.trim();
-                const jobTitle = (jobSelect === 'أخرى') ? jobTitleText : jobSelect;
+                const jobTitle = jobSelect === 'أخرى' ? document.getElementById('register-job-title').value.trim() : jobSelect;
                 
                 // التحقق من رقم الهاتف والعنوان
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
@@ -1467,7 +1482,8 @@
                 });
 
 
-                const jobTitleSearch = role === 'provider' ? SERVICES_LIST.find(s => s.name === jobTitle)?.categorySearch || jobTitle : null;
+                // === إصلاح 3: استخدام اسم الوظيفة للبحث ===
+                const jobTitleSearch = role === 'provider' ? jobTitle.toLowerCase() : null;
 
 
                 const newUserProfile = {
@@ -1545,12 +1561,12 @@
                 let jobTitle = userProfile.jobTitle;
                 if (userProfile.role === 'provider') {
                     const jobSelect = document.getElementById('edit-job-select').value;
-                    const jobTitleText = document.getElementById('edit-job-title')?.value.trim();
-                    jobTitle = (jobSelect === 'other') ? jobTitleText : jobSelect;
+                    jobTitle = jobSelect === 'other' ? document.getElementById('edit-job-title').value.trim() : jobSelect;
                 }
                 
                 showLoading('جاري تحديث البيانات...');
-                const jobTitleSearch = userProfile.role === 'provider' ? SERVICES_LIST.find(s => s.name === jobTitle)?.categorySearch || jobTitle : null;
+                // === إصلاح 3: استخدام اسم الوظيفة للبحث ===
+                const jobTitleSearch = userProfile.role === 'provider' ? jobTitle.toLowerCase() : null;
 
 
                 const updates = {
@@ -1682,6 +1698,7 @@
             }
         }
         
+        // === استعادة وظائف التقييم ===
         function handleOpenRatingModal(providerId, providerName) {
             const modalHtml = `
                 <h2 class="text-2xl font-semibold text-center mb-4">تقييم ${providerName}</h2>
@@ -1868,26 +1885,14 @@
                 }
             }
             
-            // Register Job Title Logic
+            // Register Job Title Logic (تم تبسيطها)
             if (e.target.id === 'register-job-select') {
-                const otherField = document.getElementById('job-title-other-field');
-                if (e.target.value === 'أخرى') {
-                    otherField.classList.remove('hidden');
-                } else {
-                    otherField.classList.add('hidden');
-                    document.getElementById('register-job-title').value = '';
-                }
+                // إزالة حقل "أخرى"
             }
             
-            // Edit Job Title Logic
+            // Edit Job Title Logic (تم تبسيطها)
             if (e.target.id === 'edit-job-select') {
-                const otherField = document.getElementById('edit-job-title-other-field');
-                if (e.target.value === 'other') {
-                    otherField.classList.remove('hidden');
-                } else {
-                    otherField.classList.add('hidden');
-                    document.getElementById('edit-job-title').value = '';
-                }
+                // إزالة حقل "أخرى"
             }
         });
 
