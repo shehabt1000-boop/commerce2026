@@ -1,11 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستقبل الشرقية</title>
-    <!-- PWA Manifest Link -->
-    <link rel="manifest" href="manifest.json">
+    <title>مستقبل خدمات الشرقية</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#1e40af"> <!-- لون شريط العنوان -->
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json"> 
+    
+    <!-- PWA Icons (Shehab) - يجب التأكد من وجود هذه الملفات في مسارها الصحيح -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/shehab-180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/shehab-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/shehab-16.png">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font (Inter) -->
@@ -19,7 +32,6 @@
         body {
             font-family: 'Cairo', 'Inter', sans-serif;
             direction: rtl; /* ضمان الاتجاه من اليمين لليسار */
-            padding-top: 48px; /* إضافة مسافة للبانر الثابت */
         }
         /* تعديلات بسيطة لـ Tailwind لدعم RTL بشكل أفضل */
         .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
@@ -91,17 +103,19 @@
 </head>
 <body class="bg-gray-50">
 
-    <!-- PWA INSTALLATION BANNER (زر تنزيل التطبيق) -->
-    <div id="install-banner" class="fixed top-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-red-600 text-white p-2 flex items-center justify-between z-50 shadow-lg hidden">
-        <div class="flex items-center space-x-2 space-x-reverse">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-            <span class="font-semibold text-sm">تنزيل تطبيق مستقبل خدمات الشرقية</span>
+    <!-- شريط تنزيل التطبيق (يظهر فوق كل شيء) -->
+    <div id="install-banner" class="fixed top-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-red-600 text-white p-2 text-center z-50 shadow-lg hidden">
+        <div class="flex items-center justify-between">
+            <p class="text-sm font-semibold flex-1">
+                تنزيل تطبيق مستقبل خدمات الشرقية
+            </p>
+            <button id="install-button" class="bg-white text-red-600 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors mr-2">
+                تنزيل التطبيق
+            </button>
+            <button id="close-banner" class="text-white opacity-75 hover:opacity-100 text-lg leading-none p-1">
+                &times;
+            </button>
         </div>
-        <button id="install-button" class="bg-white text-red-600 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
-            تثبيت
-        </button>
     </div>
 
     <!-- الحاوية الرئيسية للتطبيق -->
@@ -153,7 +167,7 @@
 
         // 2. إعدادات Firebase (من المستخدم)
         const firebaseConfig = {
-          apiKey: "AIzaSyA5OiTcX95GBgiJoDHnY3y7N23o-j8hsQ8",
+          apiKey: "AIzaSyA5OiTcX95GBgiJoDHnY3y7N23o-j8hsO8",
           authDomain: "services-cef84.firebaseapp.com",
           databaseURL: "https://services-cef84-default-rtdb.firebaseio.com",
           projectId: "services-cef84",
@@ -182,10 +196,12 @@
 
         let navigationHistory = [];
         
-        // PWA Variables
+        // === متغيرات PWA لنظام التعرف الذكي ===
         let deferredInstallPrompt = null;
         const installBanner = document.getElementById('install-banner');
         const installButton = document.getElementById('install-button');
+        const closeBanner = document.getElementById('close-banner');
+        // ======================================
 
 
         // === تحديث قائمة الخدمات (لأكثر من 100 مهنة وتعديل الصياغة) ===
@@ -533,15 +549,15 @@
 
         function getPageTitle(page) {
             switch(page) {
-                case 'auth': return 'تسجيل الدخول - مستقبل الشرقية';
-                case 'register': return 'إنشاء حساب - مستقبل الشرقية';
+                case 'auth': return 'تسجيل الدخول - مستقبل خدمات الشرقية';
+                case 'register': return 'إنشاء حساب - مستقبل خدمات الشرقية';
                 case 'clientHome':
-                case 'providerHome': return 'الرئيسية - مستقبل الشرقية';
-                case 'directory': return 'دليل المستخدمين - مستقبل الشرقية';
-                case 'chatList': return 'المحادثات - مستقبل الشرقية';
-                case 'jobListings': return 'الوظائف المتاحة - مستقبل الشرقية';
-                case 'profile': return 'الملف الشخصي - مستقبل الشرقية';
-                default: return 'مستقبل الشرقية';
+                case 'providerHome': return 'الرئيسية - مستقبل خدمات الشرقية';
+                case 'directory': return 'دليل المستخدمين - مستقبل خدمات الشرقية';
+                case 'chatList': return 'المحادثات - مستقبل خدمات الشرقية';
+                case 'jobListings': return 'الوظائف المتاحة - مستقبل خدمات الشرقية';
+                case 'profile': return 'الملف الشخصي - مستقبل خدمات الشرقية';
+                default: return 'مستقبل خدمات الشرقية';
             }
         }
 
@@ -567,7 +583,7 @@
         function renderAuthPage() {
             appContainer.innerHTML = `
                 <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-indigo-800">
-                    <h1 class="text-4xl font-bold text-white mb-4">مستقبل الشرقية</h1>
+                    <h1 class="text-4xl font-bold text-white mb-4">مستقبل خدمات الشرقية</h1>
                     <p class="text-lg text-indigo-100 mb-8 text-center">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
                     
                     <div class="w-full max-w-sm bg-white rounded-lg shadow-xl p-6">
@@ -2377,77 +2393,75 @@
             e.preventDefault();
         });
         
-        // =============================================
-        // ==== PWA INSTALLATION LOGIC (المنطق الذكي) ====
-        // =============================================
-        
-        // 1. تسجيل Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(reg => console.log('Service Worker registered: ', reg))
-                    .catch(err => console.log('Service Worker registration failed: ', err));
-            });
-        }
-        
-        // 2. اعتراض حدث التثبيت وعرض البانر
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // منع ظهور النافذة المنبثقة الافتراضية للمتصفح
-            e.preventDefault();
-            // تخزين الحدث لاستخدامه لاحقاً
-            deferredInstallPrompt = e;
-            
-            // إظهار البانر الأحمر فقط إذا لم يكن التطبيق مثبتاً بالفعل
-            if (!window.matchMedia('(display-mode: standalone)').matches) {
+        // 12. وظائف PWA (نظام التعرف الذكي لزر التنزيل)
+        function setupPWAInstallPrompt() {
+            // 1. تسجيل Service Worker (للتخزين المؤقت والـ PWA)
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(reg => console.log('SW registered: ', reg))
+                        .catch(err => console.log('SW registration failed: ', err));
+                });
+            }
+
+
+            // 2. الاستماع لحدث قبل التثبيت (لتخزين الـ Prompt)
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // منع المتصفح من إظهار الـ prompt التلقائي
+                e.preventDefault();
+                // تخزين الحدث ليتم استخدامه لاحقاً
+                deferredInstallPrompt = e;
+                console.log('beforeinstallprompt event fired.');
+                
+                // إظهار البانر الأحمر
                 installBanner.classList.remove('hidden');
-            }
-        });
-        
-        // 3. معالجة النقر على زر التثبيت
-        installButton.addEventListener('click', async () => {
-            if (deferredInstallPrompt) {
-                // إخفاء البانر قبل عرض نافذة التثبيت
-                installBanner.classList.add('hidden');
-                
-                // عرض نافذة التثبيت
-                deferredInstallPrompt.prompt();
-                
-                // انتظار استجابة المستخدم
-                const { outcome } = await deferredInstallPrompt.userChoice;
-                
-                // إذا اختار المستخدم التثبيت، يتم إخفاء البانر نهائياً
-                if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt.');
-                } else {
-                    console.log('User dismissed the install prompt.');
-                    // إذا رفض، يمكن إظهار البانر مرة أخرى أو إخفائه حسب الرغبة
-                    // نتركه مخفياً مؤقتاً
+            });
+
+
+            // 3. معالجة ضغطة زر التنزيل
+            installButton.addEventListener('click', async () => {
+                if (deferredInstallPrompt) {
+                    // إخفاء البانر قبل إظهار الـ prompt
+                    installBanner.classList.add('hidden');
+                    
+                    // إظهار الـ prompt للمستخدم
+                    deferredInstallPrompt.prompt();
+                    
+                    // انتظار استجابة المستخدم
+                    const { outcome } = await deferredInstallPrompt.userChoice;
+                    console.log(`User response to the install prompt: ${outcome}`);
+                    
+                    // مسح الحدث المخزن
+                    deferredInstallPrompt = null;
                 }
-                
-                // مسح الحدث المخزن
+            });
+
+
+            // 4. إخفاء البانر عند الضغط على زر الإغلاق
+            closeBanner.addEventListener('click', () => {
+                installBanner.classList.add('hidden');
+            });
+
+
+            // 5. الاستماع لحدث التثبيت (لإخفاء البانر نهائياً بعد التثبيت)
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA was successfully installed.');
+                installBanner.classList.add('hidden');
                 deferredInstallPrompt = null;
+            });
+
+
+            // 6. التحقق إذا كان التطبيق مثبتاً بالفعل (في وضع standalone)
+            // هذا يساعد على إخفاء البانر إذا تم فتح التطبيق بعد التثبيت
+            if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+                installBanner.classList.add('hidden');
             }
-        });
-        
-        // 4. إخفاء البانر عند التثبيت الناجح (أو عند الفتح في وضع التطبيق)
-        window.addEventListener('appinstalled', () => {
-            installBanner.classList.add('hidden');
-        });
-        
-        // 5. التحقق عند التحميل إذا كان التطبيق يعمل في وضع مستقل (PWA)
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            installBanner.classList.add('hidden');
-        } else {
-             // إذا لم يكن في وضع مستقل، ننتظر حدث beforeinstallprompt ليظهر البانر
         }
-        
-        // =============================================
-        // ==== END PWA INSTALLATION LOGIC ====
-        // =============================================
 
 
         // 13. نقطة البداية الرئيسية
         window.onload = () => {
+            setupPWAInstallPrompt(); // === استدعاء وظيفة PWA ===
             navigateTo('loading');
 
 
@@ -2455,7 +2469,7 @@
 
 
                 if (isRegistering) {
-                    console.log('Registration in progress, onAuthStateChanged will handle.');
+                    console.log('Registration in progress, onAuthStateChanged will wait.');
                     return; 
                 }
 
@@ -2518,3 +2532,88 @@
 
 </body>
 </html>
+```
+
+---
+
+## 2. ملف البيان (manifest.json)
+
+أنشئ ملفاً جديداً باسم **`manifest.json`** وضعه في نفس المجلد.
+
+```json
+{
+  "name": "مستقبل خدمات الشرقية",
+  "short_name": "مستقبل الشرقية",
+  "description": "تطبيق خدمات محافظة الشرقية - نظام تعرف ذكي",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e40af",
+  "lang": "ar-EG",
+  "icons": [
+    {
+      "src": "/icons/shehab-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/shehab-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/shehab-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
+```
+
+---
+
+## 3. ملف Service Worker
+
+أنشئ ملفاً جديداً باسم **`service-worker.js`** وضعه في نفس المجلد.
+
+```javascript
+// service-worker.js
+const CACHE_NAME = 'sharqia-service-cache-v1';
+const urlsToCache = [
+    '/',
+    '/index.html',
+    'https://cdn.tailwindcss.com',
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap',
+    'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js',
+    // يجب إضافة مسارات الأيقونات هنا أيضاً
+    '/icons/shehab-192.png',
+    '/icons/shehab-512.png',
+    '/icons/shehab-maskable.png'
+];
+
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+    );
+});
+
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                // Cache hit - return response
+                if (response) {
+                    return response;
+                }
+                // No cache - fetch from network
+                return fetch(event.request);
+            }
+        )
+    );
+});
+```
