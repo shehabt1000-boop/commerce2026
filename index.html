@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -9,11 +9,50 @@
     <!-- Google Font (Inter) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght=400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 
-    <!-- PWA Manifest for installation prompt -->
-    <link rel="manifest" href="manifest.json">
+    <!-- ============================================= -->
+    <!-- ==== بداية إعدادات PWA المدمجة ==== -->
+    <!-- ============================================= -->
+
+
+    <!-- 1. لون شريط العنوان في المتصفح -->
+    <meta name="theme-color" content="#1e40af">
+
+
+    <!-- 2. ملف Manifest المدمج -->
+    <link rel="manifest" href='data:application/manifest+json,{
+        "name": "خدمات الشرقية",
+        "short_name": "خدمات الشرقية",
+        "description": "مستقبل مشرق",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#1e40af",
+        "icons": [
+            {
+            "src": "https://placehold.co/192x192/1e40af/ffffff?text=shehab",
+            "sizes": "192x192",
+            "type": "image/png"
+            },
+            {
+            "src": "https://placehold.co/512x512/1e40af/ffffff?text=shehab",
+            "sizes": "512x512",
+            "type": "image/png"
+            },
+            {
+            "src": "https://placehold.co/512x512/1e40af/ffffff?text=shehab",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+            }
+        ]
+    }'>
+    
+    <!-- ============================================= -->
+    <!-- ==== نهاية إعدادات PWA المدمجة ==== -->
+    <!-- ============================================= -->
 
 
     <style>
@@ -88,7 +127,8 @@
         .welcome-header {
             padding: 0.6rem 1rem; 
         }
-        
+
+
         /* PWA Icon Placeholder */
         .pwa-icon-text {
             display: flex;
@@ -102,8 +142,6 @@
             font-weight: bold;
             font-size: 0.75rem;
         }
-
-
     </style>
 </head>
 <body class="bg-gray-50">
@@ -126,8 +164,6 @@
     </div>
 
 
-
-
     <!-- الحاوية الرئيسية للتطبيق -->
     <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg md:max-w-2xl lg:max-w-4xl">
         <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
@@ -141,16 +177,12 @@
     </button>
 
 
-
-
     <!-- مودال (نافذة منبثقة) عامة -->
     <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center p-4">
         <div id="modal-content" class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
             <!-- محتوى المودال سيتم حقنه هنا -->
         </div>
     </div>
-
-
 
 
     <!-- ============================================= -->
@@ -186,8 +218,6 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 
-
-
         // 2. إعدادات Firebase (من المستخدم)
         const firebaseConfig = {
           apiKey: "AIzaSyA5OiTcX95GBgiJoDHnY3y7N23o-j8hsQ8",
@@ -198,8 +228,6 @@
           messagingSenderId: "902396219187",
           appId: "1:902396219187:web:3ba084a724266afa8bb846"
         };
-
-
 
 
         // 3. تهيئة Firebase
@@ -222,8 +250,6 @@
         let navigationHistory = [];
         let deferredPrompt = null; // PWA variable
         let isBannerShown = false; // PWA Banner control
-
-
 
 
         // === تحديث قائمة الخدمات (لأكثر من 100 مهنة وتعديل الصياغة) ===
@@ -249,7 +275,8 @@
             { name: 'فني تركيب مطابخ ألوميتال', icon: '🔪' },
             { name: 'فني تنجيد وصالونات', icon: '🛋️' },
             { name: 'فني تركيب زجاج وسيكوريت', icon: '💎' },
-            
+
+
             // مهن هندسية وتقنية (20)
             { name: 'مهندس مدني (تنفيذ)', icon: '🏗️' },
             { name: 'مهندس معماري (تصميم)', icon: '📐' },
@@ -272,6 +299,7 @@
             { name: 'فني مختبرات', icon: '🧪' },
             { name: 'أخصائي تسويق رقمي', icon: '📈' },
 
+
             // مهن مالية وقانونية وإدارية (16)
             { name: 'محاسب', icon: '💵' }, // تم الإضافة
             { name: 'محاسب قانوني', icon: '🧾' },
@@ -290,6 +318,7 @@
             { name: 'مدقق حسابات', icon: '🔍' },
             { name: 'مستشار مالي', icon: '💵' },
 
+
             // مهن طبية وتمريض (10)
             { name: 'طبيب بشري', icon: '⚕️' },
             { name: 'ممرض منزلي', icon: '🩺' },
@@ -302,13 +331,15 @@
             { name: 'فني أشعة', icon: '☢️' },
             { name: 'فني تحاليل طبية', icon: '🩸' },
 
+
             // مهن تعليمية (5)
             { name: 'مدرس خصوصي', icon: '✍️' },
             { name: 'مدرب رياضي', icon: '💪' },
             { name: 'مدرب كلاب', icon: '🐕' },
             { name: 'مدرب تنمية بشرية', icon: '🧠' },
             { name: 'مصحح لغوي', icon: '📝' },
-            
+
+
             // مهن البناء والتشييد (10)
             { name: 'عامل بناء', icon: '🧱' },
             { name: 'مبيض محارة', icon: '⬜' },
@@ -320,7 +351,8 @@
             { name: 'فني تركيب جبس بورد', icon: '💡' },
             { name: 'مساح أراضي', icon: '📏' },
             { name: 'مقاول تشطيبات', icon: '🔑' },
-            
+
+
             // مهن السيارات والنقل (10)
             { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
             { name: 'فني كهرباء سيارات', icon: '🔋' },
@@ -333,6 +365,7 @@
             { name: 'فني غسيل وتلميع سيارات', icon: '🧼' },
             { name: 'خدمات سياحية وحجز', icon: '✈️' },
 
+
             // مهن الضيافة والإعلام (10)
             { name: 'مصور فوتوغرافي', icon: '📸' },
             { name: 'مصور فيديو', icon: '🎥' },
@@ -344,7 +377,8 @@
             { name: 'خياط / ترزي', icon: '👔' },
             { name: 'جليس مسنين', icon: '🧓' },
             { name: 'مربية أطفال', icon: '👶' },
-            
+
+
             // مهن متنوعة (10)
             { name: 'حارس أمن', icon: '🔒' },
             { name: 'بائع/كاشير', icon: '🛒' },
@@ -367,8 +401,6 @@
         ];
 
 
-
-
         // 5. أيقونات SVG 
         const ICONS = {
             star: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>`,
@@ -387,16 +419,12 @@
         };
 
 
-
-
         // 6. الحاوية الرئيسية
         const appContainer = document.getElementById('app');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
         const installBanner = document.getElementById('install-banner');
         const miniInstallButton = document.getElementById('mini-install-button');
-
-
 
 
         // 7. وظائف مساعدة (Modal)
@@ -406,14 +434,10 @@
         }
 
 
-
-
         function hideModal() {
             modalBackdrop.classList.add('hidden');
             modalContent.innerHTML = '';
         }
-
-
 
 
         function showLoading(message = 'جاري التحميل...') {
@@ -431,13 +455,9 @@
         }
 
 
-
-
         function hideLoading() {
             hideModal();
         }
-
-
 
 
         function showMessageModal(title, message, isSuccess = true) {
@@ -464,8 +484,6 @@
                         let height = img.height;
 
 
-
-
                         if (width > height) {
                             if (width > MAX_SIZE) {
                                 height *= MAX_SIZE / width;
@@ -479,15 +497,11 @@
                         }
 
 
-
-
                         const canvas = document.createElement('canvas');
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-
-
 
 
                         // التحويل إلى Base64 مع ضغط الجودة
@@ -506,6 +520,7 @@
             const displayMode = getDisplayMode();
             // التحقق من أن التطبيق غير مثبت وأن هناك prompt متاح
             const isInstalled = displayMode !== 'browser'; 
+
 
             if (deferredPrompt && !isBannerShown && !isInstalled) {
                 installBanner.classList.remove('hidden');
@@ -558,19 +573,78 @@
             }
             return 'browser';
         }
-        
-        // تسجيل Service Worker
+
+
+        // =============================================
+        // ==== بداية تسجيل Service Worker المدمج ====
+        // =============================================
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js').then(registration => {
-                    console.log('SW registered: ', registration);
-                }).catch(registrationError => {
-                    console.log('SW registration failed: ', registrationError);
+            const swCode = `
+                const CACHE_NAME = 'sharqia-services-v1';
+                const urlsToCache = [
+                '/',
+                'https://placehold.co/512x512/1e40af/ffffff?text=shehab' // Cache the main icon
+                ];
+
+
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                        .then(cache => {
+                            console.log('Opened cache');
+                            return cache.addAll(urlsToCache);
+                        })
+                    );
                 });
+
+
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request)
+                        .then(response => {
+                            if (response) {
+                                return response;
+                            }
+                            return fetch(event.request);
+                        })
+                    );
+                });
+
+
+                self.addEventListener('activate', event => {
+                    const cacheWhitelist = [CACHE_NAME];
+                    event.waitUntil(
+                        caches.keys().then(cacheNames => {
+                        return Promise.all(
+                            cacheNames.map(cacheName => {
+                            if (cacheWhitelist.indexOf(cacheName) === -1) {
+                                return caches.delete(cacheName);
+                            }
+                            })
+                        );
+                        })
+                    );
+                });
+            `;
+            
+            // Create a blob from the SW code
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+
+
+            // Register the service worker
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(swUrl)
+                    .then(registration => {
+                        console.log('Inline SW registered: ', registration);
+                    }).catch(registrationError => {
+                        console.log('Inline SW registration failed: ', registrationError);
+                    });
             });
         }
-
-
+        // =============================================
+        // ==== نهاية تسجيل Service Worker المدمج ====
+        // =============================================
 
 
         // 8. وظائف التوجيه (Routing) 
@@ -657,7 +731,8 @@
                     renderAuthPage(); 
             }
         }
-        
+
+
         function getPageTitle(page) {
             switch(page) {
                 case 'auth': return 'تسجيل الدخول - مستقبل الشرقية';
@@ -673,11 +748,7 @@
         }
 
 
-
-
         // 9. وظائف عرض الصفحات (Render Functions)
-
-
 
 
         function renderLoadingScreen() {
@@ -693,8 +764,6 @@
                 </div>
             `;
         }
-
-
 
 
         function renderAuthPage() {
@@ -736,8 +805,6 @@
         }
 
 
-
-
         function renderRegisterPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
@@ -747,8 +814,6 @@
             const cityOptions = SHARQIA_CITIES.map(city => 
                 `<option value="${city}">${city}</option>`
             ).join('');
-
-
 
 
             appContainer.innerHTML = `
@@ -896,8 +961,6 @@
             `).join('');
 
 
-
-
             appContainer.innerHTML = `
                 <div class="pb-24">
                     <header class="bg-indigo-800 text-white welcome-header shadow-md sticky top-0 z-10">
@@ -921,8 +984,6 @@
                 </div>
             `;
         }
-
-
 
 
         // === إصلاح 1: الصفحة الرئيسية لمقدم الخدمة (تم تعديل منطق عرض الطلبات) ===
@@ -1063,8 +1124,6 @@
                     .filter(p => !categoryName || (p.jobTitle && p.jobTitle.toLowerCase().includes(categoryName))); 
 
 
-
-
                 if (providers.length === 0) {
                     providersListEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا يوجد مقدمو خدمات مسجلون في هذا القسم حالياً.</p>';
                     return;
@@ -1119,8 +1178,6 @@
                     (user.jobTitle && user.jobTitle.toLowerCase().includes(searchText)) ||
                     (user.username && user.username.toLowerCase().includes(searchText))
                 );
-
-
 
 
                 if (filteredUsers.length === 0) {
@@ -1178,19 +1235,13 @@
             });
 
 
-
-
             currentUnsubscribe = unsubscribeDirectory;
-
-
 
 
             document.getElementById('search-directory').addEventListener('input', () => {
                 renderUserList(allUsers);
             });
         }
-
-
 
 
         async function renderChatListPage() {
@@ -1248,8 +1299,6 @@
                     </div>
                     `;
                 }).join('');
-
-
 
 
             }, (error) => {
@@ -1365,8 +1414,6 @@
                     </div>
 
 
-
-
                     <!-- تقييم مقدم الخدمة (إذا كان مقدم خدمة) -->
                     ${profileData.role === 'provider' ? `
                     <div class="bg-white p-4 rounded-lg shadow-md mt-4 border border-gray-200">
@@ -1444,8 +1491,6 @@
         }
 
 
-
-
         function renderEditProfilePage() {
             if (!userProfile) {
                 navigateTo('auth');
@@ -1453,13 +1498,9 @@
             }
 
 
-
-
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}" ${userProfile.jobTitle === service.name ? 'selected' : ''}>${service.name}</option>`
             ).join('');
-
-
 
 
             const cityOptions = SHARQIA_CITIES.map(city => 
@@ -1545,8 +1586,6 @@
                                     </div>
                                 </div>
                             ` : ''}
-
-
 
 
                             <button type="submit" data-action="editProfile" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
@@ -1704,8 +1743,6 @@
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
-
-
 
 
             appContainer.innerHTML = `
@@ -1869,8 +1906,6 @@
         }
 
 
-
-
         // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
         function renderBottomNav(activeTab) {
             const activeClass = 'text-white bg-indigo-700';
@@ -1928,11 +1963,7 @@
         }
 
 
-
-
         // 10. وظائف معالجة الأحداث (Event Handlers)
-
-
 
 
         async function handleLogin(e) {
@@ -1961,8 +1992,6 @@
                 const authEmail = userData.email; 
 
 
-
-
                 await signInWithEmailAndPassword(auth, authEmail, password);
 
 
@@ -1984,16 +2013,12 @@
         }
 
 
-
-
         async function handleRegister(e) {
             e.preventDefault();
             isRegistering = true; 
             showLoading('جاري إنشاء الحساب...');
             const errorEl = document.getElementById('register-error');
             errorEl.classList.add('hidden');
-
-
 
 
             try {
@@ -2043,8 +2068,6 @@
 
 
                 const jobTitleSearch = role === 'provider' ? jobTitle.toLowerCase() : null;
-
-
 
 
                 const newUserProfile = {
@@ -2112,8 +2135,6 @@
             errorEl.classList.add('hidden');
 
 
-
-
             try {
                 const name = document.getElementById('edit-name').value;
                 const phone = document.getElementById('edit-phone').value;
@@ -2121,8 +2142,6 @@
                 const city = document.getElementById('edit-city').value;
                 const area = document.getElementById('edit-area').value.trim();
                 const photoURL = document.getElementById('photo-base64').value || null; 
-
-
 
 
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
@@ -2142,8 +2161,6 @@
 
                 showLoading('جاري تحديث البيانات...');
                 const jobTitleSearch = userProfile.role === 'provider' ? jobTitle.toLowerCase() : null;
-
-
 
 
                 const updates = {
@@ -2168,8 +2185,6 @@
                 });
 
 
-
-
                 userProfile = { ...userProfile, ...updates };
 
 
@@ -2182,8 +2197,6 @@
                 }, 1500);
 
 
-
-
             } catch (error) {
                 console.error("Edit Profile Error: ", error);
                 errorEl.textContent = error.message || 'حدث خطأ أثناء حفظ التعديلات.';
@@ -2191,8 +2204,6 @@
                 hideLoading();
             }
         }
-
-
 
 
         async function handleLogout() {
@@ -2229,8 +2240,6 @@
                 const otherUserDoc = await getDoc(doc(db, `artifacts/${appId}/public/data/users`, otherUserId));
                 if (!otherUserDoc.exists()) { throw new Error("Other user not found"); }
                 const otherUserData = otherUserDoc.data();
-
-
 
 
                 const chatRoomDocRef = doc(db, `artifacts/${appId}/public/data/chats`, chatRoomId);
@@ -2433,8 +2442,6 @@
                 showMessageModal('نجاح', 'شكراً لتقييمك!', true);
 
 
-
-
             } catch (error) {
                 console.error("Error submitting rating: ", error);
                 hideLoading();
@@ -2443,14 +2450,10 @@
         }
 
 
-
-
         // 11. Event Delegation (المستمع الرئيسي للأحداث)
         appContainer.addEventListener('click', async (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
-
-
 
 
             const action = target.dataset.action;
@@ -2461,8 +2464,6 @@
             const targetId = target.dataset.targetid;
             const targetName = target.dataset.targetname;
             const targetRole = target.dataset.targetrole;
-
-
 
 
             switch (action) {
@@ -2534,8 +2535,6 @@
             if(!target) return;
 
 
-
-
             const action = target.dataset.action;
             switch(action) {
                 case 'closeModal':
@@ -2580,6 +2579,7 @@
         // PWA: إغلاق البانر عند الضغط على زر الإغلاق
         document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
 
+
         // PWA: محاولة التثبيت عند الضغط على زر التثبيت في البانر
         document.getElementById('install-button')?.addEventListener('click', async () => {
             if (deferredPrompt) {
@@ -2612,8 +2612,6 @@
         });
 
 
-
-
         appContainer.addEventListener('change', (e) => {
             if (e.target.name === 'role') {
                 const jobField = document.getElementById('job-title-field');
@@ -2626,8 +2624,6 @@
         });
 
 
-
-
         appContainer.addEventListener('submit', (e) => {
             e.preventDefault();
         });
@@ -2636,8 +2632,6 @@
         // 13. نقطة البداية الرئيسية
         window.onload = () => {
             navigateTo('loading');
-
-
 
 
             onAuthStateChanged(auth, async (user) => {
@@ -2690,8 +2684,6 @@
             });
 
 
-
-
             (async () => {
                 try {
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -2708,14 +2700,10 @@
         };
 
 
-
-
     </script>
     <!-- ============================================= -->
     <!-- ==== نهاية كود جافاسكريبت و Firebase ===== -->
     <!-- ============================================= -->
-
-
 
 
 </body>
