@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدمات الشرقية</title>
+    <title>مستقبل الشرقية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font (Inter) -->
@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght=400;500;600;700&display=swap" rel="stylesheet">
 
 
-    <!-- PWA Manifest for installation prompt (إصلاح 2) -->
+    <!-- PWA Manifest for installation prompt -->
     <link rel="manifest" href="manifest.json">
 
 
@@ -88,6 +88,20 @@
         .welcome-header {
             padding: 0.6rem 1rem; 
         }
+        
+        /* PWA Icon Placeholder */
+        .pwa-icon-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: #fff;
+            color: #1e40af;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
 
 
     </style>
@@ -95,11 +109,11 @@
 <body class="bg-gray-50">
 
 
-    <!-- PWA Install Prompt Banner (إصلاح 2) -->
+    <!-- PWA Install Prompt Banner -->
     <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-800 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
         <div class="flex items-center space-x-3 space-x-reverse">
-            <span class="text-lg">🛠️</span>
-            <p class="text-xs font-medium">ثبّت "خدمات الشرقية" لتجربة تطبيق كاملة.</p>
+            <span class="pwa-icon-text">Sh</span>
+            <p class="text-xs font-medium">ثبّت "مستقبل الشرقية" لتجربة تطبيق كاملة.</p>
         </div>
         <div class="flex items-center space-x-2 space-x-reverse">
             <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
@@ -120,7 +134,7 @@
     </div>
 
 
-    <!-- PWA Install Small Button (إصلاح 2) -->
+    <!-- PWA Install Small Button -->
     <button id="mini-install-button" class="fixed bottom-24 right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
         <span class="text-lg">⬇️</span>
         <span>تثبيت</span>
@@ -212,11 +226,11 @@
 
 
 
-        // === تحديث قائمة الخدمات (لتتجاوز 100 مهنة) ===
+        // === تحديث قائمة الخدمات (لأكثر من 100 مهنة وتعديل الصياغة) ===
         const SERVICES_LIST = [
             // مهن حرفية وخدمات منزلية (20)
             { name: 'سباك', icon: '🔧' },
-            { name: 'كهربائي منازل', icon: '💡' },
+            { name: 'كهربائي', icon: '💡' }, // تم التعديل
             { name: 'نجار موبيليا', icon: '🪚' },
             { name: 'فني تبريد وتكييف', icon: '❄️' },
             { name: 'نقاش ودهانات', icon: '🎨' },
@@ -258,7 +272,8 @@
             { name: 'فني مختبرات', icon: '🧪' },
             { name: 'أخصائي تسويق رقمي', icon: '📈' },
 
-            // مهن مالية وقانونية وإدارية (15)
+            // مهن مالية وقانونية وإدارية (16)
+            { name: 'محاسب', icon: '💵' }, // تم الإضافة
             { name: 'محاسب قانوني', icon: '🧾' },
             { name: 'محاسب شركات', icon: '🧮' },
             { name: 'محاسب تكاليف', icon: '💰' },
@@ -341,7 +356,7 @@
             { name: 'فني صيانة أجهزة طباعة', icon: '🖨️' },
             { name: 'أخصائي موارد بيئية', icon: '♻️' },
             { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
-        ]; // الإجمالي: 105 مهنة
+        ]; // الإجمالي: 106 مهنة
 
 
         // قائمة مراكز ومدن الشرقية
@@ -486,11 +501,11 @@
         }
 
 
-        // PWA Banner Controller (إصلاح 2)
+        // PWA Banner Controller (تم تحديث المنطق)
         function showInstallBanner() {
             const displayMode = getDisplayMode();
-            const isInstalled = displayMode !== 'browser';
-
+            // التحقق من أن التطبيق غير مثبت وأن هناك prompt متاح
+            const isInstalled = displayMode !== 'browser'; 
 
             if (deferredPrompt && !isBannerShown && !isInstalled) {
                 installBanner.classList.remove('hidden');
@@ -519,7 +534,7 @@
         }
 
 
-        // PWA Mini Button Controller (إصلاح 2)
+        // PWA Mini Button Controller (تم تحديث المنطق)
         function toggleMiniInstallButton(show) {
             const displayMode = getDisplayMode();
             const isInstalled = displayMode !== 'browser';
@@ -542,6 +557,17 @@
                 return 'ios-standalone';
             }
             return 'browser';
+        }
+        
+        // تسجيل Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('SW registered: ', registration);
+                }).catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+            });
         }
 
 
@@ -580,6 +606,8 @@
             toggleMiniInstallButton(page === 'clientHome' || page === 'providerHome');
 
 
+            // تحديث عنوان الصفحة
+            document.title = getPageTitle(page);
 
 
             switch (page) {
@@ -629,6 +657,20 @@
                     renderAuthPage(); 
             }
         }
+        
+        function getPageTitle(page) {
+            switch(page) {
+                case 'auth': return 'تسجيل الدخول - مستقبل الشرقية';
+                case 'register': return 'إنشاء حساب - مستقبل الشرقية';
+                case 'clientHome':
+                case 'providerHome': return 'الرئيسية - مستقبل الشرقية';
+                case 'directory': return 'دليل المستخدمين - مستقبل الشرقية';
+                case 'chatList': return 'المحادثات - مستقبل الشرقية';
+                case 'jobListings': return 'الوظائف المتاحة - مستقبل الشرقية';
+                case 'profile': return 'الملف الشخصي - مستقبل الشرقية';
+                default: return 'مستقبل الشرقية';
+            }
+        }
 
 
 
@@ -658,7 +700,7 @@
         function renderAuthPage() {
             appContainer.innerHTML = `
                 <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-indigo-800">
-                    <h1 class="text-4xl font-bold text-white mb-4">خدمات الشرقية</h1>
+                    <h1 class="text-4xl font-bold text-white mb-4">مستقبل الشرقية</h1>
                     <p class="text-lg text-indigo-100 mb-8 text-center">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
                     
                     <div class="w-full max-w-sm bg-white rounded-lg shadow-xl p-6">
@@ -1990,7 +2032,7 @@
                 }
 
 
-                const dummyEmail = `${username}@zagazig.service`;
+                const dummyEmail = `${username}@sharqia.service`; // تم تحديث الدومين
                 const userCredential = await createUserWithEmailAndPassword(auth, dummyEmail, password);
                 const newUserId = userCredential.user.uid;
 
@@ -2034,9 +2076,7 @@
                 userProfile = newUserProfile;
                 userId = newUserId;
                 hideLoading();
-                showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في خدمات الشرقية!', true);
-
-
+                showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في مستقبل الشرقية!', true);
 
 
                 setTimeout(() => {
@@ -2537,6 +2577,41 @@
         });
 
 
+        // PWA: إغلاق البانر عند الضغط على زر الإغلاق
+        document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
+
+        // PWA: محاولة التثبيت عند الضغط على زر التثبيت في البانر
+        document.getElementById('install-button')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                hideInstallBanner();
+                deferredPrompt.prompt();
+
+
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+
+
+                deferredPrompt = null;
+            }
+        });
+
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); 
+            deferredPrompt = e; 
+            if (userId) { 
+                showInstallBanner(); 
+            }
+            console.log("PWA install prompt deferred.");
+        });
+
+
+        window.addEventListener('appinstalled', () => {
+             toggleMiniInstallButton(false);
+             hideInstallBanner();
+        });
+
+
 
 
         appContainer.addEventListener('change', (e) => {
@@ -2556,41 +2631,6 @@
         appContainer.addEventListener('submit', (e) => {
             e.preventDefault();
         });
-
-
-        // 12. PWA Logic (إصلاح 2)
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); 
-            deferredPrompt = e; 
-            if (userId) { 
-                showInstallBanner(); 
-            }
-            console.log("PWA install prompt deferred.");
-        });
-
-
-        window.addEventListener('appinstalled', () => {
-             toggleMiniInstallButton(false);
-             hideInstallBanner();
-        });
-
-
-        document.getElementById('install-button')?.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                hideInstallBanner();
-                deferredPrompt.prompt();
-
-
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-
-
-                deferredPrompt = null;
-            }
-        });
-
-
-        document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
 
 
         // 13. نقطة البداية الرئيسية
