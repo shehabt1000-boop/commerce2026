@@ -133,7 +133,7 @@
             runTransaction,
             getDocs,
             orderBy,
-            deleteDoc // === التعديل 1: إضافة deleteDoc ===
+            deleteDoc 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 
@@ -1108,6 +1108,32 @@
             });
         }
 
+        // === دالة مساعدة: جلب طلبات المستخدم (النشطة خلال 48 ساعة) ===
+        async function fetchUserRequests(uid) {
+            const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
+            const expiryCutoff = Timestamp.fromMillis(Date.now() - 48 * 60 * 60 * 1000); 
+            const q = query(requestsColRef, 
+                where('requesterId', '==', uid),
+                where('createdAt', '>', expiryCutoff),
+                orderBy('createdAt', 'desc')
+            );
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
+        // === دالة مساعدة: جلب إعلانات وظائف المستخدم (النشطة خلال 48 ساعة) ===
+        async function fetchUserJobPosts(uid) {
+            const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
+            const expiryCutoff = Timestamp.fromMillis(Date.now() - 48 * 60 * 60 * 1000); 
+            const q = query(jobPostingsColRef, 
+                where('posterId', '==', uid),
+                where('createdAt', '>', expiryCutoff),
+                orderBy('createdAt', 'desc')
+            );
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+
 
         async function renderProfilePage(uid) {
             appContainer.innerHTML = `
@@ -1140,25 +1166,25 @@
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, uid);
                 const userDoc = await getDoc(userDocRef);
 
-
                 if (!userDoc.exists()) {
                     document.getElementById('profile-content').innerHTML = '<p class="text-red-500">هذا المستخدم غير موجود.</p>';
                     return;
                 }
 
-
                 const profileData = userDoc.data();
-
 
                 const ratings = profileData.ratings || [];
                 const avgRating = profileData.avgRating ? profileData.avgRating.toFixed(1) : 0;
                 const ratingCount = ratings.length;
 
-
                 const clientRatings = profileData.clientRatings || [];
                 const clientAvgRating = clientRatings.length > 0 ? (clientRatings.reduce((acc, r) => acc + r.stars, 0) / clientRatings.length).toFixed(1) : 0;
                 const clientRatingCount = clientRatings.length;
 
+                // === جلب الطلبات والإعلانات ===
+                const userRequests = await fetchUserRequests(uid);
+                const userJobPosts = await fetchUserJobPosts(uid);
+                // ==============================
 
                 const profileContent = document.getElementById('profile-content');
                 profileContent.innerHTML = `
@@ -1211,6 +1237,64 @@
                                     <span class="text-gray-700 font-medium text-sm">${profileData.addressCity}، ${profileData.addressArea}</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- قسم طلبات الخدمات المنشورة -->
+                    <div class="bg-white p-4 rounded-lg shadow-md mt-4 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">طلبات الخدمات المنشورة (${userRequests.length})</h3>
+                        <div class="space-y-3">
+                            ${userRequests.length > 0 ? userRequests.map(req => {
+                                const dateString = req.createdAt && req.createdAt.toDate ? new Date(req.createdAt.toDate()).toLocaleDateString('ar-EG') : 'تاريخ غير محدد';
+                                const deleteButton = uid === userId ? `
+                                    <button data-action="deleteRequest" data-requestid="${req.id}"
+                                            class="text-red-500 hover:text-red-700 transition-colors p-1">
+                                        ${ICONS.trash}
+                                    </button>
+                                ` : '';
+                                return `
+                                    <div class="border-b border-gray-100 pb-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold text-gray-800 text-sm">${req.title}</span>
+                                            <div class="flex items-center space-x-2 space-x-reverse">
+                                                <span class="text-xs text-gray-500">${dateString}</span>
+                                                ${deleteButton}
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-indigo-600 mt-0.5">${req.category}</p>
+                                        <p class="text-sm text-gray-600 mt-1 truncate-1-line">${req.description}</p>
+                                    </div>
+                                `;
+                            }).join('') : '<p class="text-gray-500 text-sm">لا توجد طلبات خدمة نشطة حالياً.</p>'}
+                        </div>
+                    </div>
+
+                    <!-- قسم إعلانات الوظائف المنشورة -->
+                    <div class="bg-white p-4 rounded-lg shadow-md mt-4 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">إعلانات الوظائف المنشورة (${userJobPosts.length})</h3>
+                        <div class="space-y-3">
+                            ${userJobPosts.length > 0 ? userJobPosts.map(job => {
+                                const dateString = job.createdAt && job.createdAt.toDate ? new Date(job.createdAt.toDate()).toLocaleDateString('ar-EG') : 'تاريخ غير محدد';
+                                const deleteButton = uid === userId ? `
+                                    <button data-action="deleteJobPost" data-jobid="${job.id}"
+                                            class="text-red-500 hover:text-red-700 transition-colors p-1">
+                                        ${ICONS.trash}
+                                    </button>
+                                ` : '';
+                                return `
+                                    <div class="border-b border-gray-100 pb-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-semibold text-gray-800 text-sm">${job.title}</span>
+                                            <div class="flex items-center space-x-2 space-x-reverse">
+                                                <span class="text-xs text-gray-500">${dateString}</span>
+                                                ${deleteButton}
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-indigo-600 mt-0.5">${job.category}</p>
+                                        <p class="text-sm text-gray-600 mt-1 truncate-1-line">${job.details}</p>
+                                    </div>
+                                `;
+                            }).join('') : '<p class="text-gray-500 text-sm">لا توجد إعلانات وظائف نشطة حالياً.</p>'}
                         </div>
                     </div>
 
@@ -2139,6 +2223,9 @@
                 await deleteDoc(requestDocRef);
                 hideLoading();
                 showMessageModal('تم الحذف', 'تم حذف طلب الخدمة بنجاح.', true);
+                
+                // إعادة تحميل صفحة البروفايل لتحديث القائمة
+                navigateTo('profile', { uid: userId });
             } catch (error) {
                 console.error("Error deleting request: ", error);
                 hideLoading();
@@ -2205,6 +2292,9 @@
                 await deleteDoc(jobDocRef);
                 hideLoading();
                 showMessageModal('تم الحذف', 'تم حذف إعلان الوظيفة بنجاح.', true);
+                
+                // إعادة تحميل صفحة البروفايل لتحديث القائمة
+                navigateTo('profile', { uid: userId });
             } catch (error) {
                 console.error("Error deleting job post: ", error);
                 hideLoading();
