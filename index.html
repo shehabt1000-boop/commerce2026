@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مستقبل الشرقية</title>
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font (Inter) -->
@@ -11,11 +13,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+
     <style>
         /* استخدام خط Cairo كخط أساسي للمحتوى العربي */
         body {
             font-family: 'Cairo', 'Inter', sans-serif;
             direction: rtl; /* ضمان الاتجاه من اليمين لليسار */
+            padding-top: 48px; /* إضافة مسافة للبانر الثابت */
         }
         /* تعديلات بسيطة لـ Tailwind لدعم RTL بشكل أفضل */
         .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
@@ -37,6 +41,7 @@
             display: inline-block;
         }
 
+
         /* === تعديل فقاعات الشات === */
         .chat-bubble-sent {
             background-color: #1e40af; /* bg-blue-800 */
@@ -53,6 +58,7 @@
             word-wrap: break-word; 
         }
 
+
         /* truncate */
         .truncate-1-line {
             overflow: hidden;
@@ -60,6 +66,7 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 1;
         }
+
 
         /* تقليل التباعدات الافتراضية */
         .main-padding {
@@ -70,6 +77,7 @@
                 padding: 2rem; 
             }
         }
+
 
         /* === إصلاح 1: تصغير ارتفاع البار العلوي === */
         .app-header {
@@ -83,10 +91,24 @@
 </head>
 <body class="bg-gray-50">
 
+    <!-- PWA INSTALLATION BANNER (زر تنزيل التطبيق) -->
+    <div id="install-banner" class="fixed top-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-red-600 text-white p-2 flex items-center justify-between z-50 shadow-lg hidden">
+        <div class="flex items-center space-x-2 space-x-reverse">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            <span class="font-semibold text-sm">تنزيل تطبيق مستقبل خدمات الشرقية</span>
+        </div>
+        <button id="install-button" class="bg-white text-red-600 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
+            تثبيت
+        </button>
+    </div>
+
     <!-- الحاوية الرئيسية للتطبيق -->
     <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg md:max-w-2xl lg:max-w-4xl">
         <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
     </div>
+
 
     <!-- مودال (نافذة منبثقة) عامة -->
     <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center p-4">
@@ -94,6 +116,7 @@
             <!-- محتوى المودال سيتم حقنه هنا -->
         </div>
     </div>
+
 
     <!-- ============================================= -->
     <!-- ==== بداية كود جافاسكريبت و Firebase ==== -->
@@ -127,6 +150,7 @@
             orderBy
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+
         // 2. إعدادات Firebase (من المستخدم)
         const firebaseConfig = {
           apiKey: "AIzaSyA5OiTcX95GBgiJoDHnY3y7N23o-j8hsQ8",
@@ -138,10 +162,12 @@
           appId: "1:902396219187:web:3ba084a724266afa8bb846"
         };
 
+
         // 3. تهيئة Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
 
         // 4. متغيرات الحالة العامة
         let userId = null;
@@ -149,10 +175,18 @@
         let currentUnsubscribe = null; 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'services-cef84'; 
 
+
         let isRegistering = false; 
         let allUsers = []; 
 
+
         let navigationHistory = [];
+        
+        // PWA Variables
+        let deferredInstallPrompt = null;
+        const installBanner = document.getElementById('install-banner');
+        const installButton = document.getElementById('install-button');
+
 
         // === تحديث قائمة الخدمات (لأكثر من 100 مهنة وتعديل الصياغة) ===
         const SERVICES_LIST = [
@@ -178,6 +212,7 @@
             { name: 'فني تنجيد وصالونات', icon: '🛋️' },
             { name: 'فني تركيب زجاج وسيكوريت', icon: '💎' },
 
+
             // مهن هندسية وتقنية (20)
             { name: 'مهندس مدني (تنفيذ)', icon: '🏗️' },
             { name: 'مهندس معماري (تصميم)', icon: '📐' },
@@ -200,6 +235,7 @@
             { name: 'فني مختبرات', icon: '🧪' },
             { name: 'أخصائي تسويق رقمي', icon: '📈' },
 
+
             // مهن مالية وقانونية وإدارية (16)
             { name: 'محاسب', icon: '💵' }, // تم الإضافة
             { name: 'محاسب قانوني', icon: '🧾' },
@@ -218,6 +254,7 @@
             { name: 'مدقق حسابات', icon: '🔍' },
             { name: 'مستشار مالي', icon: '💵' },
 
+
             // مهن طبية وتمريض (10)
             { name: 'طبيب بشري', icon: '⚕️' },
             { name: 'ممرض منزلي', icon: '🩺' },
@@ -230,12 +267,14 @@
             { name: 'فني أشعة', icon: '☢️' },
             { name: 'فني تحاليل طبية', icon: '🩸' },
 
+
             // مهن تعليمية (5)
             { name: 'مدرس خصوصي', icon: '✍️' },
             { name: 'مدرب رياضي', icon: '💪' },
             { name: 'مدرب كلاب', icon: '🐕' },
             { name: 'مدرب تنمية بشرية', icon: '🧠' },
             { name: 'مصحح لغوي', icon: '📝' },
+
 
             // مهن البناء والتشييد (10)
             { name: 'عامل بناء', icon: '🧱' },
@@ -249,6 +288,7 @@
             { name: 'مساح أراضي', icon: '📏' },
             { name: 'مقاول تشطيبات', icon: '🔑' },
 
+
             // مهن السيارات والنقل (10)
             { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
             { name: 'فني كهرباء سيارات', icon: '🔋' },
@@ -261,6 +301,7 @@
             { name: 'فني غسيل وتلميع سيارات', icon: '🧼' },
             { name: 'خدمات سياحية وحجز', icon: '✈️' },
 
+
             // مهن الضيافة والإعلام (10)
             { name: 'مصور فوتوغرافي', icon: '📸' },
             { name: 'مصور فيديو', icon: '🎥' },
@@ -272,6 +313,7 @@
             { name: 'خياط / ترزي', icon: '👔' },
             { name: 'جليس مسنين', icon: '🧓' },
             { name: 'مربية أطفال', icon: '👶' },
+
 
             // مهن متنوعة (10)
             { name: 'حارس أمن', icon: '🔒' },
@@ -286,12 +328,14 @@
             { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
         ]; // الإجمالي: 106 مهنة
 
+
         // قائمة مراكز ومدن الشرقية
         const SHARQIA_CITIES = [
             "الزقازيق", "بلبيس", "العاشر من رمضان", "أبو كبير", "فاقوس", "منيا القمح", 
             "ديرب نجم", "كفر صقر", "أبو حماد", "القرين", "القنايات", "مشتول السوق", 
             "ههيا", "الإبراهيمية", "أولاد صقر", "الصالحية الجديدة", "الحسينية"
         ];
+
 
         // 5. أيقونات SVG 
         const ICONS = {
@@ -310,10 +354,12 @@
             job: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25M9 13.5h6" /></svg>`,
         };
 
+
         // 6. الحاوية الرئيسية
         const appContainer = document.getElementById('app');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
+
 
         // 7. وظائف مساعدة (Modal)
         function showModal(html) {
@@ -321,10 +367,12 @@
             modalBackdrop.classList.remove('hidden');
         }
 
+
         function hideModal() {
             modalBackdrop.classList.add('hidden');
             modalContent.innerHTML = '';
         }
+
 
         function showLoading(message = 'جاري التحميل...') {
             // استخدام Modal للتحميل
@@ -340,9 +388,11 @@
             showModal(html);
         }
 
+
         function hideLoading() {
             hideModal();
         }
+
 
         function showMessageModal(title, message, isSuccess = true) {
             const color = isSuccess ? 'text-green-600' : 'text-red-600';
@@ -353,6 +403,7 @@
             `;
             showModal(html);
         }
+
 
         // وظيفة مساعدة لضغط وتحويل الصورة إلى Base64
         function resizeAndConvertImage(file) {
@@ -366,6 +417,7 @@
                         let width = img.width;
                         let height = img.height;
 
+
                         if (width > height) {
                             if (width > MAX_SIZE) {
                                 height *= MAX_SIZE / width;
@@ -378,11 +430,13 @@
                             }
                         }
 
+
                         const canvas = document.createElement('canvas');
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
+
 
                         // التحويل إلى Base64 مع ضغط الجودة
                         const dataUrl = canvas.toDataURL('image/jpeg', 0.6); 
@@ -394,6 +448,7 @@
             });
         }
 
+
         // 8. وظائف التوجيه (Routing) 
         function navigateTo(page, params = {}) {
             console.log(`Navigating to: ${page}`, params);
@@ -402,6 +457,7 @@
                 currentUnsubscribe = null;
                 console.log('Unsubscribed from real-time listener.');
             }
+
 
             const newRoute = { page, params };
             if (page !== 'loading' && page !== 'auth' && page !== 'register') {
@@ -417,11 +473,14 @@
                 navigationHistory.push(newRoute);
             }
 
+
             appContainer.innerHTML = ''; 
             window.scrollTo(0, 0);
 
+
             // تحديث عنوان الصفحة
             document.title = getPageTitle(page);
+
 
             switch (page) {
                 case 'loading':
@@ -471,6 +530,7 @@
             }
         }
 
+
         function getPageTitle(page) {
             switch(page) {
                 case 'auth': return 'تسجيل الدخول - مستقبل الشرقية';
@@ -485,7 +545,9 @@
             }
         }
 
+
         // 9. وظائف عرض الصفحات (Render Functions)
+
 
         function renderLoadingScreen() {
             appContainer.innerHTML = `
@@ -500,6 +562,7 @@
                 </div>
             `;
         }
+
 
         function renderAuthPage() {
             appContainer.innerHTML = `
@@ -539,14 +602,17 @@
             `;
         }
 
+
         function renderRegisterPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
 
+
             const cityOptions = SHARQIA_CITIES.map(city => 
                 `<option value="${city}">${city}</option>`
             ).join('');
+
 
             appContainer.innerHTML = `
                 <div class="min-h-screen main-padding bg-gray-50">
@@ -606,6 +672,7 @@
                             </div>
                         </div>
 
+
                         
                         <!-- تقسيم العنوان -->
                         <div>
@@ -660,10 +727,12 @@
                 </div>
             `;
 
+
             // تهيئة مستمع حدث رفع الصورة
             document.getElementById('photo-upload-input').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
+
 
                 showLoading('جاري معالجة الصورة...');
                 try {
@@ -679,6 +748,7 @@
             });
         }
 
+
         function renderClientHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
                 <div data-action="navigateTo" data-page="category" data-category="${cat.name.toLowerCase()}" 
@@ -687,6 +757,7 @@
                     <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
                 </div>
             `).join('');
+
 
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -712,6 +783,7 @@
             `;
         }
 
+
         // === إصلاح 1: الصفحة الرئيسية لمقدم الخدمة (تم تعديل منطق عرض الطلبات) ===
         async function renderProviderHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
@@ -721,6 +793,7 @@
                     <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
                 </div>
             `).join('');
+
 
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -752,14 +825,18 @@
                 </div>
             `;
 
+
             const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
+
 
             // 1. بحث عن الطلبات التي تتطابق مع وظيفة مقدم الخدمة
             const jobSpecificQuery = query(requestsColRef, where('category', '==', userProfile.jobTitle), orderBy('createdAt', 'desc'));
 
+
             currentUnsubscribe = onSnapshot(jobSpecificQuery, (snapshot) => {
                 const requestsList = document.getElementById('requests-list');
                 const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
 
                 if (requests.length === 0) {
                      // 2. إذا لم يجد طلبات لوظيفته، يعرض كل الطلبات المتاحة (كخيار بديل)
@@ -775,6 +852,7 @@
                 console.error("Error fetching requests: ", error);
                 document.getElementById('requests-list').innerHTML = '<p class="text-red-500 p-6 bg-white rounded-lg shadow-sm">حدث خطأ أثناء تحميل الطلبات.</p>';
             });
+
 
             function generateRequestList(requests, emptyMessage = `لا توجد طلبات حالياً لوظيفة ${userProfile.jobTitle || 'غير محددة'}.`) {
                  if (requests.length === 0) {
@@ -808,6 +886,7 @@
             }
         }
 
+
         async function renderCategoryPage(categoryName) {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -828,25 +907,31 @@
                 </div>
             `;
 
+
             const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
             const allProvidersQuery = query(usersColRef, where('role', '==', 'provider'));
 
+
             currentUnsubscribe = onSnapshot(allProvidersQuery, (snapshot) => {
                 const providersListEl = document.getElementById('providers-list');
+
 
                 // === البحث باستخدام اسم الوظيفة في حقل jobTitleSearch ===
                 const providers = snapshot.docs
                     .map(doc => ({ id: doc.id, ...doc.data() }))
                     .filter(p => !categoryName || (p.jobTitle && p.jobTitle.toLowerCase().includes(categoryName))); 
 
+
                 if (providers.length === 0) {
                     providersListEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا يوجد مقدمو خدمات مسجلون في هذا القسم حالياً.</p>';
                     return;
                 }
 
+
                 providersListEl.innerHTML = providers.map(p => {
                     const avgRating = p.avgRating ? p.avgRating.toFixed(1) : 'جديد';
                     const ratingCount = p.ratings ? p.ratings.length : 0;
+
 
                     return `
                     <div class="bg-indigo-50 p-3 rounded-lg shadow-sm border border-indigo-200 flex items-center space-x-3 space-x-reverse">
@@ -878,11 +963,13 @@
             });
         }
 
+
         async function renderDirectoryPage() {
             function renderUserList(users) {
                 const listEl = document.getElementById('directory-list');
                 const searchInput = document.getElementById('search-directory');
                 const searchText = searchInput ? searchInput.value.toLowerCase() : '';
+
 
                 const filteredUsers = users.filter(user => 
                     user.name.toLowerCase().includes(searchText) || 
@@ -890,10 +977,12 @@
                     (user.username && user.username.toLowerCase().includes(searchText))
                 );
 
+
                 if (filteredUsers.length === 0) {
                     listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لم يتم العثور على مستخدمين مطابقين لنتائج البحث.</p>';
                     return;
                 }
+
 
                 listEl.innerHTML = filteredUsers.map(user => {
                     const userRole = user.role === 'provider' ? (user.jobTitle || 'مقدم خدمة') : 'عميل';
@@ -913,6 +1002,7 @@
                 }).join('');
             }
 
+
             appContainer.innerHTML = `
                 <div class="pb-24">
                     <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10">
@@ -930,7 +1020,9 @@
                 </div>
             `;
 
+
             const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
+
 
             const unsubscribeDirectory = onSnapshot(usersColRef, (snapshot) => {
                 allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -940,12 +1032,15 @@
                 document.getElementById('directory-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل المستخدمين.</p>';
             });
 
+
             currentUnsubscribe = unsubscribeDirectory;
+
 
             document.getElementById('search-directory').addEventListener('input', () => {
                 renderUserList(allUsers);
             });
         }
+
 
         async function renderChatListPage() {
             appContainer.innerHTML = `
@@ -964,8 +1059,10 @@
                 </div>
             `;
 
+
             const chatsColRef = collection(db, `artifacts/${appId}/public/data/chats`);
             const q = query(chatsColRef, where('users', 'array-contains', userId));
+
 
             currentUnsubscribe = onSnapshot(q, (snapshot) => {
                 const listEl = document.getElementById('chat-list-container');
@@ -974,8 +1071,10 @@
                     return;
                 }
 
+
                 const chats = snapshot.docs.map(doc => doc.data());
                 chats.sort((a, b) => b.lastUpdate.toMillis() - a.lastUpdate.toMillis());
+
 
                 listEl.innerHTML = chats.map(chat => {
                     const otherUserId = chat.users.find(uid => uid !== userId);
@@ -983,6 +1082,7 @@
                         return ''; 
                     }
                     const otherUser = chat.userDetails[otherUserId];
+
 
                     return `
                     <div data-action="navigateTo" data-page="chat" data-otheruserid="${otherUserId}"
@@ -998,11 +1098,13 @@
                     `;
                 }).join('');
 
+
             }, (error) => {
                 console.error("Error fetching chat list: ", error);
                 document.getElementById('chat-list-container').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل المحادثات.</p>';
             });
         }
+
 
         async function renderProfilePage(uid) {
             appContainer.innerHTML = `
@@ -1030,24 +1132,30 @@
                 </div>
             `;
 
+
             try {
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, uid);
                 const userDoc = await getDoc(userDocRef);
+
 
                 if (!userDoc.exists()) {
                     document.getElementById('profile-content').innerHTML = '<p class="text-red-500">هذا المستخدم غير موجود.</p>';
                     return;
                 }
 
+
                 const profileData = userDoc.data();
+
 
                 const ratings = profileData.ratings || [];
                 const avgRating = profileData.avgRating ? profileData.avgRating.toFixed(1) : 0;
                 const ratingCount = ratings.length;
 
+
                 const clientRatings = profileData.clientRatings || [];
                 const clientAvgRating = clientRatings.length > 0 ? (clientRatings.reduce((acc, r) => acc + r.stars, 0) / clientRatings.length).toFixed(1) : 0;
                 const clientRatingCount = clientRatings.length;
+
 
                 const profileContent = document.getElementById('profile-content');
                 profileContent.innerHTML = `
@@ -1102,6 +1210,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!-- تقييم مقدم الخدمة (إذا كان مقدم خدمة) -->
                     ${profileData.role === 'provider' ? `
@@ -1161,6 +1270,7 @@
                     </div>
                     ` : ''}
 
+
                     
                     ${uid === userId ? `
                         <button data-action="logout" 
@@ -1171,11 +1281,13 @@
                     ` : ''}
                 `;
 
+
             } catch (error) {
                 console.error("Error fetching profile: ", error);
                 document.getElementById('profile-content').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الملف الشخصي.</p>';
             }
         }
+
 
         function renderEditProfilePage() {
             if (!userProfile) {
@@ -1183,13 +1295,16 @@
                 return;
             }
 
+
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}" ${userProfile.jobTitle === service.name ? 'selected' : ''}>${service.name}</option>`
             ).join('');
 
+
             const cityOptions = SHARQIA_CITIES.map(city => 
                 `<option value="${city}" ${userProfile.addressCity === city ? 'selected' : ''}>${city}</option>`
             ).join('');
+
 
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1217,6 +1332,7 @@
                                 </label>
                                 <input type="hidden" id="photo-base64" value="${userProfile.photoURL || ''}">
                             </div>
+
 
                             <hr class="my-3">
                             
@@ -1269,6 +1385,7 @@
                                 </div>
                             ` : ''}
 
+
                             <button type="submit" data-action="editProfile" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                 حفظ التعديلات
                             </button>
@@ -1277,10 +1394,12 @@
                 </div>
             `;
 
+
             // تهيئة مستمع حدث رفع الصورة
             document.getElementById('photo-upload-input').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
+
 
                 showLoading('جاري معالجة الصورة...');
                 try {
@@ -1295,6 +1414,7 @@
                 }
             });
         }
+
 
         async function renderChatPage(otherUserId) {
             let otherUserProfile = null;
@@ -1312,11 +1432,13 @@
                 return;
             }
 
+
             // تحديد ما إذا كان يمكن التقييم
             const isProviderRatingClient = userProfile.role === 'provider' && otherUserProfile.role === 'client';
             const isClientRatingProvider = userProfile.role === 'client' && otherUserProfile.role === 'provider';
             // === إضافة منطق تقييم مقدم خدمة لمقدم خدمة آخر ===
             const isProviderRatingProvider = userProfile.role === 'provider' && otherUserProfile.role === 'provider';
+
 
             appContainer.innerHTML = `
                 <div class="flex flex-col h-screen max-h-screen"> 
@@ -1363,25 +1485,31 @@
                 </div>
             `;
 
+
             const chatRoomId = [userId, otherUserId].sort().join('_');
             const messagesColRef = collection(db, `artifacts/${appId}/public/data/chats/${chatRoomId}/messages`);
+
 
             currentUnsubscribe = onSnapshot(messagesColRef, (snapshot) => {
                 const messagesContainer = document.getElementById('messages-container');
                 const isNearBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 50; 
+
 
                 if (snapshot.empty) {
                     messagesContainer.innerHTML = '<p class="text-center text-gray-500 text-sm">ابدأ المحادثة...</p>';
                     return;
                 }
 
+
                 const messages = snapshot.docs.map(doc => doc.data());
                 messages.sort((a, b) => a.createdAt.toMillis() - b.createdAt.toMillis());
+
 
                 messagesContainer.innerHTML = messages.map(msg => {
                     const isSent = msg.senderId === userId;
                     const bubbleClass = isSent ? 'chat-bubble-sent' : 'chat-bubble-received';
                     const alignmentClass = isSent ? 'justify-end' : 'justify-start';
+
 
                     return `
                         <div class="flex ${alignmentClass}">
@@ -1395,10 +1523,12 @@
                     `;
                 }).join('');
 
+
                 // التمرير التلقائي إلى الأسفل
                 if (isNearBottom) {
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }
+
 
             }, (error) => {
                 console.error("Error fetching messages: ", error);
@@ -1406,10 +1536,12 @@
             });
         }
 
+
         function renderNewRequestPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
+
 
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1451,11 +1583,13 @@
             `;
         }
 
+
         // === إصلاح 3: صفحة نشر إعلان وظيفة ===
         function renderJobPostingPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
+
 
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1499,6 +1633,7 @@
             `;
         }
 
+
         // === إصلاح 3: صفحة عرض إعلانات الوظائف ===
         async function renderJobListingsPage() {
             appContainer.innerHTML = `
@@ -1521,8 +1656,10 @@
                 </div>
             `;
 
+
             const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
             const q = query(jobPostingsColRef, orderBy('createdAt', 'desc'));
+
 
             currentUnsubscribe = onSnapshot(q, (snapshot) => {
                 const listEl = document.getElementById('job-listings-list');
@@ -1531,7 +1668,9 @@
                     return;
                 }
 
+
                 const listings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
 
                 listEl.innerHTML = listings.map(job => {
                     const dateString = job.createdAt && job.createdAt.toDate ? new Date(job.createdAt.toDate()).toLocaleDateString('ar-EG') : 'تاريخ غير محدد';
@@ -1564,10 +1703,12 @@
             });
         }
 
+
         // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
         function renderBottomNav(activeTab) {
             const activeClass = 'text-white bg-indigo-700';
             const inactiveClass = 'text-indigo-300 hover:text-white';
+
 
             return `
                 <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-indigo-800 shadow-lg border-t border-indigo-700 z-20">
@@ -1606,6 +1747,7 @@
             `;
         }
 
+
         function renderStarRating(rating, maxStars = 5, cssClass = 'h-5 w-5') {
             let html = '';
             for (let i = 1; i <= maxStars; i++) {
@@ -1618,7 +1760,9 @@
             return html;
         }
 
+
         // 10. وظائف معالجة الأحداث (Event Handlers)
+
 
         async function handleLogin(e) {
             e.preventDefault();
@@ -1626,22 +1770,28 @@
             const password = document.getElementById('login-password').value;
             const errorEl = document.getElementById('login-error');
 
+
             showLoading('جاري تسجيل الدخول...');
             errorEl.classList.add('hidden');
+
 
             try {
                 const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
                 const q = query(usersColRef, where('username', '==', username));
                 const snapshot = await getDocs(q); 
 
+
                 if (snapshot.empty) {
                     throw new Error('اسم المستخدم غير صحيح.');
                 }
 
+
                 const userData = snapshot.docs[0].data();
                 const authEmail = userData.email; 
 
+
                 await signInWithEmailAndPassword(auth, authEmail, password);
+
 
                 hideLoading();
             } catch (error) {
@@ -1653,11 +1803,13 @@
                      errorMessage = 'كلمة المرور غير صحيحة.';
                 }
 
+
                 errorEl.textContent = errorMessage;
                 errorEl.classList.remove('hidden');
                 hideLoading();
             }
         }
+
 
         async function handleRegister(e) {
             e.preventDefault();
@@ -1665,6 +1817,7 @@
             showLoading('جاري إنشاء الحساب...');
             const errorEl = document.getElementById('register-error');
             errorEl.classList.add('hidden');
+
 
             try {
                 const username = document.getElementById('register-username').value.trim(); 
@@ -1677,8 +1830,10 @@
                 const role = document.querySelector('input[name="role"]:checked').value;
                 const photoURL = document.getElementById('photo-base64').value || null; 
 
+
                 const jobSelect = document.getElementById('register-job-select')?.value;
                 const jobTitle = jobSelect;
+
 
                 // التحقق من رقم الهاتف والعنوان
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
@@ -1691,6 +1846,7 @@
                     throw new Error('يرجى اختيار الوظيفة لمقدم الخدمة.');
                 }
 
+
                 const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
                 const q = query(usersColRef, where('username', '==', username));
                 const snapshot = await getDocs(q);
@@ -1698,15 +1854,19 @@
                     throw new Error('اسم المستخدم هذا محجوز بالفعل. يرجى اختيار اسم آخر.');
                 }
 
+
                 const dummyEmail = `${username}@sharqia.service`; // تم تحديث الدومين
                 const userCredential = await createUserWithEmailAndPassword(auth, dummyEmail, password);
                 const newUserId = userCredential.user.uid;
+
 
                 await updateProfile(userCredential.user, {
                     displayName: name,
                 });
 
+
                 const jobTitleSearch = role === 'provider' ? jobTitle.toLowerCase() : null;
+
 
                 const newUserProfile = {
                     uid: newUserId,
@@ -1729,17 +1889,21 @@
                     clientAvgRating: 0 // === إصلاح 3: تقييم العميل ===
                 };
 
+
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, newUserId);
                 await setDoc(userDocRef, newUserProfile);
+
 
                 userProfile = newUserProfile;
                 userId = newUserId;
                 hideLoading();
                 showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في مستقبل الشرقية!', true);
 
+
                 setTimeout(() => {
                     navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                 }, 1500);
+
 
             } catch (error) {
                 console.error("Register Error: ", error);
@@ -1752,6 +1916,7 @@
                     displayError = 'كلمة المرور ضعيفة جداً، يرجى استخدام 6 أحرف أو أكثر.';
                 }
 
+
                 errorEl.textContent = displayError;
                 errorEl.classList.remove('hidden');
                 hideLoading();
@@ -1760,11 +1925,13 @@
             }
         }
 
+
         async function handleEditProfile(e) {
             e.preventDefault();
             showLoading('جاري حفظ التعديلات...');
             const errorEl = document.getElementById('edit-error');
             errorEl.classList.add('hidden');
+
 
             try {
                 const name = document.getElementById('edit-name').value;
@@ -1774,6 +1941,7 @@
                 const area = document.getElementById('edit-area').value.trim();
                 const photoURL = document.getElementById('photo-base64').value || null; 
 
+
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
                     throw new Error('يرجى إدخال رقم هاتف مصري صحيح مكون من 11 رقم.');
                 }
@@ -1781,14 +1949,17 @@
                     throw new Error('يرجى اختيار المدينة/المركز وإدخال تفاصيل المنطقة.');
                 }
 
+
                 let jobTitle = userProfile.jobTitle;
                 if (userProfile.role === 'provider') {
                     const jobSelect = document.getElementById('edit-job-select').value;
                     jobTitle = jobSelect;
                 }
 
+
                 showLoading('جاري تحديث البيانات...');
                 const jobTitleSearch = userProfile.role === 'provider' ? jobTitle.toLowerCase() : null;
+
 
                 const updates = {
                     name: name,
@@ -1802,21 +1973,27 @@
                     jobTitleSearch: jobTitleSearch,
                 };
 
+
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, userId);
                 await updateDoc(userDocRef, updates);
+
 
                 await updateProfile(auth.currentUser, {
                     displayName: name,
                 });
 
+
                 userProfile = { ...userProfile, ...updates };
+
 
                 hideLoading();
                 showMessageModal('تم الحفظ بنجاح', 'تم تحديث ملفك الشخصي.', true);
 
+
                 setTimeout(() => {
                     navigateTo('profile', { uid: userId });
                 }, 1500);
+
 
             } catch (error) {
                 console.error("Edit Profile Error: ", error);
@@ -1825,6 +2002,7 @@
                 hideLoading();
             }
         }
+
 
         async function handleLogout() {
             showLoading('جاري تسجيل الخروج...');
@@ -1835,15 +2013,19 @@
             navigateTo('auth');
         }
 
+
         async function handleSendMessage(otherUserId) {
             const input = document.getElementById('message-input');
             const text = input.value.trim();
             if (text === '') return;
 
+
             input.value = '';
+
 
             const chatRoomId = [userId, otherUserId].sort().join('_');
             const messagesColRef = collection(db, `artifacts/${appId}/public/data/chats/${chatRoomId}/messages`);
+
 
             try {
                 await addDoc(messagesColRef, {
@@ -1852,9 +2034,11 @@
                     createdAt: Timestamp.now()
                 });
 
+
                 const otherUserDoc = await getDoc(doc(db, `artifacts/${appId}/public/data/users`, otherUserId));
                 if (!otherUserDoc.exists()) { throw new Error("Other user not found"); }
                 const otherUserData = otherUserDoc.data();
+
 
                 const chatRoomDocRef = doc(db, `artifacts/${appId}/public/data/chats`, chatRoomId);
                 const chatRoomData = {
@@ -1869,10 +2053,12 @@
                 };
                 await setDoc(chatRoomDocRef, chatRoomData, { merge: true });
 
+
             } catch (error) {
                 console.error("Error sending message: ", error);
             }
         }
+
 
         async function handleSubmitRequest(e) {
             e.preventDefault();
@@ -1880,14 +2066,17 @@
             const errorEl = document.getElementById('request-error');
             errorEl.classList.add('hidden');
 
+
             try {
                 const title = document.getElementById('request-title').value;
                 const category = document.getElementById('request-category').value;
                 const description = document.getElementById('request-description').value;
 
+
                 if (!title || !category || !description) {
                     throw new Error('يرجى ملء جميع الحقول.');
                 }
+
 
                 const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
                 await addDoc(requestsColRef, {
@@ -1901,12 +2090,15 @@
                     createdAt: Timestamp.now()
                 });
 
+
                 hideLoading();
                 showMessageModal('تم نشر الطلب', 'يمكن لمقدمي الخدمات الآن رؤية طلبك والتواصل معك.', true);
+
 
                 setTimeout(() => {
                     navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                 }, 1500);
+
 
             } catch (error) {
                 console.error("Error submitting request: ", error);
@@ -1916,6 +2108,7 @@
             }
         }
 
+
         // === إصلاح 3: إرسال إعلان وظيفة ===
         async function handleSubmitJobPost(e) {
             e.preventDefault();
@@ -1923,14 +2116,17 @@
             const errorEl = document.getElementById('job-post-error');
             errorEl.classList.add('hidden');
 
+
             try {
                 const title = document.getElementById('job-title').value;
                 const category = document.getElementById('job-category').value;
                 const details = document.getElementById('job-details').value;
 
+
                 if (!title || !category || !details) {
                     throw new Error('يرجى ملء جميع الحقول.');
                 }
+
 
                 const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
                 await addDoc(jobPostingsColRef, {
@@ -1943,12 +2139,15 @@
                     createdAt: Timestamp.now()
                 });
 
+
                 hideLoading();
                 showMessageModal('تم نشر الإعلان', 'تم نشر إعلان الوظيفة بنجاح.', true);
+
 
                 setTimeout(() => {
                     navigateTo('jobListings');
                 }, 1500);
+
 
             } catch (error) {
                 console.error("Error submitting job post: ", error);
@@ -1957,6 +2156,7 @@
                 hideLoading();
             }
         }
+
 
         function handleOpenRatingModal(targetRole, targetId, targetName) {
             const modalHtml = `
@@ -1978,22 +2178,27 @@
             showModal(modalHtml);
         }
 
+
         // === توحيد دالة إرسال التقييم للمقدم والعميل (إصلاح 3) ===
         async function handleSubmitRating(targetId, targetRole) {
             const stars = parseInt(document.getElementById('rating-value').value);
             const comment = document.getElementById('rating-comment').value.trim();
+
 
             if (stars === 0) {
                 showMessageModal('خطأ', 'يرجى اختيار عدد النجوم لتقييم المستخدم.', false);
                 return;
             }
 
+
             showLoading('جاري إرسال التقييم...');
+
 
             try {
                 const targetDocRef = doc(db, `artifacts/${appId}/public/data/users`, targetId);
                 const ratingFieldName = targetRole === 'provider' ? 'ratings' : 'clientRatings';
                 const avgRatingFieldName = targetRole === 'provider' ? 'avgRating' : 'clientAvgRating';
+
 
                 await runTransaction(db, async (transaction) => {
                     const targetDoc = await transaction.get(targetDocRef);
@@ -2001,9 +2206,11 @@
                         throw "Target user document does not exist!";
                     }
 
+
                     const data = targetDoc.data();
                     const oldRatings = data[ratingFieldName] || [];
                     const filteredRatings = oldRatings.filter(r => r.by !== userId);
+
 
                     const newRating = {
                         by: userId,
@@ -2014,19 +2221,24 @@
                     };
                     const newRatings = [...filteredRatings, newRating];
 
+
                     const totalStars = newRatings.reduce((acc, r) => acc + r.stars, 0);
                     const newAvgRating = totalStars / newRatings.length;
+
 
                     const updates = {};
                     updates[ratingFieldName] = newRatings;
                     updates[avgRatingFieldName] = newAvgRating;
 
+
                     transaction.update(targetDocRef, updates);
                 });
+
 
                 hideLoading();
                 hideModal();
                 showMessageModal('نجاح', 'شكراً لتقييمك!', true);
+
 
             } catch (error) {
                 console.error("Error submitting rating: ", error);
@@ -2035,10 +2247,12 @@
             }
         }
 
+
         // 11. Event Delegation (المستمع الرئيسي للأحداث)
         appContainer.addEventListener('click', async (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
+
 
             const action = target.dataset.action;
             const page = target.dataset.page;
@@ -2049,6 +2263,7 @@
             const targetName = target.dataset.targetname;
             const targetRole = target.dataset.targetrole;
 
+
             switch (action) {
                 case 'navigateTo':
                     if (page === 'profile') navigateTo(page, { uid });
@@ -2057,6 +2272,7 @@
                     else if (page === 'home') navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                     else navigateTo(page);
                     break;
+
 
                 case 'goBack':
                     // === إصلاح منطق زر الرجوع ===
@@ -2070,6 +2286,7 @@
                          navigateTo('auth');
                     }
                     break;
+
 
                 case 'login':
                     e.preventDefault();
@@ -2107,12 +2324,14 @@
             }
         });
 
+
         modalBackdrop.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target && e.target === modalBackdrop) {
                 return;
             }
             if(!target) return;
+
 
             const action = target.dataset.action;
             switch(action) {
@@ -2141,6 +2360,7 @@
             }
         });
 
+
         appContainer.addEventListener('change', (e) => {
             if (e.target.name === 'role') {
                 const jobField = document.getElementById('job-title-field');
@@ -2152,32 +2372,108 @@
             }
         });
 
+
         appContainer.addEventListener('submit', (e) => {
             e.preventDefault();
         });
+        
+        // =============================================
+        // ==== PWA INSTALLATION LOGIC (المنطق الذكي) ====
+        // =============================================
+        
+        // 1. تسجيل Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('Service Worker registered: ', reg))
+                    .catch(err => console.log('Service Worker registration failed: ', err));
+            });
+        }
+        
+        // 2. اعتراض حدث التثبيت وعرض البانر
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // منع ظهور النافذة المنبثقة الافتراضية للمتصفح
+            e.preventDefault();
+            // تخزين الحدث لاستخدامه لاحقاً
+            deferredInstallPrompt = e;
+            
+            // إظهار البانر الأحمر فقط إذا لم يكن التطبيق مثبتاً بالفعل
+            if (!window.matchMedia('(display-mode: standalone)').matches) {
+                installBanner.classList.remove('hidden');
+            }
+        });
+        
+        // 3. معالجة النقر على زر التثبيت
+        installButton.addEventListener('click', async () => {
+            if (deferredInstallPrompt) {
+                // إخفاء البانر قبل عرض نافذة التثبيت
+                installBanner.classList.add('hidden');
+                
+                // عرض نافذة التثبيت
+                deferredInstallPrompt.prompt();
+                
+                // انتظار استجابة المستخدم
+                const { outcome } = await deferredInstallPrompt.userChoice;
+                
+                // إذا اختار المستخدم التثبيت، يتم إخفاء البانر نهائياً
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt.');
+                } else {
+                    console.log('User dismissed the install prompt.');
+                    // إذا رفض، يمكن إظهار البانر مرة أخرى أو إخفائه حسب الرغبة
+                    // نتركه مخفياً مؤقتاً
+                }
+                
+                // مسح الحدث المخزن
+                deferredInstallPrompt = null;
+            }
+        });
+        
+        // 4. إخفاء البانر عند التثبيت الناجح (أو عند الفتح في وضع التطبيق)
+        window.addEventListener('appinstalled', () => {
+            installBanner.classList.add('hidden');
+        });
+        
+        // 5. التحقق عند التحميل إذا كان التطبيق يعمل في وضع مستقل (PWA)
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            installBanner.classList.add('hidden');
+        } else {
+             // إذا لم يكن في وضع مستقل، ننتظر حدث beforeinstallprompt ليظهر البانر
+        }
+        
+        // =============================================
+        // ==== END PWA INSTALLATION LOGIC ====
+        // =============================================
+
 
         // 13. نقطة البداية الرئيسية
         window.onload = () => {
             navigateTo('loading');
 
+
             onAuthStateChanged(auth, async (user) => {
 
+
                 if (isRegistering) {
-                    console.log('Registration in progress, onAuthStateChanged will wait.');
+                    console.log('Registration in progress, onAuthStateChanged will handle.');
                     return; 
                 }
+
 
                 if (user) {
                     console.log('User is signed in:', user.uid);
                     userId = user.uid;
 
+
                     const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, userId);
                     const userDoc = await getDoc(userDocRef);
+
 
                     if (userDoc.exists()) {
                         userProfile = userDoc.data();
                         console.log('User profile found:', userProfile);
-                        
+
+
                         // إعادة التوجيه للصفحة المناسبة
                         if(navigationHistory.length <= 1 || navigationHistory[navigationHistory.length - 1].page === 'auth' || navigationHistory[navigationHistory.length - 1].page === 'register') {
                             navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
@@ -2197,6 +2493,7 @@
                 }
             });
 
+
             (async () => {
                 try {
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -2212,10 +2509,12 @@
             })();
         };
 
+
     </script>
     <!-- ============================================= -->
     <!-- ==== نهاية كود جافاسكريبت و Firebase ===== -->
     <!-- ============================================= -->
+
 
 </body>
 </html>
