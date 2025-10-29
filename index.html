@@ -87,7 +87,7 @@
 </head>
 <body class="bg-gray-50">
 
-    <!-- PWA Install Prompt Banner (إصلاح 2) -->
+    <!-- PWA Install Prompt Banner -->
     <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-800 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
         <div class="flex items-center space-x-3 space-x-reverse">
             <span class="text-lg">🛠️</span>
@@ -97,7 +97,7 @@
             <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
                 &times;
             </button>
-            <button id="install-button" class="bg-white text-indigo-800 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
+            <button data-action="manualInstall" id="install-button" class="bg-white text-indigo-800 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
                 تثبيت
             </button>
         </div>
@@ -109,10 +109,16 @@
         <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
     </div>
     
-    <!-- PWA Install Small Button (إصلاح 2) -->
-    <button id="mini-install-button" class="fixed bottom-24 right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
+    <!-- PWA Install Small Button (إصلاح 2: الموضع فوق زر +) -->
+    <button id="mini-install-button" data-action="manualInstall" class="fixed bottom-[calc(4rem+20px)] right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
         <span class="text-lg">⬇️</span>
         <span>تثبيت</span>
+    </button>
+    
+    <!-- زر + (طلب خدمة جديد) -->
+    <button data-action="navigateTo" data-page="newRequest" 
+        class="fixed bottom-16 right-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
     </button>
 
 
@@ -188,76 +194,73 @@
         let isBannerShown = false; // PWA Banner control
 
 
-        // === إصلاح 2: توسيع قائمة الخدمات (الوظائف) ===
+        // === إصلاح 1: تبسيط وتوسيع قائمة الخدمات (الوظائف) ===
         const SERVICES_LIST = [
             { name: 'سباك', icon: '🔧' },
             { name: 'كهربائي منازل', icon: '💡' },
-            { name: 'نجار موبيليا', icon: '🪚' },
-            { name: 'فني تبريد وتكييف', icon: '❄️' },
-            { name: 'فني صيانة غسالات', icon: '🧺' },
-            { name: 'فني صيانة ثلاجات', icon: '🧊' },
-            { name: 'فني صيانة أجهزة كهربائية', icon: '🔌' },
-            { name: 'نقاش ودهانات', icon: '🎨' },
-            { name: 'مهندس مدني (تنفيذ)', icon: '🏗️' },
-            { name: 'مهندس معماري (تصميم)', icon: '📐' },
+            { name: 'نجار', icon: '🪚' },
+            { name: 'فني تكييف', icon: '❄️' },
+            { name: 'فني غسالات', icon: '👚' },
+            { name: 'فني ثلاجات', icon: '🧊' },
+            { name: 'فني أجهزة كهربائية', icon: '🔌' },
+            { name: 'نقاش', icon: '🎨' },
+            { name: 'مهندس مدني', icon: '🏗️' },
+            { name: 'مهندس معماري', icon: '📐' },
             { name: 'مهندس شبكات', icon: '📶' },
             { name: 'مهندس برمجيات', icon: '💻' },
-            { name: 'محامي (قضايا مدنية)', icon: '⚖️' },
-            { name: 'محامي (قضايا أسرية)', icon: '📜' },
-            { name: 'طبيب بشري', icon: '⚕️' },
-            { name: 'ممرض منزلي', icon: '🩺' },
-            { name: 'مدرس خصوصي (لغة عربية)', icon: '✍️' },
-            { name: 'مدرس خصوصي (علوم/رياضيات)', icon: '🧠' },
-            { name: 'محاسب قانوني', icon: '🧾' },
-            { name: 'محاسب شركات', icon: '🧮' },
-            { name: 'محاسب تكاليف', icon: '💰' },
-            { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
-            { name: 'تركيب دش وستالايت', icon: '📡' },
+            { name: 'محامي', icon: '⚖️' },
+            { name: 'طبيب', icon: '⚕️' },
+            { name: 'ممرض', icon: '🩺' },
+            { name: 'مدرس', icon: '📚' },
+            { name: 'محاسب', icon: '🧾' },
+            { name: 'صيانة هواتف', icon: '📱' },
+            { name: 'فني دش', icon: '📡' },
             { name: 'عامل بناء', icon: '🧱' },
             { name: 'مبيض محارة', icon: '⬜' },
-            { name: 'مركب سيراميك ورخام', icon: '🔨' },
-            { name: 'حداد مسلح', icon: '🔗' },
-            { name: 'حداد كريتال', icon: '🛡️' },
-            { name: 'ألوميتال وزجاج', icon: '🪟' },
-            { name: 'فني كاميرات مراقبة', icon: '📹' },
+            { name: 'مركب سيراميك', icon: '🔨' },
+            { name: 'حداد', icon: '🔗' },
+            { name: 'فني ألوميتال', icon: '🪟' },
+            { name: 'فني كاميرات', icon: '📹' },
             { name: 'فني مصاعد', icon: '⬆️' },
-            { name: 'مصور فوتوغرافي', icon: '📸' },
-            { name: 'مصور فيديو', icon: '🎥' },
-            { name: 'خياط / ترزي (ملابس رجالي)', icon: '👔' },
-            { name: 'خياط / ترزي (ملابس حريمي)', icon: '👗' },
-            { name: 'طباخ مناسبات', icon: '🧑‍🍳' },
-            { name: 'شيف مطعم', icon: '🍽️' },
-            { name: 'تنظيف منازل ومكاتب', icon: '🧹' },
+            { name: 'مصور', icon: '📸' },
+            { name: 'خياط', icon: '🧵' },
+            { name: 'طباخ', icon: '🧑‍🍳' },
+            { name: 'تنظيف منازل', icon: '🧹' },
             { name: 'مربية أطفال', icon: '👶' },
             { name: 'جليس مسنين', icon: '🧓' },
-            { name: 'سائق خاص', icon: '🚗' },
+            { name: 'سائق', icon: '🚗' },
             { name: 'نقل عفش', icon: '🚚' },
             { name: 'مهندس زراعي', icon: '🌾' },
-            { name: 'مدير مكتب/سكرتير', icon: '📁' },
+            { name: 'سكرتير', icon: '📁' },
             { name: 'مندوب مبيعات', icon: '💼' },
-            { name: 'أخصائي تسويق رقمي', icon: '📈' },
+            { name: 'أخصائي تسويق', icon: '📈' },
             { name: 'مترجم', icon: '🌐' },
             { name: 'مدرب رياضي', icon: '💪' },
-            { name: 'مصفف شعر (كوافير)', icon: '💇' },
-            { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
-            { name: 'فني كهرباء سيارات', icon: '🔋' },
-            { name: 'صيادلي', icon: '💊' },
+            { name: 'مصفف شعر', icon: '💇' },
+            { name: 'ميكانيكي سيارات', icon: '⚙️' },
+            { name: 'كهربائي سيارات', icon: '🔋' },
+            { name: 'صيدلي', icon: '💊' },
             { name: 'موظف استقبال', icon: '🛎️' },
             { name: 'أمين مخزن', icon: '📦' },
-            { name: 'خدمات سياحية وحجز', icon: '✈️' },
+            { name: 'خدمات سياحية', icon: '✈️' },
             { name: 'معلم دهان سيارات', icon: '🖌️' },
-            { name: 'فني غلايات', icon: '🔥' },
             { name: 'مراقب جودة', icon: '🔎' },
             { name: 'حارس أمن', icon: '🔒' },
-            { name: 'بائع/كاشير', icon: '🛒' },
+            { name: 'بائع', icon: '🛒' },
             { name: 'مسعف', icon: '🩹' },
-            { name: 'مذيع/معلق صوتي', icon: '🎤' },
+            { name: 'مذيع', icon: '🎤' },
             { name: 'مدرب كلاب', icon: '🐕' },
-            { name: 'مزارع/جنايني', icon: '🌿' },
-            { name: 'فني ميكانيكا إنتاج', icon: '🏭' },
-            { name: 'فني طباعة وتصوير', icon: '🖨️' },
+            { name: 'مزارع', icon: '🌿' },
+            { name: 'فني إنتاج', icon: '🏭' },
             { name: 'فني مختبرات', icon: '🔬' },
-            { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
+            { name: 'مصمم جرافيك', icon: '🖼️' },
+            { name: 'مونتاج فيديو', icon: '🎬' },
+            { name: 'مكوجي', icon: '♨️' },
+            { name: 'عامل مطبعة', icon: '🖨️' },
+            { name: 'منسق حفلات', icon: '🎉' },
+            { name: 'معلم خباز', icon: '🍞' },
+            { name: 'فني صيانة دراجات', icon: '🚲' },
+            { name: 'أخرى', icon: '👥' },
         ];
         
         // قائمة مراكز ومدن الشرقية
@@ -622,7 +625,7 @@
                             <input type="tel" id="register-phone" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: 01012345678">
                         </div>
                         
-                        <!-- === إصلاح 3: اختيار الجنس === -->
+                        <!-- اختيار الجنس -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700">الجنس</label>
                             <div class="mt-1 flex space-x-4 space-x-reverse">
@@ -734,11 +737,6 @@
                         </div>
                     </main>
                     
-                    <button data-action="navigateTo" data-page="newRequest" 
-                            class="fixed bottom-16 left-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
-                        ${ICONS.add}
-                    </button>
-                    
                     ${renderBottomNav('home')}
                 </div>
             `;
@@ -775,11 +773,6 @@
                             ${categoriesHtml}
                         </div>
                     </main>
-                    
-                    <button data-action="navigateTo" data-page="newRequest" 
-                            class="fixed bottom-16 left-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
-                        ${ICONS.add}
-                    </button>
                     
                     ${renderBottomNav('home')}
                 </div>
@@ -1082,9 +1075,9 @@
                 const avgRating = profileData.avgRating ? profileData.avgRating.toFixed(1) : 0;
                 const ratingCount = ratings.length;
                 
-                const clientRatings = profileData.clientRatings || [];
+                const clientRatings = profileData.clientRatings || []; // === إصلاح 3: تقييم العميل ===
                 const clientAvgRating = clientRatings.length > 0 ? (clientRatings.reduce((acc, r) => acc + r.stars, 0) / clientRatings.length).toFixed(1) : 0;
-                const clientRatingCount = clientRatings.length;
+                const clientRatingCount = clientRatings.length; // === إصلاح 3: تقييم العميل ===
                 
                 const profileContent = document.getElementById('profile-content');
                 profileContent.innerHTML = `
@@ -1115,7 +1108,7 @@
                                     <span class="text-gray-700 font-medium text-sm">${profileData.username || 'N/A'}</span>
                                 </div>
                             </div>
-                            <!-- === عرض الجنس === -->
+                            <!-- عرض الجنس -->
                             <div class="flex items-start">
                                 <span class="w-5 text-gray-500 mt-1">🚻</span>
                                 <div class="mr-3">
@@ -1270,7 +1263,7 @@
                                 <input type="tel" id="edit-phone" value="${userProfile.phone}" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                             </div>
                             
-                            <!-- === إصلاح 3: اختيار الجنس === -->
+                            <!-- اختيار الجنس -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">الجنس</label>
                                 <div class="mt-1 flex space-x-4 space-x-reverse">
@@ -1371,13 +1364,13 @@
                         <div class="flex items-center space-x-2 space-x-reverse">
                             ${isClientRatingProvider ? `
                                 <button data-action="openRatingModal" data-targetrole="provider" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
-                                        class="p-1 text-yellow-300 hover:text-yellow-400">
+                                        class="p-1 text-yellow-300 hover:text-yellow-400" title="تقييم مقدم الخدمة">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
                                 </button>
                             ` : ''}
                             ${isProviderRatingClient ? `
-                                <button data-action="openRatingClientModal" data-targetrole="client" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
-                                        class="p-1 text-yellow-300 hover:text-yellow-400">
+                                <button data-action="openRatingModal" data-targetrole="client" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
+                                        class="p-1 text-yellow-300 hover:text-yellow-400" title="تقييم العميل">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
                                 </button>
                             ` : ''}
@@ -1492,7 +1485,7 @@
             `;
         }
         
-        // === إصلاح 3: صفحة نشر إعلان وظيفة ===
+        // === صفحة نشر إعلان وظيفة ===
         function renderJobPostingPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
@@ -1540,7 +1533,7 @@
             `;
         }
         
-        // === إصلاح 3: صفحة عرض إعلانات الوظائف ===
+        // === صفحة عرض إعلانات الوظائف ===
         async function renderJobListingsPage() {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1604,7 +1597,7 @@
         }
 
 
-        // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
+        // === تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
         function renderBottomNav(activeTab) {
             const activeClass = 'text-white bg-indigo-700';
             const inactiveClass = 'text-indigo-300 hover:text-white';
@@ -1716,7 +1709,7 @@
                 const password = document.getElementById('register-password').value;
                 const name = document.getElementById('register-name').value;
                 const phone = document.getElementById('register-phone').value;
-                const gender = document.querySelector('input[name="gender"]:checked').value; // === إصلاح 3 ===
+                const gender = document.querySelector('input[name="gender"]:checked').value; 
                 const city = document.getElementById('register-city').value;
                 const area = document.getElementById('register-area').value.trim();
                 const role = document.querySelector('input[name="role"]:checked').value;
@@ -1732,7 +1725,7 @@
                 if (!city || !area) {
                     throw new Error('يرجى اختيار المدينة/المركز وإدخال تفاصيل المنطقة.');
                 }
-                if (role === 'provider' && (!jobTitle || jobTitle === '')) {
+                if (role === 'provider' && (!jobTitle || jobTitle === '' || jobTitle === 'اختر...')) {
                     throw new Error('يرجى اختيار الوظيفة لمقدم الخدمة.');
                 }
                 
@@ -1760,7 +1753,7 @@
                     email: dummyEmail, 
                     name: name,
                     phone: phone,
-                    gender: gender, // === إصلاح 3 ===
+                    gender: gender, 
                     addressCity: city, 
                     addressArea: area, 
                     address: `${city}, ${area}`, 
@@ -1771,8 +1764,8 @@
                     createdAt: Timestamp.now(),
                     ratings: [],
                     avgRating: 0,
-                    clientRatings: [], // === إصلاح 3: تقييم العميل ===
-                    clientAvgRating: 0 // === إصلاح 3: تقييم العميل ===
+                    clientRatings: [],
+                    clientAvgRating: 0 
                 };
                 
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, newUserId);
@@ -1817,7 +1810,7 @@
             try {
                 const name = document.getElementById('edit-name').value;
                 const phone = document.getElementById('edit-phone').value;
-                const gender = document.querySelector('input[name="edit-gender"]:checked').value; // === إصلاح 3 ===
+                const gender = document.querySelector('input[name="edit-gender"]:checked').value; 
                 const city = document.getElementById('edit-city').value;
                 const area = document.getElementById('edit-area').value.trim();
                 const photoURL = document.getElementById('photo-base64').value || null; 
@@ -1833,6 +1826,9 @@
                 let jobTitle = userProfile.jobTitle;
                 if (userProfile.role === 'provider') {
                     const jobSelect = document.getElementById('edit-job-select').value;
+                    if (!jobSelect || jobSelect === 'اختر...') {
+                        throw new Error('يرجى اختيار الوظيفة لمقدم الخدمة.');
+                    }
                     jobTitle = jobSelect;
                 }
                 
@@ -1843,7 +1839,7 @@
                 const updates = {
                     name: name,
                     phone: phone,
-                    gender: gender, // === إصلاح 3 ===
+                    gender: gender, 
                     addressCity: city, 
                     addressArea: area, 
                     address: `${city}, ${area}`,
@@ -1970,7 +1966,7 @@
             }
         }
         
-        // === إصلاح 3: إرسال إعلان وظيفة ===
+        // === إرسال إعلان وظيفة ===
         async function handleSubmitJobPost(e) {
             e.preventDefault();
             showLoading('جاري نشر إعلان الوظيفة...');
@@ -2069,7 +2065,7 @@
                     const newRatings = [...filteredRatings, newRating];
                     
                     const totalStars = newRatings.reduce((acc, r) => acc + r.stars, 0);
-                    const newAvgRating = totalStars / newRatings.length;
+                    const newAvgRating = newRatings.length > 0 ? totalStars / newRatings.length : 0;
                     
                     const updates = {};
                     updates[ratingFieldName] = newRatings;
@@ -2156,11 +2152,13 @@
                     e.preventDefault();
                     await handleSubmitJobPost(e);
                     break;
-                case 'openRatingModal': // تقييم مقدم الخدمة
-                    handleOpenRatingModal('provider', targetId, targetName);
+                case 'openRatingModal': 
+                    handleOpenRatingModal(targetRole, targetId, targetName);
                     break;
-                case 'openRatingClientModal': // تقييم العميل === إصلاح 3 ===
-                    handleOpenRatingModal('client', targetId, targetName);
+                case 'manualInstall': // === إصلاح 2: زر التثبيت اليدوي ===
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                    }
                     break;
             }
         });
@@ -2245,15 +2243,7 @@
         });
         
         document.getElementById('install-button')?.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                hideInstallBanner();
-                deferredPrompt.prompt();
-                
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-                
-                deferredPrompt = null;
-            }
+             // تم نقل منطق prompt إلى زر manualInstall لتجنب مشاكل المتصفح
         });
         
         document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
