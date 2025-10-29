@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +10,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght=400;500;600;700&display=swap" rel="stylesheet">
-    
+
+
     <!-- PWA Manifest for installation prompt (إصلاح 2) -->
     <link rel="manifest" href="manifest.json">
-    
+
+
     <style>
         /* استخدام خط Cairo كخط أساسي للمحتوى العربي */
         body {
@@ -39,7 +41,8 @@
             fill: currentColor;
             display: inline-block;
         }
-        
+
+
         /* === تعديل فقاعات الشات === */
         .chat-bubble-sent {
             background-color: #1e40af; /* bg-blue-800 */
@@ -55,7 +58,8 @@
             border-radius: 1.25rem 1.25rem 1.25rem 0; 
             word-wrap: break-word; 
         }
-        
+
+
         /* truncate */
         .truncate-1-line {
             overflow: hidden;
@@ -63,7 +67,8 @@
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 1;
         }
-        
+
+
         /* تقليل التباعدات الافتراضية */
         .main-padding {
             padding: 0.75rem; /* p-3 */
@@ -73,7 +78,8 @@
                 padding: 2rem; 
             }
         }
-        
+
+
         /* === إصلاح 1: تصغير ارتفاع البار العلوي === */
         .app-header {
             padding: 0.5rem 0.75rem; 
@@ -82,12 +88,14 @@
         .welcome-header {
             padding: 0.6rem 1rem; 
         }
-        
+
+
     </style>
 </head>
 <body class="bg-gray-50">
 
-    <!-- PWA Install Prompt Banner -->
+
+    <!-- PWA Install Prompt Banner (إصلاح 2) -->
     <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-800 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
         <div class="flex items-center space-x-3 space-x-reverse">
             <span class="text-lg">🛠️</span>
@@ -97,29 +105,28 @@
             <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
                 &times;
             </button>
-            <button data-action="manualInstall" id="install-button" class="bg-white text-indigo-800 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
+            <button id="install-button" class="bg-white text-indigo-800 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
                 تثبيت
             </button>
         </div>
     </div>
 
 
+
+
     <!-- الحاوية الرئيسية للتطبيق -->
     <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg md:max-w-2xl lg:max-w-4xl">
         <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
     </div>
-    
-    <!-- PWA Install Small Button (إصلاح 2: الموضع فوق زر +) -->
-    <button id="mini-install-button" data-action="manualInstall" class="fixed bottom-[calc(4rem+20px)] right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
+
+
+    <!-- PWA Install Small Button (إصلاح 2) -->
+    <button id="mini-install-button" class="fixed bottom-24 right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
         <span class="text-lg">⬇️</span>
         <span>تثبيت</span>
     </button>
-    
-    <!-- زر + (طلب خدمة جديد) -->
-    <button data-action="navigateTo" data-page="newRequest" 
-        class="fixed bottom-16 right-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-    </button>
+
+
 
 
     <!-- مودال (نافذة منبثقة) عامة -->
@@ -128,6 +135,8 @@
             <!-- محتوى المودال سيتم حقنه هنا -->
         </div>
     </div>
+
+
 
 
     <!-- ============================================= -->
@@ -163,6 +172,8 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 
+
+
         // 2. إعدادات Firebase (من المستخدم)
         const firebaseConfig = {
           apiKey: "AIzaSyA5OiTcX95GBgiJoDHnY3y7N23o-j8hsQ8",
@@ -175,94 +186,123 @@
         };
 
 
+
+
         // 3. تهيئة Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
         
-        // 4. متغيرات الحالة العامة
+        // 4. تهيئة الـ Service Worker (إصلاح PWA)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+
+        // 5. متغيرات الحالة العامة
         let userId = null;
         let userProfile = null;
         let currentUnsubscribe = null; 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'services-cef84'; 
-        
+
+
         let isRegistering = false; 
         let allUsers = []; 
-        
+
+
         let navigationHistory = [];
         let deferredPrompt = null; // PWA variable
         let isBannerShown = false; // PWA Banner control
 
 
-        // === إصلاح 1: تبسيط وتوسيع قائمة الخدمات (الوظائف) ===
+
+
+        // === إصلاح 2: توسيع قائمة الخدمات (الوظائف) ===
+        // === إضافة: محاسب عادي، مدرس عادي، مهندس عادي ===
         const SERVICES_LIST = [
             { name: 'سباك', icon: '🔧' },
             { name: 'كهربائي منازل', icon: '💡' },
-            { name: 'نجار', icon: '🪚' },
-            { name: 'فني تكييف', icon: '❄️' },
-            { name: 'فني غسالات', icon: '👚' },
-            { name: 'فني ثلاجات', icon: '🧊' },
-            { name: 'فني أجهزة كهربائية', icon: '🔌' },
-            { name: 'نقاش', icon: '🎨' },
-            { name: 'مهندس مدني', icon: '🏗️' },
-            { name: 'مهندس معماري', icon: '📐' },
+            { name: 'نجار موبيليا', icon: '🪚' },
+            { name: 'فني تبريد وتكييف', icon: '❄️' },
+            { name: 'فني صيانة غسالات', icon: '🧺' },
+            { name: 'فني صيانة ثلاجات', icon: '🧊' },
+            { name: 'فني صيانة أجهزة كهربائية', icon: '🔌' },
+            { name: 'نقاش ودهانات', icon: '🎨' },
+            { name: 'مهندس مدني (تنفيذ)', icon: '🏗️' },
+            { name: 'مهندس معماري (تصميم)', icon: '📐' },
             { name: 'مهندس شبكات', icon: '📶' },
             { name: 'مهندس برمجيات', icon: '💻' },
-            { name: 'محامي', icon: '⚖️' },
-            { name: 'طبيب', icon: '⚕️' },
-            { name: 'ممرض', icon: '🩺' },
-            { name: 'مدرس', icon: '📚' },
-            { name: 'محاسب', icon: '🧾' },
-            { name: 'صيانة هواتف', icon: '📱' },
-            { name: 'فني دش', icon: '📡' },
+            { name: 'مهندس زراعي', icon: '🌾' },
+            { name: 'مهندس عادي', icon: '👷' }, // <--- جديد
+            { name: 'محامي (قضايا مدنية)', icon: '⚖️' },
+            { name: 'محامي (قضايا أسرية)', icon: '📜' },
+            { name: 'طبيب بشري', icon: '⚕️' },
+            { name: 'ممرض منزلي', icon: '🩺' },
+            { name: 'مدرس خصوصي (لغة عربية)', icon: '✍️' },
+            { name: 'مدرس خصوصي (علوم/رياضيات)', icon: '🧠' },
+            { name: 'مدرس عادي', icon: '✏️' }, // <--- جديد
+            { name: 'محاسب قانوني', icon: '🧾' },
+            { name: 'محاسب شركات', icon: '🧮' },
+            { name: 'محاسب تكاليف', icon: '💰' },
+            { name: 'محاسب عادي', icon: '📈' }, // <--- جديد
+            { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
+            { name: 'تركيب دش وستالايت', icon: '📡' },
             { name: 'عامل بناء', icon: '🧱' },
             { name: 'مبيض محارة', icon: '⬜' },
-            { name: 'مركب سيراميك', icon: '🔨' },
-            { name: 'حداد', icon: '🔗' },
-            { name: 'فني ألوميتال', icon: '🪟' },
-            { name: 'فني كاميرات', icon: '📹' },
+            { name: 'مركب سيراميك ورخام', icon: '🔨' },
+            { name: 'حداد مسلح', icon: '🔗' },
+            { name: 'حداد كريتال', icon: '🛡️' },
+            { name: 'ألوميتال وزجاج', icon: '🪟' },
+            { name: 'فني كاميرات مراقبة', icon: '📹' },
             { name: 'فني مصاعد', icon: '⬆️' },
-            { name: 'مصور', icon: '📸' },
-            { name: 'خياط', icon: '🧵' },
-            { name: 'طباخ', icon: '🧑‍🍳' },
-            { name: 'تنظيف منازل', icon: '🧹' },
+            { name: 'مصور فوتوغرافي', icon: '📸' },
+            { name: 'مصور فيديو', icon: '🎥' },
+            { name: 'خياط / ترزي (ملابس رجالي)', icon: '👔' },
+            { name: 'خياط / ترزي (ملابس حريمي)', icon: '👗' },
+            { name: 'طباخ مناسبات', icon: '🧑‍🍳' },
+            { name: 'شيف مطعم', icon: '🍽️' },
+            { name: 'تنظيف منازل ومكاتب', icon: '🧹' },
             { name: 'مربية أطفال', icon: '👶' },
             { name: 'جليس مسنين', icon: '🧓' },
-            { name: 'سائق', icon: '🚗' },
+            { name: 'سائق خاص', icon: '🚗' },
             { name: 'نقل عفش', icon: '🚚' },
-            { name: 'مهندس زراعي', icon: '🌾' },
-            { name: 'سكرتير', icon: '📁' },
+            { name: 'مدير مكتب/سكرتير', icon: '📁' },
             { name: 'مندوب مبيعات', icon: '💼' },
-            { name: 'أخصائي تسويق', icon: '📈' },
+            { name: 'أخصائي تسويق رقمي', icon: '📈' },
             { name: 'مترجم', icon: '🌐' },
             { name: 'مدرب رياضي', icon: '💪' },
-            { name: 'مصفف شعر', icon: '💇' },
-            { name: 'ميكانيكي سيارات', icon: '⚙️' },
-            { name: 'كهربائي سيارات', icon: '🔋' },
-            { name: 'صيدلي', icon: '💊' },
+            { name: 'مصفف شعر (كوافير)', icon: '💇' },
+            { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
+            { name: 'فني كهرباء سيارات', icon: '🔋' },
+            { name: 'صيادلي', icon: '💊' },
             { name: 'موظف استقبال', icon: '🛎️' },
             { name: 'أمين مخزن', icon: '📦' },
-            { name: 'خدمات سياحية', icon: '✈️' },
+            { name: 'خدمات سياحية وحجز', icon: '✈️' },
             { name: 'معلم دهان سيارات', icon: '🖌️' },
+            { name: 'فني غلايات', icon: '🔥' },
             { name: 'مراقب جودة', icon: '🔎' },
             { name: 'حارس أمن', icon: '🔒' },
-            { name: 'بائع', icon: '🛒' },
+            { name: 'بائع/كاشير', icon: '🛒' },
             { name: 'مسعف', icon: '🩹' },
-            { name: 'مذيع', icon: '🎤' },
+            { name: 'مذيع/معلق صوتي', icon: '🎤' },
             { name: 'مدرب كلاب', icon: '🐕' },
-            { name: 'مزارع', icon: '🌿' },
-            { name: 'فني إنتاج', icon: '🏭' },
+            { name: 'مزارع/جنايني', icon: '🌿' },
+            { name: 'فني ميكانيكا إنتاج', icon: '🏭' },
+            { name: 'فني طباعة وتصوير', icon: '🖨️' },
             { name: 'فني مختبرات', icon: '🔬' },
-            { name: 'مصمم جرافيك', icon: '🖼️' },
-            { name: 'مونتاج فيديو', icon: '🎬' },
-            { name: 'مكوجي', icon: '♨️' },
-            { name: 'عامل مطبعة', icon: '🖨️' },
-            { name: 'منسق حفلات', icon: '🎉' },
-            { name: 'معلم خباز', icon: '🍞' },
-            { name: 'فني صيانة دراجات', icon: '🚲' },
-            { name: 'أخرى', icon: '👥' },
+            { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
         ];
-        
+
+
         // قائمة مراكز ومدن الشرقية
         const SHARQIA_CITIES = [
             "الزقازيق", "بلبيس", "العاشر من رمضان", "أبو كبير", "فاقوس", "منيا القمح", 
@@ -271,7 +311,9 @@
         ];
 
 
-        // 5. أيقونات SVG 
+
+
+        // 6. أيقونات SVG 
         const ICONS = {
             star: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>`,
             starEmpty: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>`,
@@ -289,7 +331,9 @@
         };
 
 
-        // 6. الحاوية الرئيسية
+
+
+        // 7. الحاوية الرئيسية
         const appContainer = document.getElementById('app');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
@@ -297,17 +341,23 @@
         const miniInstallButton = document.getElementById('mini-install-button');
 
 
-        // 7. وظائف مساعدة (Modal)
+
+
+        // 8. وظائف مساعدة (Modal)
         function showModal(html) {
             modalContent.innerHTML = html;
             modalBackdrop.classList.remove('hidden');
         }
 
 
+
+
         function hideModal() {
             modalBackdrop.classList.add('hidden');
             modalContent.innerHTML = '';
         }
+
+
 
 
         function showLoading(message = 'جاري التحميل...') {
@@ -325,9 +375,13 @@
         }
 
 
+
+
         function hideLoading() {
             hideModal();
         }
+
+
 
 
         function showMessageModal(title, message, isSuccess = true) {
@@ -339,7 +393,8 @@
             `;
             showModal(html);
         }
-        
+
+
         // وظيفة مساعدة لضغط وتحويل الصورة إلى Base64
         function resizeAndConvertImage(file) {
             return new Promise((resolve, reject) => {
@@ -351,6 +406,8 @@
                         const MAX_SIZE = 400; 
                         let width = img.width;
                         let height = img.height;
+
+
 
 
                         if (width > height) {
@@ -366,11 +423,15 @@
                         }
 
 
+
+
                         const canvas = document.createElement('canvas');
                         canvas.width = width;
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
+
+
 
 
                         // التحويل إلى Base64 مع ضغط الجودة
@@ -382,11 +443,13 @@
                 reader.onerror = reject;
             });
         }
-        
+
+
         // PWA Banner Controller (إصلاح 2)
         function showInstallBanner() {
             const displayMode = getDisplayMode();
             const isInstalled = displayMode !== 'browser';
+
 
             if (deferredPrompt && !isBannerShown && !isInstalled) {
                 installBanner.classList.remove('hidden');
@@ -395,12 +458,14 @@
                     installBanner.classList.remove('-translate-y-full');
                 }, 100); 
                 isBannerShown = true;
-                
+
+
                 // إخفاء الإشعار بعد 12 ثانية تلقائياً
                 setTimeout(hideInstallBanner, 12000); 
             }
         }
-        
+
+
         function hideInstallBanner() {
             if (isBannerShown) {
                 installBanner.classList.add('-translate-y-full');
@@ -411,11 +476,13 @@
                 isBannerShown = false;
             }
         }
-        
+
+
         // PWA Mini Button Controller (إصلاح 2)
         function toggleMiniInstallButton(show) {
             const displayMode = getDisplayMode();
             const isInstalled = displayMode !== 'browser';
+
 
             if (show && deferredPrompt && !isInstalled) {
                  miniInstallButton.classList.remove('hidden');
@@ -423,6 +490,7 @@
                  miniInstallButton.classList.add('hidden');
             }
         }
+
 
         function getDisplayMode() {
             if (window.matchMedia('(display-mode: standalone)').matches) {
@@ -436,7 +504,9 @@
         }
 
 
-        // 8. وظائف التوجيه (Routing) 
+
+
+        // 9. وظائف التوجيه (Routing) 
         function navigateTo(page, params = {}) {
             console.log(`Navigating to: ${page}`, params);
             if (currentUnsubscribe) {
@@ -444,7 +514,8 @@
                 currentUnsubscribe = null;
                 console.log('Unsubscribed from real-time listener.');
             }
-            
+
+
             const newRoute = { page, params };
             if (page !== 'loading' && page !== 'auth' && page !== 'register') {
                 const lastRoute = navigationHistory[navigationHistory.length - 1];
@@ -458,12 +529,16 @@
                 navigationHistory = [];
                 navigationHistory.push(newRoute);
             }
-            
+
+
             appContainer.innerHTML = ''; 
             window.scrollTo(0, 0);
-            
+
+
             // إظهار زر التثبيت الصغير في الصفحة الرئيسية فقط (إصلاح 2)
             toggleMiniInstallButton(page === 'clientHome' || page === 'providerHome');
+
+
 
 
             switch (page) {
@@ -515,7 +590,11 @@
         }
 
 
-        // 9. وظائف عرض الصفحات (Render Functions)
+
+
+        // 10. وظائف عرض الصفحات (Render Functions)
+
+
 
 
         function renderLoadingScreen() {
@@ -531,6 +610,8 @@
                 </div>
             `;
         }
+
+
 
 
         function renderAuthPage() {
@@ -572,14 +653,19 @@
         }
 
 
+
+
         function renderRegisterPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
-            
+
+
             const cityOptions = SHARQIA_CITIES.map(city => 
                 `<option value="${city}">${city}</option>`
             ).join('');
+
+
 
 
             appContainer.innerHTML = `
@@ -625,7 +711,7 @@
                             <input type="tel" id="register-phone" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: 01012345678">
                         </div>
                         
-                        <!-- اختيار الجنس -->
+                        <!-- === إصلاح 3: اختيار الجنس === -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700">الجنس</label>
                             <div class="mt-1 flex space-x-4 space-x-reverse">
@@ -639,6 +725,7 @@
                                 </label>
                             </div>
                         </div>
+
 
                         
                         <!-- تقسيم العنوان -->
@@ -693,12 +780,14 @@
                     </form>
                 </div>
             `;
-            
+
+
             // تهيئة مستمع حدث رفع الصورة
             document.getElementById('photo-upload-input').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                
+
+
                 showLoading('جاري معالجة الصورة...');
                 try {
                     const base64Image = await resizeAndConvertImage(file);
@@ -712,7 +801,8 @@
                 }
             });
         }
-        
+
+
         function renderClientHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
                 <div data-action="navigateTo" data-page="category" data-category="${cat.name.toLowerCase()}" 
@@ -721,6 +811,8 @@
                     <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
                 </div>
             `).join('');
+
+
 
 
             appContainer.innerHTML = `
@@ -737,10 +829,17 @@
                         </div>
                     </main>
                     
+                    <button data-action="navigateTo" data-page="newRequest" 
+                            class="fixed bottom-16 left-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
+                        ${ICONS.add}
+                    </button>
+                    
                     ${renderBottomNav('home')}
                 </div>
             `;
         }
+
+
 
 
         // === إصلاح 1: الصفحة الرئيسية لمقدم الخدمة ===
@@ -752,6 +851,7 @@
                     <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
                 </div>
             `).join('');
+
 
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -774,18 +874,27 @@
                         </div>
                     </main>
                     
+                    <button data-action="navigateTo" data-page="newRequest" 
+                            class="fixed bottom-16 left-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
+                        ${ICONS.add}
+                    </button>
+                    
                     ${renderBottomNav('home')}
                 </div>
             `;
-            
+
+
             const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
-            
+
+
             // بحث عن الطلبات التي تتطابق مع وظيفة مقدم الخدمة
             const jobSpecificQuery = query(requestsColRef, where('category', '==', userProfile.jobTitle), orderBy('createdAt', 'desc'));
-            
+
+
             currentUnsubscribe = onSnapshot(jobSpecificQuery, (snapshot) => {
                 const requestsList = document.getElementById('requests-list');
                 const requests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
 
                 if (requests.length === 0) {
                      // إذا لم يجد طلبات لوظيفته، يعرض كل الطلبات المتاحة
@@ -801,6 +910,7 @@
                 console.error("Error fetching requests: ", error);
                 document.getElementById('requests-list').innerHTML = '<p class="text-red-500 p-6 bg-white rounded-lg shadow-sm">حدث خطأ أثناء تحميل الطلبات.</p>';
             });
+
 
             function generateRequestList(requests, emptyMessage = `لا توجد طلبات حالياً لوظيفة ${userProfile.jobTitle || 'غير محددة'}.`) {
                  if (requests.length === 0) {
@@ -831,7 +941,8 @@
                 `).join('');
             }
         }
-        
+
+
         async function renderCategoryPage(categoryName) {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -851,17 +962,22 @@
                     ${renderBottomNav('home')}
                 </div>
             `;
-            
+
+
             const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
             const allProvidersQuery = query(usersColRef, where('role', '==', 'provider'));
 
+
             currentUnsubscribe = onSnapshot(allProvidersQuery, (snapshot) => {
                 const providersListEl = document.getElementById('providers-list');
-                
+
+
                 // === البحث باستخدام اسم الوظيفة في حقل jobTitleSearch ===
                 const providers = snapshot.docs
                     .map(doc => ({ id: doc.id, ...doc.data() }))
                     .filter(p => !categoryName || (p.jobTitle && p.jobTitle.toLowerCase().includes(categoryName))); 
+
+
 
 
                 if (providers.length === 0) {
@@ -869,10 +985,12 @@
                     return;
                 }
 
+
                 providersListEl.innerHTML = providers.map(p => {
                     const avgRating = p.avgRating ? p.avgRating.toFixed(1) : 'جديد';
                     const ratingCount = p.ratings ? p.ratings.length : 0;
-                    
+
+
                     return `
                     <div class="bg-indigo-50 p-3 rounded-lg shadow-sm border border-indigo-200 flex items-center space-x-3 space-x-reverse">
                         <img data-action="navigateTo" data-page="profile" data-uid="${p.uid}"
@@ -902,13 +1020,15 @@
                 document.getElementById('providers-list').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل مقدمي الخدمات.</p>';
             });
         }
-        
+
+
         async function renderDirectoryPage() {
             function renderUserList(users) {
                 const listEl = document.getElementById('directory-list');
                 const searchInput = document.getElementById('search-directory');
                 const searchText = searchInput ? searchInput.value.toLowerCase() : '';
-                
+
+
                 const filteredUsers = users.filter(user => 
                     user.name.toLowerCase().includes(searchText) || 
                     (user.jobTitle && user.jobTitle.toLowerCase().includes(searchText)) ||
@@ -916,11 +1036,14 @@
                 );
 
 
+
+
                 if (filteredUsers.length === 0) {
                     listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لم يتم العثور على مستخدمين مطابقين لنتائج البحث.</p>';
                     return;
                 }
-                
+
+
                 listEl.innerHTML = filteredUsers.map(user => {
                     const userRole = user.role === 'provider' ? (user.jobTitle || 'مقدم خدمة') : 'عميل';
                     const userColor = user.role === 'provider' ? 'text-indigo-600' : 'text-green-600';
@@ -938,7 +1061,8 @@
                     `
                 }).join('');
             }
-            
+
+
             appContainer.innerHTML = `
                 <div class="pb-24">
                     <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10">
@@ -955,9 +1079,11 @@
                     ${renderBottomNav('directory')}
                 </div>
             `;
-            
+
+
             const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
-            
+
+
             const unsubscribeDirectory = onSnapshot(usersColRef, (snapshot) => {
                 allUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderUserList(allUsers); 
@@ -967,13 +1093,19 @@
             });
 
 
+
+
             currentUnsubscribe = unsubscribeDirectory;
+
+
 
 
             document.getElementById('search-directory').addEventListener('input', () => {
                 renderUserList(allUsers);
             });
         }
+
+
 
 
         async function renderChatListPage() {
@@ -992,27 +1124,32 @@
                     ${renderBottomNav('chatList')}
                 </div>
             `;
-            
+
+
             const chatsColRef = collection(db, `artifacts/${appId}/public/data/chats`);
             const q = query(chatsColRef, where('users', 'array-contains', userId));
-            
+
+
             currentUnsubscribe = onSnapshot(q, (snapshot) => {
                 const listEl = document.getElementById('chat-list-container');
                 if (snapshot.empty) {
                     listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا توجد لديك محادثات حتى الآن.</p>';
                     return;
                 }
-                
+
+
                 const chats = snapshot.docs.map(doc => doc.data());
                 chats.sort((a, b) => b.lastUpdate.toMillis() - a.lastUpdate.toMillis());
-                
+
+
                 listEl.innerHTML = chats.map(chat => {
                     const otherUserId = chat.users.find(uid => uid !== userId);
                     if (!chat.userDetails || !chat.userDetails[otherUserId]) {
                         return ''; 
                     }
                     const otherUser = chat.userDetails[otherUserId];
-                    
+
+
                     return `
                     <div data-action="navigateTo" data-page="chat" data-otheruserid="${otherUserId}"
                          class="bg-indigo-50 p-3 rounded-lg shadow-sm border border-indigo-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-indigo-100 transition-colors">
@@ -1028,12 +1165,15 @@
                 }).join('');
 
 
+
+
             }, (error) => {
                 console.error("Error fetching chat list: ", error);
                 document.getElementById('chat-list-container').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل المحادثات.</p>';
             });
         }
-        
+
+
         async function renderProfilePage(uid) {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1059,26 +1199,32 @@
                     ${renderBottomNav(uid === userId ? 'profile' : '')}
                 </div>
             `;
-            
+
+
             try {
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, uid);
                 const userDoc = await getDoc(userDocRef);
-                
+
+
                 if (!userDoc.exists()) {
                     document.getElementById('profile-content').innerHTML = '<p class="text-red-500">هذا المستخدم غير موجود.</p>';
                     return;
                 }
-                
+
+
                 const profileData = userDoc.data();
-                
+
+
                 const ratings = profileData.ratings || [];
                 const avgRating = profileData.avgRating ? profileData.avgRating.toFixed(1) : 0;
                 const ratingCount = ratings.length;
-                
-                const clientRatings = profileData.clientRatings || []; // === إصلاح 3: تقييم العميل ===
+
+
+                const clientRatings = profileData.clientRatings || [];
                 const clientAvgRating = clientRatings.length > 0 ? (clientRatings.reduce((acc, r) => acc + r.stars, 0) / clientRatings.length).toFixed(1) : 0;
-                const clientRatingCount = clientRatings.length; // === إصلاح 3: تقييم العميل ===
-                
+                const clientRatingCount = clientRatings.length;
+
+
                 const profileContent = document.getElementById('profile-content');
                 profileContent.innerHTML = `
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center">
@@ -1108,7 +1254,7 @@
                                     <span class="text-gray-700 font-medium text-sm">${profileData.username || 'N/A'}</span>
                                 </div>
                             </div>
-                            <!-- عرض الجنس -->
+                            <!-- === عرض الجنس === -->
                             <div class="flex items-start">
                                 <span class="w-5 text-gray-500 mt-1">🚻</span>
                                 <div class="mr-3">
@@ -1132,6 +1278,8 @@
                             </div>
                         </div>
                     </div>
+
+
 
 
                     <!-- تقييم مقدم الخدمة (إذا كان مقدم خدمة) -->
@@ -1192,6 +1340,7 @@
                     </div>
                     ` : ''}
 
+
                     
                     ${uid === userId ? `
                         <button data-action="logout" 
@@ -1201,12 +1350,15 @@
                         </button>
                     ` : ''}
                 `;
-                
+
+
             } catch (error) {
                 console.error("Error fetching profile: ", error);
                 document.getElementById('profile-content').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الملف الشخصي.</p>';
             }
         }
+
+
 
 
         function renderEditProfilePage() {
@@ -1216,15 +1368,20 @@
             }
 
 
+
+
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}" ${userProfile.jobTitle === service.name ? 'selected' : ''}>${service.name}</option>`
             ).join('');
 
-            
+
+
+
             const cityOptions = SHARQIA_CITIES.map(city => 
                 `<option value="${city}" ${userProfile.addressCity === city ? 'selected' : ''}>${city}</option>`
             ).join('');
-            
+
+
             appContainer.innerHTML = `
                 <div class="pb-24">
                     <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
@@ -1252,6 +1409,7 @@
                                 <input type="hidden" id="photo-base64" value="${userProfile.photoURL || ''}">
                             </div>
 
+
                             <hr class="my-3">
                             
                             <div>
@@ -1263,7 +1421,7 @@
                                 <input type="tel" id="edit-phone" value="${userProfile.phone}" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                             </div>
                             
-                            <!-- اختيار الجنس -->
+                            <!-- === إصلاح 3: اختيار الجنس === -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">الجنس</label>
                                 <div class="mt-1 flex space-x-4 space-x-reverse">
@@ -1304,6 +1462,8 @@
                             ` : ''}
 
 
+
+
                             <button type="submit" data-action="editProfile" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                 حفظ التعديلات
                             </button>
@@ -1311,12 +1471,14 @@
                     </main>
                 </div>
             `;
-            
+
+
             // تهيئة مستمع حدث رفع الصورة
             document.getElementById('photo-upload-input').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                
+
+
                 showLoading('جاري معالجة الصورة...');
                 try {
                     const base64Image = await resizeAndConvertImage(file);
@@ -1330,7 +1492,8 @@
                 }
             });
         }
-        
+
+
         async function renderChatPage(otherUserId) {
             let otherUserProfile = null;
             try {
@@ -1346,11 +1509,13 @@
                 appContainer.innerHTML = `<p class="p-4 text-red-500">خطأ: لا يمكن العثور على المستخدم.</p>`;
                 return;
             }
-            
+
+
             // تحديد ما إذا كان يمكن التقييم (مقدم خدمة يُقيّم عميل، أو عميل يُقيّم مقدم خدمة)
             const isProviderRatingClient = userProfile.role === 'provider' && otherUserProfile.role === 'client';
             const isClientRatingProvider = userProfile.role === 'client' && otherUserProfile.role === 'provider';
-            
+
+
             appContainer.innerHTML = `
                 <div class="flex flex-col h-screen max-h-screen"> 
                     <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between space-x-3 space-x-reverse">
@@ -1364,13 +1529,13 @@
                         <div class="flex items-center space-x-2 space-x-reverse">
                             ${isClientRatingProvider ? `
                                 <button data-action="openRatingModal" data-targetrole="provider" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
-                                        class="p-1 text-yellow-300 hover:text-yellow-400" title="تقييم مقدم الخدمة">
+                                        class="p-1 text-yellow-300 hover:text-yellow-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
                                 </button>
                             ` : ''}
                             ${isProviderRatingClient ? `
-                                <button data-action="openRatingModal" data-targetrole="client" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
-                                        class="p-1 text-yellow-300 hover:text-yellow-400" title="تقييم العميل">
+                                <button data-action="openRatingClientModal" data-targetrole="client" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
+                                        class="p-1 text-yellow-300 hover:text-yellow-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
                                 </button>
                             ` : ''}
@@ -1395,27 +1560,33 @@
                     </footer>
                 </div>
             `;
-            
+
+
             const chatRoomId = [userId, otherUserId].sort().join('_');
             const messagesColRef = collection(db, `artifacts/${appId}/public/data/chats/${chatRoomId}/messages`);
-            
+
+
             currentUnsubscribe = onSnapshot(messagesColRef, (snapshot) => {
                 const messagesContainer = document.getElementById('messages-container');
                 const isNearBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight < 50; 
-                
+
+
                 if (snapshot.empty) {
                     messagesContainer.innerHTML = '<p class="text-center text-gray-500 text-sm">ابدأ المحادثة...</p>';
                     return;
                 }
-                
+
+
                 const messages = snapshot.docs.map(doc => doc.data());
                 messages.sort((a, b) => a.createdAt.toMillis() - b.createdAt.toMillis());
-                
+
+
                 messagesContainer.innerHTML = messages.map(msg => {
                     const isSent = msg.senderId === userId;
                     const bubbleClass = isSent ? 'chat-bubble-sent' : 'chat-bubble-received';
                     const alignmentClass = isSent ? 'justify-end' : 'justify-start';
-                    
+
+
                     return `
                         <div class="flex ${alignmentClass}">
                             <div class="${bubbleClass} max-w-[80%] text-sm">
@@ -1427,22 +1598,27 @@
                         </div>
                     `;
                 }).join('');
-                
+
+
                 // التمرير التلقائي إلى الأسفل
                 if (isNearBottom) {
                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 }
-                
+
+
             }, (error) => {
                 console.error("Error fetching messages: ", error);
                 document.getElementById('messages-container').innerHTML = '<p class="text-red-500">حدث خطأ أثناء تحميل الرسائل.</p>';
             });
         }
-        
+
+
         function renderNewRequestPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
+
+
 
 
             appContainer.innerHTML = `
@@ -1484,13 +1660,15 @@
                 </div>
             `;
         }
-        
-        // === صفحة نشر إعلان وظيفة ===
+
+
+        // === إصلاح 3: صفحة نشر إعلان وظيفة ===
         function renderJobPostingPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
             ).join('');
-            
+
+
             appContainer.innerHTML = `
                 <div class="pb-24">
                     <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
@@ -1532,8 +1710,9 @@
                 </div>
             `;
         }
-        
-        // === صفحة عرض إعلانات الوظائف ===
+
+
+        // === إصلاح 3: صفحة عرض إعلانات الوظائف ===
         async function renderJobListingsPage() {
             appContainer.innerHTML = `
                 <div class="pb-24">
@@ -1555,8 +1734,10 @@
                 </div>
             `;
 
+
             const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
             const q = query(jobPostingsColRef, orderBy('createdAt', 'desc'));
+
 
             currentUnsubscribe = onSnapshot(q, (snapshot) => {
                 const listEl = document.getElementById('job-listings-list');
@@ -1564,9 +1745,11 @@
                     listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا توجد إعلانات وظائف حالياً.</p>';
                     return;
                 }
-                
+
+
                 const listings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
+
+
                 listEl.innerHTML = listings.map(job => `
                     <div class="bg-indigo-50 p-4 rounded-lg shadow-md border border-indigo-200">
                         <div class="flex items-center justify-between mb-2">
@@ -1597,11 +1780,14 @@
         }
 
 
-        // === تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
+
+
+        // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
         function renderBottomNav(activeTab) {
             const activeClass = 'text-white bg-indigo-700';
             const inactiveClass = 'text-indigo-300 hover:text-white';
-            
+
+
             return `
                 <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-indigo-800 shadow-lg border-t border-indigo-700 z-20">
                     <div class="flex justify-around items-center h-12">
@@ -1638,7 +1824,8 @@
                 </nav>
             `;
         }
-        
+
+
         function renderStarRating(rating, maxStars = 5, cssClass = 'h-5 w-5') {
             let html = '';
             for (let i = 1; i <= maxStars; i++) {
@@ -1652,7 +1839,11 @@
         }
 
 
-        // 10. وظائف معالجة الأحداث (Event Handlers)
+
+
+        // 11. وظائف معالجة الأحداث (Event Handlers)
+
+
 
 
         async function handleLogin(e) {
@@ -1660,25 +1851,32 @@
             const username = document.getElementById('login-identifier').value.trim(); 
             const password = document.getElementById('login-password').value;
             const errorEl = document.getElementById('login-error');
-            
+
+
             showLoading('جاري تسجيل الدخول...');
             errorEl.classList.add('hidden');
-            
+
+
             try {
                 const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
                 const q = query(usersColRef, where('username', '==', username));
                 const snapshot = await getDocs(q); 
-                
+
+
                 if (snapshot.empty) {
                     throw new Error('اسم المستخدم غير صحيح.');
                 }
-                
+
+
                 const userData = snapshot.docs[0].data();
                 const authEmail = userData.email; 
 
 
+
+
                 await signInWithEmailAndPassword(auth, authEmail, password);
-                
+
+
                 hideLoading();
             } catch (error) {
                 console.error("Login Error: ", error);
@@ -1688,12 +1886,15 @@
                 } else if (error.code === 'auth/invalid-credential') {
                      errorMessage = 'كلمة المرور غير صحيحة.';
                 }
-                
+
+
                 errorEl.textContent = errorMessage;
                 errorEl.classList.remove('hidden');
                 hideLoading();
             }
         }
+
+
 
 
         async function handleRegister(e) {
@@ -1704,20 +1905,24 @@
             errorEl.classList.add('hidden');
 
 
+
+
             try {
                 const username = document.getElementById('register-username').value.trim(); 
                 const password = document.getElementById('register-password').value;
                 const name = document.getElementById('register-name').value;
                 const phone = document.getElementById('register-phone').value;
-                const gender = document.querySelector('input[name="gender"]:checked').value; 
+                const gender = document.querySelector('input[name="gender"]:checked').value; // === إصلاح 3 ===
                 const city = document.getElementById('register-city').value;
                 const area = document.getElementById('register-area').value.trim();
                 const role = document.querySelector('input[name="role"]:checked').value;
                 const photoURL = document.getElementById('photo-base64').value || null; 
-                
+
+
                 const jobSelect = document.getElementById('register-job-select')?.value;
                 const jobTitle = jobSelect;
-                
+
+
                 // التحقق من رقم الهاتف والعنوان
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
                     throw new Error('يرجى إدخال رقم هاتف مصري صحيح مكون من 11 رقم.');
@@ -1725,26 +1930,32 @@
                 if (!city || !area) {
                     throw new Error('يرجى اختيار المدينة/المركز وإدخال تفاصيل المنطقة.');
                 }
-                if (role === 'provider' && (!jobTitle || jobTitle === '' || jobTitle === 'اختر...')) {
+                if (role === 'provider' && (!jobTitle || jobTitle === '')) {
                     throw new Error('يرجى اختيار الوظيفة لمقدم الخدمة.');
                 }
-                
+
+
                 const usersColRef = collection(db, `artifacts/${appId}/public/data/users`);
                 const q = query(usersColRef, where('username', '==', username));
                 const snapshot = await getDocs(q);
                 if (!snapshot.empty) {
                     throw new Error('اسم المستخدم هذا محجوز بالفعل. يرجى اختيار اسم آخر.');
                 }
-                
+
+
                 const dummyEmail = `${username}@zagazig.service`;
                 const userCredential = await createUserWithEmailAndPassword(auth, dummyEmail, password);
                 const newUserId = userCredential.user.uid;
-                
+
+
                 await updateProfile(userCredential.user, {
                     displayName: name,
                 });
 
+
                 const jobTitleSearch = role === 'provider' ? jobTitle.toLowerCase() : null;
+
+
 
 
                 const newUserProfile = {
@@ -1753,7 +1964,7 @@
                     email: dummyEmail, 
                     name: name,
                     phone: phone,
-                    gender: gender, 
+                    gender: gender, // === إصلاح 3 ===
                     addressCity: city, 
                     addressArea: area, 
                     address: `${city}, ${area}`, 
@@ -1764,23 +1975,28 @@
                     createdAt: Timestamp.now(),
                     ratings: [],
                     avgRating: 0,
-                    clientRatings: [],
-                    clientAvgRating: 0 
+                    clientRatings: [], // === إصلاح 3: تقييم العميل ===
+                    clientAvgRating: 0 // === إصلاح 3: تقييم العميل ===
                 };
-                
+
+
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, newUserId);
                 await setDoc(userDocRef, newUserProfile);
-                
+
+
                 userProfile = newUserProfile;
                 userId = newUserId;
                 hideLoading();
                 showMessageModal('تم التسجيل بنجاح', 'أهلاً بك في خدمات الشرقية!', true);
 
 
+
+
                 setTimeout(() => {
                     navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                 }, 1500);
-                
+
+
             } catch (error) {
                 console.error("Register Error: ", error);
                 let displayError = error.message || 'حدث خطأ. يرجى المحاولة مرة أخرى.';
@@ -1791,7 +2007,8 @@
                 } else if (error.code === 'auth/weak-password') {
                     displayError = 'كلمة المرور ضعيفة جداً، يرجى استخدام 6 أحرف أو أكثر.';
                 }
-                
+
+
                 errorEl.textContent = displayError;
                 errorEl.classList.remove('hidden');
                 hideLoading();
@@ -1799,7 +2016,8 @@
                 isRegistering = false; 
             }
         }
-        
+
+
         async function handleEditProfile(e) {
             e.preventDefault();
             showLoading('جاري حفظ التعديلات...');
@@ -1807,13 +2025,17 @@
             errorEl.classList.add('hidden');
 
 
+
+
             try {
                 const name = document.getElementById('edit-name').value;
                 const phone = document.getElementById('edit-phone').value;
-                const gender = document.querySelector('input[name="edit-gender"]:checked').value; 
+                const gender = document.querySelector('input[name="edit-gender"]:checked').value; // === إصلاح 3 ===
                 const city = document.getElementById('edit-city').value;
                 const area = document.getElementById('edit-area').value.trim();
                 const photoURL = document.getElementById('photo-base64').value || null; 
+
+
 
 
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
@@ -1822,24 +2044,25 @@
                 if (!city || !area) {
                     throw new Error('يرجى اختيار المدينة/المركز وإدخال تفاصيل المنطقة.');
                 }
-                
+
+
                 let jobTitle = userProfile.jobTitle;
                 if (userProfile.role === 'provider') {
                     const jobSelect = document.getElementById('edit-job-select').value;
-                    if (!jobSelect || jobSelect === 'اختر...') {
-                        throw new Error('يرجى اختيار الوظيفة لمقدم الخدمة.');
-                    }
                     jobTitle = jobSelect;
                 }
-                
+
+
                 showLoading('جاري تحديث البيانات...');
                 const jobTitleSearch = userProfile.role === 'provider' ? jobTitle.toLowerCase() : null;
+
+
 
 
                 const updates = {
                     name: name,
                     phone: phone,
-                    gender: gender, 
+                    gender: gender, // === إصلاح 3 ===
                     addressCity: city, 
                     addressArea: area, 
                     address: `${city}, ${area}`,
@@ -1847,23 +2070,31 @@
                     jobTitle: userProfile.role === 'provider' ? jobTitle : null,
                     jobTitleSearch: jobTitleSearch,
                 };
-                
+
+
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, userId);
                 await updateDoc(userDocRef, updates);
-                
+
+
                 await updateProfile(auth.currentUser, {
                     displayName: name,
                 });
 
 
+
+
                 userProfile = { ...userProfile, ...updates };
-                
+
+
                 hideLoading();
                 showMessageModal('تم الحفظ بنجاح', 'تم تحديث ملفك الشخصي.', true);
-                
+
+
                 setTimeout(() => {
                     navigateTo('profile', { uid: userId });
                 }, 1500);
+
+
 
 
             } catch (error) {
@@ -1875,6 +2106,8 @@
         }
 
 
+
+
         async function handleLogout() {
             showLoading('جاري تسجيل الخروج...');
             await signOut(auth);
@@ -1883,27 +2116,34 @@
             hideLoading();
             navigateTo('auth');
         }
-        
+
+
         async function handleSendMessage(otherUserId) {
             const input = document.getElementById('message-input');
             const text = input.value.trim();
             if (text === '') return;
-            
+
+
             input.value = '';
-            
+
+
             const chatRoomId = [userId, otherUserId].sort().join('_');
             const messagesColRef = collection(db, `artifacts/${appId}/public/data/chats/${chatRoomId}/messages`);
-            
+
+
             try {
                 await addDoc(messagesColRef, {
                     text: text,
                     senderId: userId,
                     createdAt: Timestamp.now()
                 });
-                
+
+
                 const otherUserDoc = await getDoc(doc(db, `artifacts/${appId}/public/data/users`, otherUserId));
                 if (!otherUserDoc.exists()) { throw new Error("Other user not found"); }
                 const otherUserData = otherUserDoc.data();
+
+
 
 
                 const chatRoomDocRef = doc(db, `artifacts/${appId}/public/data/chats`, chatRoomId);
@@ -1918,27 +2158,32 @@
                     lastUpdate: Timestamp.now()
                 };
                 await setDoc(chatRoomDocRef, chatRoomData, { merge: true });
-                
+
+
             } catch (error) {
                 console.error("Error sending message: ", error);
             }
         }
-        
+
+
         async function handleSubmitRequest(e) {
             e.preventDefault();
             showLoading('جاري نشر الطلب...');
             const errorEl = document.getElementById('request-error');
             errorEl.classList.add('hidden');
-            
+
+
             try {
                 const title = document.getElementById('request-title').value;
                 const category = document.getElementById('request-category').value;
                 const description = document.getElementById('request-description').value;
-                
+
+
                 if (!title || !category || !description) {
                     throw new Error('يرجى ملء جميع الحقول.');
                 }
-                
+
+
                 const requestsColRef = collection(db, `artifacts/${appId}/public/data/serviceRequests`);
                 await addDoc(requestsColRef, {
                     title: title,
@@ -1950,14 +2195,17 @@
                     status: 'open',
                     createdAt: Timestamp.now()
                 });
-                
+
+
                 hideLoading();
                 showMessageModal('تم نشر الطلب', 'يمكن لمقدمي الخدمات الآن رؤية طلبك والتواصل معك.', true);
-                
+
+
                 setTimeout(() => {
                     navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                 }, 1500);
-                
+
+
             } catch (error) {
                 console.error("Error submitting request: ", error);
                 errorEl.textContent = error.message || 'حدث خطأ أثناء نشر الطلب.';
@@ -1965,23 +2213,27 @@
                 hideLoading();
             }
         }
-        
-        // === إرسال إعلان وظيفة ===
+
+
+        // === إصلاح 3: إرسال إعلان وظيفة ===
         async function handleSubmitJobPost(e) {
             e.preventDefault();
             showLoading('جاري نشر إعلان الوظيفة...');
             const errorEl = document.getElementById('job-post-error');
             errorEl.classList.add('hidden');
-            
+
+
             try {
                 const title = document.getElementById('job-title').value;
                 const category = document.getElementById('job-category').value;
                 const details = document.getElementById('job-details').value;
-                
+
+
                 if (!title || !category || !details) {
                     throw new Error('يرجى ملء جميع الحقول.');
                 }
-                
+
+
                 const jobPostingsColRef = collection(db, `artifacts/${appId}/public/data/jobPostings`);
                 await addDoc(jobPostingsColRef, {
                     title: title,
@@ -1992,14 +2244,17 @@
                     posterPhoto: userProfile.photoURL,
                     createdAt: Timestamp.now()
                 });
-                
+
+
                 hideLoading();
                 showMessageModal('تم نشر الإعلان', 'تم نشر إعلان الوظيفة بنجاح.', true);
-                
+
+
                 setTimeout(() => {
                     navigateTo('jobListings');
                 }, 1500);
-                
+
+
             } catch (error) {
                 console.error("Error submitting job post: ", error);
                 errorEl.textContent = error.message || 'حدث خطأ أثناء نشر الإعلان.';
@@ -2007,7 +2262,8 @@
                 hideLoading();
             }
         }
-        
+
+
         function handleOpenRatingModal(targetRole, targetId, targetName) {
             const modalHtml = `
                 <h2 class="text-xl font-semibold text-center mb-4">تقييم ${targetName} (${targetRole === 'provider' ? 'مقدم خدمة' : 'عميل'})</h2>
@@ -2027,34 +2283,41 @@
             `;
             showModal(modalHtml);
         }
-        
+
+
         // === توحيد دالة إرسال التقييم للمقدم والعميل (إصلاح 3) ===
         async function handleSubmitRating(targetId, targetRole) {
             const stars = parseInt(document.getElementById('rating-value').value);
             const comment = document.getElementById('rating-comment').value.trim();
-            
+
+
             if (stars === 0) {
                 showMessageModal('خطأ', 'يرجى اختيار عدد النجوم لتقييم المستخدم.', false);
                 return;
             }
-            
+
+
             showLoading('جاري إرسال التقييم...');
-            
+
+
             try {
                 const targetDocRef = doc(db, `artifacts/${appId}/public/data/users`, targetId);
                 const ratingFieldName = targetRole === 'provider' ? 'ratings' : 'clientRatings';
                 const avgRatingFieldName = targetRole === 'provider' ? 'avgRating' : 'clientAvgRating';
-                
+
+
                 await runTransaction(db, async (transaction) => {
                     const targetDoc = await transaction.get(targetDocRef);
                     if (!targetDoc.exists()) {
                         throw "Target user document does not exist!";
                     }
-                    
+
+
                     const data = targetDoc.data();
                     const oldRatings = data[ratingFieldName] || [];
                     const filteredRatings = oldRatings.filter(r => r.by !== userId);
-                    
+
+
                     const newRating = {
                         by: userId,
                         byName: userProfile.name,
@@ -2063,20 +2326,26 @@
                         createdAt: Timestamp.now()
                     };
                     const newRatings = [...filteredRatings, newRating];
-                    
+
+
                     const totalStars = newRatings.reduce((acc, r) => acc + r.stars, 0);
                     const newAvgRating = newRatings.length > 0 ? totalStars / newRatings.length : 0;
-                    
+
+
                     const updates = {};
                     updates[ratingFieldName] = newRatings;
                     updates[avgRatingFieldName] = newAvgRating;
-                    
+
+
                     transaction.update(targetDocRef, updates);
                 });
-                
+
+
                 hideLoading();
                 hideModal();
                 showMessageModal('نجاح', 'شكراً لتقييمك!', true);
+
+
 
 
             } catch (error) {
@@ -2087,10 +2356,14 @@
         }
 
 
-        // 11. Event Delegation (المستمع الرئيسي للأحداث)
+
+
+        // 12. Event Delegation (المستمع الرئيسي للأحداث)
         appContainer.addEventListener('click', async (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
+
+
 
 
             const action = target.dataset.action;
@@ -2103,6 +2376,8 @@
             const targetRole = target.dataset.targetrole;
 
 
+
+
             switch (action) {
                 case 'navigateTo':
                     if (page === 'profile') navigateTo(page, { uid });
@@ -2111,7 +2386,8 @@
                     else if (page === 'home') navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                     else navigateTo(page);
                     break;
-                
+
+
                 case 'goBack':
                     if (navigationHistory.length > 1) {
                         navigationHistory.pop(); 
@@ -2124,7 +2400,8 @@
                          navigateTo('auth');
                     }
                     break;
-                    
+
+
                 case 'login':
                     e.preventDefault();
                     await handleLogin(e); 
@@ -2152,23 +2429,24 @@
                     e.preventDefault();
                     await handleSubmitJobPost(e);
                     break;
-                case 'openRatingModal': 
-                    handleOpenRatingModal(targetRole, targetId, targetName);
+                case 'openRatingModal': // تقييم مقدم الخدمة
+                    handleOpenRatingModal('provider', targetId, targetName);
                     break;
-                case 'manualInstall': // === إصلاح 2: زر التثبيت اليدوي ===
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                    }
+                case 'openRatingClientModal': // تقييم العميل === إصلاح 3 ===
+                    handleOpenRatingModal('client', targetId, targetName);
                     break;
             }
         });
-        
+
+
         modalBackdrop.addEventListener('click', (e) => {
             const target = e.target.closest('[data-action]');
             if (!target && e.target === modalBackdrop) {
                 return;
             }
             if(!target) return;
+
+
 
 
             const action = target.dataset.action;
@@ -2197,7 +2475,8 @@
                     break;
             }
         });
-        
+
+
         // === حدث خاص لزر التثبيت الصغير (إصلاح 2) ===
         miniInstallButton.addEventListener('click', async () => {
              if (deferredPrompt) {
@@ -2209,6 +2488,8 @@
                 deferredPrompt = null;
             }
         });
+
+
 
 
         appContainer.addEventListener('change', (e) => {
@@ -2223,11 +2504,14 @@
         });
 
 
+
+
         appContainer.addEventListener('submit', (e) => {
             e.preventDefault();
         });
-        
-        // 12. PWA Logic (إصلاح 2)
+
+
+        // 13. PWA Logic (إصلاح 2)
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             deferredPrompt = e; 
@@ -2236,46 +2520,68 @@
             }
             console.log("PWA install prompt deferred.");
         });
-        
+
+
         window.addEventListener('appinstalled', () => {
              toggleMiniInstallButton(false);
              hideInstallBanner();
         });
-        
+
+
         document.getElementById('install-button')?.addEventListener('click', async () => {
-             // تم نقل منطق prompt إلى زر manualInstall لتجنب مشاكل المتصفح
+            if (deferredPrompt) {
+                hideInstallBanner();
+                deferredPrompt.prompt();
+
+
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+
+
+                deferredPrompt = null;
+            }
         });
-        
+
+
         document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
-        
-        // 13. نقطة البداية الرئيسية
+
+
+        // 14. نقطة البداية الرئيسية
         window.onload = () => {
             navigateTo('loading');
 
 
+
+
             onAuthStateChanged(auth, async (user) => {
-                
+
+
                 if (isRegistering) {
                     console.log('Registration in progress, onAuthStateChanged will wait.');
                     return; 
                 }
-                
+
+
                 if (user) {
                     console.log('User is signed in:', user.uid);
                     userId = user.uid;
-                    
+
+
                     const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, userId);
                     const userDoc = await getDoc(userDocRef);
-                    
+
+
                     if (userDoc.exists()) {
                         userProfile = userDoc.data();
                         console.log('User profile found:', userProfile);
-                        
+
+
                         // إظهار زر التثبيت الصغير عند تسجيل الدخول
                         if (getDisplayMode() === 'browser') {
                             toggleMiniInstallButton(true);
                         }
-                        
+
+
                         // إعادة التوجيه للصفحة المناسبة
                         if(navigationHistory.length <= 1 || navigationHistory[navigationHistory.length - 1].page === 'auth' || navigationHistory[navigationHistory.length - 1].page === 'register') {
                             navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
@@ -2297,6 +2603,8 @@
             });
 
 
+
+
             (async () => {
                 try {
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -2313,10 +2621,14 @@
         };
 
 
+
+
     </script>
     <!-- ============================================= -->
     <!-- ==== نهاية كود جافاسكريبت و Firebase ===== -->
     <!-- ============================================= -->
+
+
 
 
 </body>
