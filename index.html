@@ -11,46 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ============================================= -->
-    <!-- ==== بداية إعدادات PWA المدمجة ==== -->
-    <!-- ============================================= -->
-
-    <!-- 1. لون شريط العنوان في المتصفح -->
-    <meta name="theme-color" content="#1e40af">
-
-    <!-- 2. ملف Manifest المدمج -->
-    <link rel="manifest" href='data:application/manifest+json,{
-        "name": "خدمات الشرقية",
-        "short_name": "خدمات الشرقية",
-        "description": "مستقبل مشرق",
-        "start_url": "/",
-        "display": "standalone",
-        "background_color": "#ffffff",
-        "theme_color": "#1e40af",
-        "icons": [
-            {
-            "src": "https://placehold.co/192x192/1e40af/ffffff?text=shehab",
-            "sizes": "192x192",
-            "type": "image/png"
-            },
-            {
-            "src": "https://placehold.co/512x512/1e40af/ffffff?text=shehab",
-            "sizes": "512x512",
-            "type": "image/png"
-            },
-            {
-            "src": "https://placehold.co/512x512/1e40af/ffffff?text=shehab",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-            }
-        ]
-    }'>
-    
-    <!-- ============================================= -->
-    <!-- ==== نهاية إعدادات PWA المدمجة ==== -->
-    <!-- ============================================= -->
-
     <style>
         /* استخدام خط Cairo كخط أساسي للمحتوى العربي */
         body {
@@ -119,50 +79,14 @@
         .welcome-header {
             padding: 0.6rem 1rem; 
         }
-
-        /* PWA Icon Placeholder */
-        .pwa-icon-text {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 1.5rem;
-            height: 1.5rem;
-            border-radius: 50%;
-            background-color: #fff;
-            color: #1e40af;
-            font-weight: bold;
-            font-size: 0.75rem;
-        }
     </style>
 </head>
 <body class="bg-gray-50">
-
-    <!-- PWA Install Prompt Banner -->
-    <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-800 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
-        <div class="flex items-center space-x-3 space-x-reverse">
-            <span class="pwa-icon-text">Sh</span>
-            <p class="text-xs font-medium">ثبّت "مستقبل الشرقية" لتجربة تطبيق كاملة.</p>
-        </div>
-        <div class="flex items-center space-x-2 space-x-reverse">
-            <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
-                &times;
-            </button>
-            <button id="install-button" class="bg-white text-indigo-800 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
-                تثبيت
-            </button>
-        </div>
-    </div>
 
     <!-- الحاوية الرئيسية للتطبيق -->
     <div id="app" class="max-w-lg mx-auto min-h-screen bg-white shadow-lg md:max-w-2xl lg:max-w-4xl">
         <!-- سيتم حقن المحتوى هنا بواسطة جافاسكريبت -->
     </div>
-
-    <!-- PWA Install Small Button -->
-    <button id="mini-install-button" class="fixed bottom-24 right-4 bg-red-600 text-white w-14 h-14 rounded-full shadow-lg flex flex-col items-center justify-center z-30 hover:bg-red-700 transition-colors text-xs p-1 hidden">
-        <span class="text-lg">⬇️</span>
-        <span>تثبيت</span>
-    </button>
 
     <!-- مودال (نافذة منبثقة) عامة -->
     <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden flex items-center justify-center p-4">
@@ -229,8 +153,6 @@
         let allUsers = []; 
 
         let navigationHistory = [];
-        let deferredPrompt = null; // PWA variable
-        let isBannerShown = false; // PWA Banner control
 
         // === تحديث قائمة الخدمات (لأكثر من 100 مهنة وتعديل الصياغة) ===
         const SERVICES_LIST = [
@@ -392,8 +314,6 @@
         const appContainer = document.getElementById('app');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
-        const installBanner = document.getElementById('install-banner');
-        const miniInstallButton = document.getElementById('mini-install-button');
 
         // 7. وظائف مساعدة (Modal)
         function showModal(html) {
@@ -474,126 +394,6 @@
             });
         }
 
-        // PWA Banner Controller (تم تحديث المنطق)
-        function showInstallBanner() {
-            const displayMode = getDisplayMode();
-            // التحقق من أن التطبيق غير مثبت وأن هناك prompt متاح
-            const isInstalled = displayMode !== 'browser'; 
-
-            if (deferredPrompt && !isBannerShown && !isInstalled) {
-                installBanner.classList.remove('hidden');
-                installBanner.classList.add('flex');
-                setTimeout(() => {
-                    installBanner.classList.remove('-translate-y-full');
-                }, 100); 
-                isBannerShown = true;
-
-                // إخفاء الإشعار بعد 12 ثانية تلقائياً
-                setTimeout(hideInstallBanner, 12000); 
-            }
-        }
-
-        function hideInstallBanner() {
-            if (isBannerShown) {
-                installBanner.classList.add('-translate-y-full');
-                setTimeout(() => {
-                    installBanner.classList.add('hidden');
-                    installBanner.classList.remove('flex');
-                }, 300); 
-                isBannerShown = false;
-            }
-        }
-
-        // PWA Mini Button Controller (تم تحديث المنطق)
-        function toggleMiniInstallButton(show) {
-            const displayMode = getDisplayMode();
-            const isInstalled = displayMode !== 'browser';
-
-            if (show && deferredPrompt && !isInstalled) {
-                 miniInstallButton.classList.remove('hidden');
-            } else {
-                 miniInstallButton.classList.add('hidden');
-            }
-        }
-
-        function getDisplayMode() {
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                return 'standalone';
-            } else if (document.referrer.includes('android-app://')) {
-                return 'twa';
-            } else if (navigator.standalone) {
-                return 'ios-standalone';
-            }
-            return 'browser';
-        }
-
-        // =============================================
-        // ==== بداية تسجيل Service Worker المدمج ====
-        // =============================================
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'sharqia-services-v1';
-                const urlsToCache = [
-                '/',
-                'https://placehold.co/512x512/1e40af/ffffff?text=shehab' // Cache the main icon
-                ];
-
-                self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME)
-                        .then(cache => {
-                            console.log('Opened cache');
-                            return cache.addAll(urlsToCache);
-                        })
-                    );
-                });
-
-                self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request)
-                        .then(response => {
-                            if (response) {
-                                return response;
-                            }
-                            return fetch(event.request);
-                        })
-                    );
-                });
-
-                self.addEventListener('activate', event => {
-                    const cacheWhitelist = [CACHE_NAME];
-                    event.waitUntil(
-                        caches.keys().then(cacheNames => {
-                        return Promise.all(
-                            cacheNames.map(cacheName => {
-                            if (cacheWhitelist.indexOf(cacheName) === -1) {
-                                return caches.delete(cacheName);
-                            }
-                            })
-                        );
-                        })
-                    );
-                });
-            `;
-            
-            // Create a blob from the SW code
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-
-            // Register the service worker
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register(swUrl)
-                    .then(registration => {
-                        console.log('Inline SW registered: ', registration);
-                    }).catch(registrationError => {
-                        console.log('Inline SW registration failed: ', registrationError);
-                    });
-            });
-        }
-        // =============================================
-        // ==== نهاية تسجيل Service Worker المدمج ====
-        // =============================================
-
         // 8. وظائف التوجيه (Routing) 
         function navigateTo(page, params = {}) {
             console.log(`Navigating to: ${page}`, params);
@@ -619,10 +419,6 @@
 
             appContainer.innerHTML = ''; 
             window.scrollTo(0, 0);
-
-            // === تم الحذف ===
-            // تم حذف السطر الذي كان يتحكم في زر التثبيت الصغير من هنا
-            // ليتم التحكم به فقط من خلال أحداث PWA
 
             // تحديث عنوان الصفحة
             document.title = getPageTitle(page);
@@ -2345,54 +2141,6 @@
             }
         });
 
-        // === حدث خاص لزر التثبيت الصغير (إصلاح 2) ===
-        miniInstallButton.addEventListener('click', async () => {
-             if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                     toggleMiniInstallButton(false);
-                }
-                deferredPrompt = null;
-            }
-        });
-
-        // PWA: إغلاق البانر عند الضغط على زر الإغلاق
-        document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
-
-        // PWA: محاولة التثبيت عند الضغط على زر التثبيت في البانر
-        document.getElementById('install-button')?.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                hideInstallBanner();
-                deferredPrompt.prompt();
-
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-
-                deferredPrompt = null;
-            }
-        });
-
-        // =============================================
-        // ==== بداية التعديلات الرئيسية لمشكلة التثبيت ====
-        // =============================================
-
-        // 1. تعديل: هذا الحدث سيقوم الآن بإظهار إشعار التثبيت دائماً
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); 
-            deferredPrompt = e; 
-            console.log("PWA install prompt deferred.");
-            // إظهار البانر الرئيسي فوراً
-            showInstallBanner();
-            // إظهار الزر الصغير كخيار دائم
-            toggleMiniInstallButton(true);
-        });
-
-        window.addEventListener('appinstalled', () => {
-             toggleMiniInstallButton(false);
-             hideInstallBanner();
-        });
-
         appContainer.addEventListener('change', (e) => {
             if (e.target.name === 'role') {
                 const jobField = document.getElementById('job-title-field');
@@ -2429,9 +2177,6 @@
                     if (userDoc.exists()) {
                         userProfile = userDoc.data();
                         console.log('User profile found:', userProfile);
-
-                        // 2. تعديل: التأكد من إظهار زر التثبيت عند تسجيل الدخول إذا كان متاحاً
-                        toggleMiniInstallButton(true);
                         
                         // إعادة التوجيه للصفحة المناسبة
                         if(navigationHistory.length <= 1 || navigationHistory[navigationHistory.length - 1].page === 'auth' || navigationHistory[navigationHistory.length - 1].page === 'register') {
@@ -2448,8 +2193,6 @@
                     console.log('User is signed out.');
                     userId = null;
                     userProfile = null;
-                    // 3. تعديل: عدم إخفاء زر التثبيت عند تسجيل الخروج
-                    // toggleMiniInstallButton(false); // <-- تم تعطيل هذا السطر
                     navigateTo('auth');
                 }
             });
@@ -2468,9 +2211,6 @@
                 }
             })();
         };
-        // =============================================
-        // ==== نهاية التعديلات الرئيسية لمشكلة التثبيت ====
-        // =============================================
 
     </script>
     <!-- ============================================= -->
