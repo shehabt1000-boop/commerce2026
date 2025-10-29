@@ -193,22 +193,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        
-        // 4. تهيئة الـ Service Worker (إصلاح PWA)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
-        }
 
-
-        // 5. متغيرات الحالة العامة
+        // 4. متغيرات الحالة العامة
         let userId = null;
         let userProfile = null;
         let currentUnsubscribe = null; 
@@ -227,7 +213,6 @@
 
 
         // === إصلاح 2: توسيع قائمة الخدمات (الوظائف) ===
-        // === إضافة: محاسب عادي، مدرس عادي، مهندس عادي ===
         const SERVICES_LIST = [
             { name: 'سباك', icon: '🔧' },
             { name: 'كهربائي منازل', icon: '💡' },
@@ -241,19 +226,15 @@
             { name: 'مهندس معماري (تصميم)', icon: '📐' },
             { name: 'مهندس شبكات', icon: '📶' },
             { name: 'مهندس برمجيات', icon: '💻' },
-            { name: 'مهندس زراعي', icon: '🌾' },
-            { name: 'مهندس عادي', icon: '👷' }, // <--- جديد
             { name: 'محامي (قضايا مدنية)', icon: '⚖️' },
             { name: 'محامي (قضايا أسرية)', icon: '📜' },
             { name: 'طبيب بشري', icon: '⚕️' },
             { name: 'ممرض منزلي', icon: '🩺' },
             { name: 'مدرس خصوصي (لغة عربية)', icon: '✍️' },
             { name: 'مدرس خصوصي (علوم/رياضيات)', icon: '🧠' },
-            { name: 'مدرس عادي', icon: '✏️' }, // <--- جديد
             { name: 'محاسب قانوني', icon: '🧾' },
             { name: 'محاسب شركات', icon: '🧮' },
             { name: 'محاسب تكاليف', icon: '💰' },
-            { name: 'محاسب عادي', icon: '📈' }, // <--- جديد
             { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
             { name: 'تركيب دش وستالايت', icon: '📡' },
             { name: 'عامل بناء', icon: '🧱' },
@@ -275,6 +256,7 @@
             { name: 'جليس مسنين', icon: '🧓' },
             { name: 'سائق خاص', icon: '🚗' },
             { name: 'نقل عفش', icon: '🚚' },
+            { name: 'مهندس زراعي', icon: '🌾' },
             { name: 'مدير مكتب/سكرتير', icon: '📁' },
             { name: 'مندوب مبيعات', icon: '💼' },
             { name: 'أخصائي تسويق رقمي', icon: '📈' },
@@ -313,7 +295,7 @@
 
 
 
-        // 6. أيقونات SVG 
+        // 5. أيقونات SVG 
         const ICONS = {
             star: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>`,
             starEmpty: `<svg class="star-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>`,
@@ -333,7 +315,7 @@
 
 
 
-        // 7. الحاوية الرئيسية
+        // 6. الحاوية الرئيسية
         const appContainer = document.getElementById('app');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
@@ -343,7 +325,7 @@
 
 
 
-        // 8. وظائف مساعدة (Modal)
+        // 7. وظائف مساعدة (Modal)
         function showModal(html) {
             modalContent.innerHTML = html;
             modalBackdrop.classList.remove('hidden');
@@ -506,7 +488,7 @@
 
 
 
-        // 9. وظائف التوجيه (Routing) 
+        // 8. وظائف التوجيه (Routing) 
         function navigateTo(page, params = {}) {
             console.log(`Navigating to: ${page}`, params);
             if (currentUnsubscribe) {
@@ -592,7 +574,7 @@
 
 
 
-        // 10. وظائف عرض الصفحات (Render Functions)
+        // 9. وظائف عرض الصفحات (Render Functions)
 
 
 
@@ -1841,7 +1823,7 @@
 
 
 
-        // 11. وظائف معالجة الأحداث (Event Handlers)
+        // 10. وظائف معالجة الأحداث (Event Handlers)
 
 
 
@@ -2329,7 +2311,7 @@
 
 
                     const totalStars = newRatings.reduce((acc, r) => acc + r.stars, 0);
-                    const newAvgRating = newRatings.length > 0 ? totalStars / newRatings.length : 0;
+                    const newAvgRating = totalStars / newRatings.length;
 
 
                     const updates = {};
@@ -2358,7 +2340,7 @@
 
 
 
-        // 12. Event Delegation (المستمع الرئيسي للأحداث)
+        // 11. Event Delegation (المستمع الرئيسي للأحداث)
         appContainer.addEventListener('click', async (e) => {
             const target = e.target.closest('[data-action]');
             if (!target) return;
@@ -2511,7 +2493,7 @@
         });
 
 
-        // 13. PWA Logic (إصلاح 2)
+        // 12. PWA Logic (إصلاح 2)
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             deferredPrompt = e; 
@@ -2546,7 +2528,7 @@
         document.getElementById('close-install-banner')?.addEventListener('click', hideInstallBanner);
 
 
-        // 14. نقطة البداية الرئيسية
+        // 13. نقطة البداية الرئيسية
         window.onload = () => {
             navigateTo('loading');
 
