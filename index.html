@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght=400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- PWA Manifest for installation prompt (إصلاح 2) -->
-    <!-- ملاحظة: ملف manifest.json يجب إنشاؤه بشكل منفصل ليحتوي على الاسم (خدمات الشرقية) والأيقونة (اسم مستقبل) والوصف -->
     <link rel="manifest" href="manifest.json">
     
     <style>
@@ -189,56 +188,75 @@
         let isBannerShown = false; // PWA Banner control
 
 
-        // === إصلاح 3: قائمة خدمات موسعة (الوظائف) ===
+        // === إصلاح 2: توسيع قائمة الخدمات (الوظائف) ===
         const SERVICES_LIST = [
             { name: 'سباك', icon: '🔧' },
             { name: 'كهربائي منازل', icon: '💡' },
             { name: 'نجار موبيليا', icon: '🪚' },
             { name: 'فني تبريد وتكييف', icon: '❄️' },
+            { name: 'فني صيانة غسالات', icon: '🧺' },
+            { name: 'فني صيانة ثلاجات', icon: '🧊' },
+            { name: 'فني صيانة أجهزة كهربائية', icon: '🔌' },
             { name: 'نقاش ودهانات', icon: '🎨' },
-            { name: 'مهندس مدني / معماري', icon: '🏗️' },
-            { name: 'محامي', icon: '⚖️' },
-            { name: 'طبيب/ممرض منزلي', icon: '🩺' },
-            { name: 'مدرس خصوصي', icon: '📚' },
+            { name: 'مهندس مدني (تنفيذ)', icon: '🏗️' },
+            { name: 'مهندس معماري (تصميم)', icon: '📐' },
+            { name: 'مهندس شبكات', icon: '📶' },
+            { name: 'مهندس برمجيات', icon: '💻' },
+            { name: 'محامي (قضايا مدنية)', icon: '⚖️' },
+            { name: 'محامي (قضايا أسرية)', icon: '📜' },
+            { name: 'طبيب بشري', icon: '⚕️' },
+            { name: 'ممرض منزلي', icon: '🩺' },
+            { name: 'مدرس خصوصي (لغة عربية)', icon: '✍️' },
+            { name: 'مدرس خصوصي (علوم/رياضيات)', icon: '🧠' },
             { name: 'محاسب قانوني', icon: '🧾' },
+            { name: 'محاسب شركات', icon: '🧮' },
+            { name: 'محاسب تكاليف', icon: '💰' },
             { name: 'صيانة هواتف وكمبيوتر', icon: '📱' },
-            { name: 'صيانة أجهزة منزلية', icon: '🔌' },
             { name: 'تركيب دش وستالايت', icon: '📡' },
-            { name: 'عامل بناء / محارة', icon: '🧱' },
-            { name: 'حداد', icon: '🔗' },
-            { name: 'ألوميتال وزجاج', icon: '🪟' },
-            { name: 'مركب سيراميك ورخام', icon: '🔨' },
+            { name: 'عامل بناء', icon: '🧱' },
             { name: 'مبيض محارة', icon: '⬜' },
+            { name: 'مركب سيراميك ورخام', icon: '🔨' },
+            { name: 'حداد مسلح', icon: '🔗' },
+            { name: 'حداد كريتال', icon: '🛡️' },
+            { name: 'ألوميتال وزجاج', icon: '🪟' },
             { name: 'فني كاميرات مراقبة', icon: '📹' },
             { name: 'فني مصاعد', icon: '⬆️' },
-            { name: 'مصور فوتوغرافي/فيديو', icon: '📸' },
-            { name: 'خياط / ترزي', icon: '🧵' },
-            { name: 'طباخ / شيف', icon: '🧑‍🍳' },
+            { name: 'مصور فوتوغرافي', icon: '📸' },
+            { name: 'مصور فيديو', icon: '🎥' },
+            { name: 'خياط / ترزي (ملابس رجالي)', icon: '👔' },
+            { name: 'خياط / ترزي (ملابس حريمي)', icon: '👗' },
+            { name: 'طباخ مناسبات', icon: '🧑‍🍳' },
+            { name: 'شيف مطعم', icon: '🍽️' },
             { name: 'تنظيف منازل ومكاتب', icon: '🧹' },
             { name: 'مربية أطفال', icon: '👶' },
             { name: 'جليس مسنين', icon: '🧓' },
-            { name: 'سائق خاص / نقل عفش', icon: '🚚' },
+            { name: 'سائق خاص', icon: '🚗' },
+            { name: 'نقل عفش', icon: '🚚' },
             { name: 'مهندس زراعي', icon: '🌾' },
             { name: 'مدير مكتب/سكرتير', icon: '📁' },
             { name: 'مندوب مبيعات', icon: '💼' },
-            { name: 'أخصائي تسويق رقمي', icon: '💻' },
+            { name: 'أخصائي تسويق رقمي', icon: '📈' },
             { name: 'مترجم', icon: '🌐' },
             { name: 'مدرب رياضي', icon: '💪' },
             { name: 'مصفف شعر (كوافير)', icon: '💇' },
-            { name: 'فني سيارات/ميكانيكي', icon: '🚗' },
+            { name: 'فني سيارات/ميكانيكي', icon: '⚙️' },
+            { name: 'فني كهرباء سيارات', icon: '🔋' },
             { name: 'صيادلي', icon: '💊' },
             { name: 'موظف استقبال', icon: '🛎️' },
             { name: 'أمين مخزن', icon: '📦' },
-            { name: 'خدمات سياحية', icon: '✈️' },
-            { name: 'فني شبكات', icon: '📶' },
+            { name: 'خدمات سياحية وحجز', icon: '✈️' },
             { name: 'معلم دهان سيارات', icon: '🖌️' },
             { name: 'فني غلايات', icon: '🔥' },
             { name: 'مراقب جودة', icon: '🔎' },
-            { name: 'حارس أمن', icon: '🛡️' },
+            { name: 'حارس أمن', icon: '🔒' },
             { name: 'بائع/كاشير', icon: '🛒' },
             { name: 'مسعف', icon: '🩹' },
             { name: 'مذيع/معلق صوتي', icon: '🎤' },
             { name: 'مدرب كلاب', icon: '🐕' },
+            { name: 'مزارع/جنايني', icon: '🌿' },
+            { name: 'فني ميكانيكا إنتاج', icon: '🏭' },
+            { name: 'فني طباعة وتصوير', icon: '🖨️' },
+            { name: 'فني مختبرات', icon: '🔬' },
             { name: 'أخرى (مهن حرة/عامة)', icon: '👥' },
         ];
         
@@ -364,7 +382,10 @@
         
         // PWA Banner Controller (إصلاح 2)
         function showInstallBanner() {
-            if (deferredPrompt && !isBannerShown) {
+            const displayMode = getDisplayMode();
+            const isInstalled = displayMode !== 'browser';
+
+            if (deferredPrompt && !isBannerShown && !isInstalled) {
                 installBanner.classList.remove('hidden');
                 installBanner.classList.add('flex');
                 setTimeout(() => {
@@ -391,7 +412,7 @@
         // PWA Mini Button Controller (إصلاح 2)
         function toggleMiniInstallButton(show) {
             const displayMode = getDisplayMode();
-            const isInstalled = displayMode === 'standalone' || displayMode === 'fullscreen' || displayMode === 'minimal-ui';
+            const isInstalled = displayMode !== 'browser';
 
             if (show && deferredPrompt && !isInstalled) {
                  miniInstallButton.classList.remove('hidden');
@@ -479,7 +500,6 @@
                 case 'newRequest':
                     renderNewRequestPage();
                     break;
-                // === إصلاح 3: صفحات الوظائف ===
                 case 'jobListings':
                     renderJobListingsPage();
                     break;
@@ -779,17 +799,17 @@
                     const allRequestsQuery = query(requestsColRef, orderBy('createdAt', 'desc'));
                     onSnapshot(allRequestsQuery, (allSnapshot) => {
                         const allRequests = allSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        requestsList.innerHTML = generateRequestList(allRequests, requestsList, `لا توجد طلبات لوظيفة ${userProfile.jobTitle}، هذه كل الطلبات المتاحة.`);
+                        requestsList.innerHTML = generateRequestList(allRequests, `لا توجد طلبات لوظيفة ${userProfile.jobTitle || 'غير محددة'}، هذه كل الطلبات المتاحة.`);
                     });
                 } else {
-                    requestsList.innerHTML = generateRequestList(requests, requestsList);
+                    requestsList.innerHTML = generateRequestList(requests);
                 }
             }, (error) => {
                 console.error("Error fetching requests: ", error);
                 document.getElementById('requests-list').innerHTML = '<p class="text-red-500 p-6 bg-white rounded-lg shadow-sm">حدث خطأ أثناء تحميل الطلبات.</p>';
             });
 
-            function generateRequestList(requests, requestsListEl, emptyMessage = `لا توجد طلبات حالياً لوظيفة ${userProfile.jobTitle || 'غير محددة'}.`) {
+            function generateRequestList(requests, emptyMessage = `لا توجد طلبات حالياً لوظيفة ${userProfile.jobTitle || 'غير محددة'}.`) {
                  if (requests.length === 0) {
                      return `<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">${emptyMessage}</p>`;
                  }
@@ -1062,6 +1082,10 @@
                 const avgRating = profileData.avgRating ? profileData.avgRating.toFixed(1) : 0;
                 const ratingCount = ratings.length;
                 
+                const clientRatings = profileData.clientRatings || [];
+                const clientAvgRating = clientRatings.length > 0 ? (clientRatings.reduce((acc, r) => acc + r.stars, 0) / clientRatings.length).toFixed(1) : 0;
+                const clientRatingCount = clientRatings.length;
+                
                 const profileContent = document.getElementById('profile-content');
                 profileContent.innerHTML = `
                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 flex flex-col items-center">
@@ -1091,7 +1115,7 @@
                                     <span class="text-gray-700 font-medium text-sm">${profileData.username || 'N/A'}</span>
                                 </div>
                             </div>
-                            <!-- === إصلاح 3: عرض الجنس === -->
+                            <!-- === عرض الجنس === -->
                             <div class="flex items-start">
                                 <span class="w-5 text-gray-500 mt-1">🚻</span>
                                 <div class="mr-3">
@@ -1117,9 +1141,10 @@
                     </div>
 
 
+                    <!-- تقييم مقدم الخدمة (إذا كان مقدم خدمة) -->
                     ${profileData.role === 'provider' ? `
                     <div class="bg-white p-4 rounded-lg shadow-md mt-4 border border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">التقييمات (${ratingCount})</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">تقييمات الخدمات التي قدمها (${ratingCount})</h3>
                         <div class="flex items-center mb-4">
                             <span class="text-3xl font-bold text-yellow-500">${avgRating}</span>
                             <span class="text-xl text-gray-400 mx-2">/</span>
@@ -1144,6 +1169,36 @@
                         </div>
                     </div>
                     ` : ''}
+                    
+                    <!-- تقييم العميل (إذا كان عميل) === إصلاح 3 === -->
+                    ${profileData.role === 'client' ? `
+                    <div class="bg-white p-4 rounded-lg shadow-md mt-4 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">تقييمات العميل من مقدمي الخدمات (${clientRatingCount})</h3>
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl font-bold text-yellow-500">${clientAvgRating}</span>
+                            <span class="text-xl text-gray-400 mx-2">/</span>
+                            <span class="text-xl text-gray-400">5</span>
+                            <div class="flex mr-4">
+                                ${renderStarRating(clientAvgRating, 5, 'h-6 w-6 text-yellow-400')}
+                            </div>
+                        </div>
+                        
+                        <div id="client-ratings-list" class="space-y-3 max-h-48 overflow-y-auto no-scrollbar text-sm">
+                            ${clientRatings.length > 0 ? clientRatings.sort((a,b) => b.createdAt.toMillis() - a.createdAt.toMillis()).map(r => `
+                                <div class="border-t border-gray-200 pt-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold text-gray-800">${r.byName || 'مستخدم'}</span>
+                                        <div class="flex text-yellow-400">
+                                            ${renderStarRating(r.stars, 5, 'h-4 w-4')}
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 mt-1">${r.comment}</p>
+                                </div>
+                            `).join('') : '<p class="text-gray-500">لا توجد تقييمات بعد.</p>'}
+                        </div>
+                    </div>
+                    ` : ''}
+
                     
                     ${uid === userId ? `
                         <button data-action="logout" 
@@ -1299,6 +1354,10 @@
                 return;
             }
             
+            // تحديد ما إذا كان يمكن التقييم (مقدم خدمة يُقيّم عميل، أو عميل يُقيّم مقدم خدمة)
+            const isProviderRatingClient = userProfile.role === 'provider' && otherUserProfile.role === 'client';
+            const isClientRatingProvider = userProfile.role === 'client' && otherUserProfile.role === 'provider';
+            
             appContainer.innerHTML = `
                 <div class="flex flex-col h-screen max-h-screen"> 
                     <header class="bg-indigo-800 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between space-x-3 space-x-reverse">
@@ -1310,8 +1369,14 @@
                         </div>
                         
                         <div class="flex items-center space-x-2 space-x-reverse">
-                            ${(otherUserProfile.role === 'provider' && userProfile.role === 'client') ? `
-                                <button data-action="openRatingModal" data-providerid="${otherUserId}" data-providername="${otherUserProfile.name}"
+                            ${isClientRatingProvider ? `
+                                <button data-action="openRatingModal" data-targetrole="provider" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
+                                        class="p-1 text-yellow-300 hover:text-yellow-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
+                                </button>
+                            ` : ''}
+                            ${isProviderRatingClient ? `
+                                <button data-action="openRatingClientModal" data-targetrole="client" data-targetid="${otherUserId}" data-targetname="${otherUserProfile.name}"
                                         class="p-1 text-yellow-300 hover:text-yellow-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
                                 </button>
@@ -1658,7 +1723,7 @@
                 const photoURL = document.getElementById('photo-base64').value || null; 
                 
                 const jobSelect = document.getElementById('register-job-select')?.value;
-                const jobTitle = jobSelect; // لا يوجد حقل "أخرى" الآن
+                const jobTitle = jobSelect;
                 
                 // التحقق من رقم الهاتف والعنوان
                 if (phone.length !== 11 || !/^[0-9]{11}$/.test(phone)) {
@@ -1705,7 +1770,9 @@
                     jobTitleSearch: jobTitleSearch, 
                     createdAt: Timestamp.now(),
                     ratings: [],
-                    avgRating: 0
+                    avgRating: 0,
+                    clientRatings: [], // === إصلاح 3: تقييم العميل ===
+                    clientAvgRating: 0 // === إصلاح 3: تقييم العميل ===
                 };
                 
                 const userDocRef = doc(db, `artifacts/${appId}/public/data/users`, newUserId);
@@ -1945,9 +2012,9 @@
             }
         }
         
-        function handleOpenRatingModal(providerId, providerName) {
+        function handleOpenRatingModal(targetRole, targetId, targetName) {
             const modalHtml = `
-                <h2 class="text-2xl font-semibold text-center mb-4">تقييم ${providerName}</h2>
+                <h2 class="text-xl font-semibold text-center mb-4">تقييم ${targetName} (${targetRole === 'provider' ? 'مقدم خدمة' : 'عميل'})</h2>
                 <div id="rating-stars" class="flex justify-center text-gray-300 space-x-2 space-x-reverse mb-4 cursor-pointer">
                     ${[1,2,3,4,5].map(i => `<span data-action="setRating" data-value="${i}" class="star-icon hover:text-yellow-400">${ICONS.starEmpty}</span>`).join('')}
                 </div>
@@ -1957,7 +2024,7 @@
                     <button data-action="closeModal" class="flex-1 py-2 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-sm">
                         إلغاء
                     </button>
-                    <button data-action="submitRating" data-providerid="${providerId}" class="flex-1 py-2 px-4 border border-transparent rounded-md text-white bg-indigo-600 hover:bg-indigo-700 text-sm">
+                    <button data-action="submitRating" data-targetrole="${targetRole}" data-targetid="${targetId}" class="flex-1 py-2 px-4 border border-transparent rounded-md text-white bg-indigo-600 hover:bg-indigo-700 text-sm">
                         إرسال التقييم
                     </button>
                 </div>
@@ -1965,28 +2032,31 @@
             showModal(modalHtml);
         }
         
-        async function handleSubmitRating(providerId) {
+        // === توحيد دالة إرسال التقييم للمقدم والعميل (إصلاح 3) ===
+        async function handleSubmitRating(targetId, targetRole) {
             const stars = parseInt(document.getElementById('rating-value').value);
             const comment = document.getElementById('rating-comment').value.trim();
             
             if (stars === 0) {
-                showMessageModal('خطأ', 'يرجى اختيار عدد النجوم لتقييم مقدم الخدمة.', false);
+                showMessageModal('خطأ', 'يرجى اختيار عدد النجوم لتقييم المستخدم.', false);
                 return;
             }
             
             showLoading('جاري إرسال التقييم...');
             
             try {
-                const providerDocRef = doc(db, `artifacts/${appId}/public/data/users`, providerId);
+                const targetDocRef = doc(db, `artifacts/${appId}/public/data/users`, targetId);
+                const ratingFieldName = targetRole === 'provider' ? 'ratings' : 'clientRatings';
+                const avgRatingFieldName = targetRole === 'provider' ? 'avgRating' : 'clientAvgRating';
                 
                 await runTransaction(db, async (transaction) => {
-                    const providerDoc = await transaction.get(providerDocRef);
-                    if (!providerDoc.exists()) {
-                        throw "Provider document does not exist!";
+                    const targetDoc = await transaction.get(targetDocRef);
+                    if (!targetDoc.exists()) {
+                        throw "Target user document does not exist!";
                     }
                     
-                    const data = providerDoc.data();
-                    const oldRatings = data.ratings || [];
+                    const data = targetDoc.data();
+                    const oldRatings = data[ratingFieldName] || [];
                     const filteredRatings = oldRatings.filter(r => r.by !== userId);
                     
                     const newRating = {
@@ -2001,15 +2071,16 @@
                     const totalStars = newRatings.reduce((acc, r) => acc + r.stars, 0);
                     const newAvgRating = totalStars / newRatings.length;
                     
-                    transaction.update(providerDocRef, {
-                        ratings: newRatings,
-                        avgRating: newAvgRating
-                    });
+                    const updates = {};
+                    updates[ratingFieldName] = newRatings;
+                    updates[avgRatingFieldName] = newAvgRating;
+                    
+                    transaction.update(targetDocRef, updates);
                 });
                 
                 hideLoading();
                 hideModal();
-                showMessageModal('نجاح', 'شكراً لتقييمك لمقدم الخدمة!', true);
+                showMessageModal('نجاح', 'شكراً لتقييمك!', true);
 
 
             } catch (error) {
@@ -2031,8 +2102,9 @@
             const uid = target.dataset.uid;
             const category = target.dataset.category;
             const otherUserId = target.dataset.otheruserid;
-            const providerId = target.dataset.providerid;
-            const providerName = target.dataset.providername;
+            const targetId = target.dataset.targetid;
+            const targetName = target.dataset.targetname;
+            const targetRole = target.dataset.targetrole;
 
 
             switch (action) {
@@ -2080,12 +2152,15 @@
                     e.preventDefault();
                     await handleSubmitRequest(e);
                     break;
-                case 'submitJobPost': // === إصلاح 3 ===
+                case 'submitJobPost': 
                     e.preventDefault();
                     await handleSubmitJobPost(e);
                     break;
-                case 'openRatingModal':
-                    handleOpenRatingModal(providerId, providerName);
+                case 'openRatingModal': // تقييم مقدم الخدمة
+                    handleOpenRatingModal('provider', targetId, targetName);
+                    break;
+                case 'openRatingClientModal': // تقييم العميل === إصلاح 3 ===
+                    handleOpenRatingModal('client', targetId, targetName);
                     break;
             }
         });
@@ -2118,8 +2193,9 @@
                     });
                     break;
                 case 'submitRating':
-                    const providerId = target.dataset.providerid;
-                    handleSubmitRating(providerId);
+                    const targetId = target.dataset.targetid;
+                    const targetRole = target.dataset.targetrole;
+                    handleSubmitRating(targetId, targetRole);
                     break;
             }
         });
@@ -2157,13 +2233,12 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             deferredPrompt = e; 
-            if (userId) { // أظهر البانر والإشعار فقط إذا كان المستخدم مسجلاً الدخول
+            if (userId) { 
                 showInstallBanner(); 
             }
             console.log("PWA install prompt deferred.");
         });
         
-        // إخفاء زر التثبيت إذا تم التثبيت بالفعل (متصفحات Chromium)
         window.addEventListener('appinstalled', () => {
              toggleMiniInstallButton(false);
              hideInstallBanner();
@@ -2207,7 +2282,7 @@
                         console.log('User profile found:', userProfile);
                         
                         // إظهار زر التثبيت الصغير عند تسجيل الدخول
-                        if (!getDisplayMode().includes('standalone')) {
+                        if (getDisplayMode() === 'browser') {
                             toggleMiniInstallButton(true);
                         }
                         
