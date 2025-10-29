@@ -40,18 +40,18 @@
             display: inline-block;
         }
         
-        /* === تعديل 3: تغيير لون فقاعة الشات إلى نيلي غامق (تم إصلاح مشكلة @apply) === */
+        /* === تعديل فقاعات الشات === */
         .chat-bubble-sent {
             background-color: #1e40af; /* bg-blue-800 */
             color: white; /* text-white */
-            padding: 0.6rem 0.75rem; /* p-3 */
+            padding: 0.6rem 0.75rem; 
             border-radius: 1.25rem 1.25rem 0 1.25rem; 
             word-wrap: break-word; 
         }
         .chat-bubble-received {
             background-color: #e5e7eb; /* bg-gray-200 */
             color: #1f2937; /* text-gray-800 */
-            padding: 0.6rem 0.75rem; /* p-3 */
+            padding: 0.6rem 0.75rem; 
             border-radius: 1.25rem 1.25rem 1.25rem 0; 
             word-wrap: break-word; 
         }
@@ -64,28 +64,31 @@
             -webkit-line-clamp: 1;
         }
         
-        /* === تعديل 3: تصغير حجم الموقع في وضع الهاتف */
         /* تقليل التباعدات الافتراضية */
         .main-padding {
             padding: 0.75rem; /* p-3 */
         }
         @media (min-width: 768px) {
             .main-padding {
-                padding: 2rem; /* p-8 على الشاشات الكبيرة */
+                padding: 2rem; 
             }
         }
         
         /* === إصلاح 1: تصغير ارتفاع البار العلوي === */
         .app-header {
-            padding: 0.75rem 1rem; /* p-3 - p-4 */
+            padding: 0.5rem 0.75rem; 
+        }
+        /* === إصلاح 1: تصغير ارتفاع بار الترحيب === */
+        .welcome-header {
+            padding: 0.75rem 1rem; 
         }
         
     </style>
 </head>
 <body class="bg-gray-50">
 
-    <!-- PWA Install Prompt Banner (إصلاح 2) -->
-    <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-blue-700 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
+    <!-- PWA Install Prompt Banner -->
+    <div id="install-banner" class="fixed top-0 left-0 right-0 z-50 bg-indigo-700 text-white p-2 shadow-xl hidden justify-between items-center max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl transition-transform duration-300 transform -translate-y-full">
         <div class="flex items-center space-x-3 space-x-reverse">
             <span class="text-lg">🛠️</span>
             <p class="text-xs font-medium">ثبّت "خدمات الشرقية" لتجربة تطبيق كاملة.</p>
@@ -94,7 +97,7 @@
             <button id="close-install-banner" class="text-white opacity-70 hover:opacity-100 text-sm">
                 &times;
             </button>
-            <button id="install-button" class="bg-white text-blue-700 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
+            <button id="install-button" class="bg-white text-indigo-700 font-bold py-1 px-3 rounded-full text-xs hover:bg-gray-100 transition-colors">
                 تثبيت
             </button>
         </div>
@@ -173,41 +176,36 @@
         let isRegistering = false; 
         let allUsers = []; 
         
-        // === تعديل 1: مكدس التنقل ===
         let navigationHistory = [];
         let deferredPrompt = null; // PWA variable
         let isBannerShown = false; // PWA Banner control
 
 
-        // قائمة الخدمات الموسعة جداً
+        // === إصلاح 4: قائمة خدمات موسعة بمهن مصرية شائعة ===
         const SERVICES_LIST = [
-            { name: 'سباك', icon: '🔧', categorySearch: 'سباك' },
-            { name: 'كهربائي', icon: '💡', categorySearch: 'كهربائي' },
-            { name: 'نجار', icon: '🪚', categorySearch: 'نجار' },
+            { name: 'سباك / مواسير', icon: '🔧', categorySearch: 'سباك مواسير' },
+            { name: 'كهربائي منازل', icon: '💡', categorySearch: 'كهربائي منازل' },
+            { name: 'نجار / موبيليا', icon: '🪚', categorySearch: 'نجار موبيليا' },
             { name: 'فني تبريد وتكييف', icon: '❄️', categorySearch: 'تكييف' },
-            { name: 'فني صيانة هواتف', icon: '📱', categorySearch: 'هواتف' },
-            { name: 'فني صيانة شاشات', icon: '📺', categorySearch: 'شاشات' },
-            { name: 'فني صيانة أجهزة', icon: '🔌', categorySearch: 'اجهزة' },
-            { name: 'فني صيانة دش', icon: '📡', categorySearch: 'دش' },
-            { name: 'عامل بناء / محارة', icon: '🧱', categorySearch: 'عامل بناء محارة' },
             { name: 'نقاش / دهانات', icon: '🎨', categorySearch: 'نقاش دهانات' },
-            { name: 'مهندس مدني', icon: '🏗️', categorySearch: 'مهندس مدني' }, 
-            { name: 'مهندس معماري', icon: '📐', categorySearch: 'مهندس معماري' }, 
-            { name: 'مهندس زراعي', icon: '🌾', categorySearch: 'مهندس زراعي' }, 
-            { name: 'مهندس حاسبات / برمجة', icon: '💻', categorySearch: 'مهندس حاسبات برمجة' }, 
-            { name: 'مدرس / معلم', icon: '📚', categorySearch: 'مدرس معلم تعليمية' }, 
-            { name: 'سكرتير / سكرتارية', icon: '📁', categorySearch: 'سكرتير سكرتارية' }, 
-            { name: 'محاسب / كاتب حسابات', icon: '🧾', categorySearch: 'محاسب كاتب حسابات' }, 
-            { name: 'خدمات طبية / طبيب', icon: '🩺', categorySearch: 'طبية طبيب' },
-            { name: 'ممرض / تمريض منزلي', icon: '🩹', categorySearch: 'ممرض تمريض' },
-            { name: 'نقل وشحن / عفش', icon: '🚚', categorySearch: 'نقل شحن عفش' },
-            { name: 'خدمات قانونية / محامي', icon: '⚖️', categorySearch: 'قانونية محامي' },
-            { name: 'تنظيف منازل', icon: '🧹', categorySearch: 'تنظيف منازل' },
-            { name: 'طباخ / شيف', icon: '🧑‍🍳', categorySearch: 'طباخ شيف' },
-            { name: 'مصور', icon: '📸', categorySearch: 'مصور' },
+            { name: 'محارة / بناء', icon: '🧱', categorySearch: 'محارة بناء عامل بناء' },
+            { name: 'تركيب سيراميك / رخام', icon: '🔨', categorySearch: 'سيراميك رخام' },
+            { name: 'حداد كريتال / لحام', icon: '🔗', categorySearch: 'حداد كريتال لحام' },
+            { name: 'ألوميتال وشبابيك', icon: '🪟', categorySearch: 'ألوميتال شبابيك' },
+            { name: 'فني دش / ستالايت', icon: '📡', categorySearch: 'دش ستالايت' },
+            { name: 'صيانة أجهزة منزلية', icon: '🔌', categorySearch: 'اجهزة منزلية' },
+            { name: 'صيانة هواتف / كمبيوتر', icon: '📱', categorySearch: 'هواتف كمبيوتر برمجة' },
+            { name: 'محامي / خدمات قانونية', icon: '⚖️', categorySearch: 'قانونية محامي' },
+            { name: 'محاسب / مراجعة حسابات', icon: '🧾', categorySearch: 'محاسب كاتب حسابات' },
+            { name: 'تدريس (خصوصي)', icon: '📚', categorySearch: 'مدرس معلم تعليمية' }, 
+            { name: 'خدمات طبية / تمريض منزلي', icon: '🩺', categorySearch: 'طبية طبيب ممرض تمريض' },
+            { name: 'طباخ / شيف مناسبات', icon: '🧑‍🍳', categorySearch: 'طباخ شيف' },
+            { name: 'تنظيف منازل / مربية', icon: '🧹', categorySearch: 'تنظيف منازل مربية' },
+            { name: 'سائق / نقل عفش', icon: '🚚', categorySearch: 'سائق نقل شحن عفش' },
+            { name: 'مصور فوتوغرافي / فيديو', icon: '📸', categorySearch: 'مصور' },
             { name: 'خياط / ترزي', icon: '🧵', categorySearch: 'خياط ترزي' },
-            { name: 'حداد', icon: '🔗', categorySearch: 'حداد' },
-            { name: 'مزارع / جنايني', icon: '🌿', categorySearch: 'مزارع جنايني زراعة' },
+            { name: 'مهندس مدني / معماري', icon: '🏗️', categorySearch: 'مهندس مدني معماري' }, 
+            { name: 'مندوب مبيعات / تسويق', icon: '💼', categorySearch: 'مندوب مبيعات تسويق' }, 
             { name: 'خدمات عامة / أخرى', icon: '👥', categorySearch: 'خدمات عامة أخرى' },
         ];
         
@@ -260,7 +258,7 @@
             // استخدام Modal للتحميل
             const html = `
                 <div class="flex flex-col items-center justify-center p-6">
-                    <svg class="animate-spin h-10 w-10 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg class="animate-spin h-10 w-10 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
@@ -281,7 +279,7 @@
             const html = `
                 <h2 class="text-xl font-semibold text-center ${color} mb-4">${title}</h2>
                 <p class="text-center text-gray-700">${message}</p>
-                <button data-action="closeModal" class="mt-4 w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">حسناً</button>
+                <button data-action="closeModal" class="mt-4 w-full py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">حسناً</button>
             `;
             showModal(html);
         }
@@ -294,7 +292,7 @@
                 reader.onload = (readerEvent) => {
                     const img = new Image();
                     img.onload = () => {
-                        const MAX_SIZE = 400; // تقليل الحجم قليلاً
+                        const MAX_SIZE = 400; 
                         let width = img.width;
                         let height = img.height;
 
@@ -320,7 +318,7 @@
 
 
                         // التحويل إلى Base64 مع ضغط الجودة
-                        const dataUrl = canvas.toDataURL('image/jpeg', 0.6); // ضغط أكبر
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.6); 
                         resolve(dataUrl); 
                     };
                     img.src = readerEvent.target.result;
@@ -329,7 +327,7 @@
             });
         }
         
-        // PWA Banner Controller (إصلاح 2)
+        // PWA Banner Controller
         function showInstallBanner() {
             if (deferredPrompt && !isBannerShown) {
                 installBanner.classList.remove('hidden');
@@ -365,7 +363,6 @@
                 console.log('Unsubscribed from real-time listener.');
             }
             
-            // تحقق من عدم التكرار والدفع إلى مكدس التاريخ (إصلاح 1)
             const newRoute = { page, params };
             if (page !== 'loading' && page !== 'auth' && page !== 'register') {
                 const lastRoute = navigationHistory[navigationHistory.length - 1];
@@ -376,7 +373,6 @@
                     }
                 }
             } else if (page === 'auth' || page === 'register') {
-                 // مسح التاريخ عند الذهاب لصفحة تسجيل الدخول/التسجيل
                 navigationHistory = [];
                 navigationHistory.push(newRoute);
             }
@@ -440,7 +436,7 @@
             appContainer.innerHTML = `
                 <div class="flex items-center justify-center min-h-screen">
                     <div class="flex flex-col items-center">
-                        <svg class="animate-spin h-12 w-12 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg class="animate-spin h-12 w-12 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -453,9 +449,9 @@
 
         function renderAuthPage() {
             appContainer.innerHTML = `
-                <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-blue-600">
+                <div class="flex flex-col items-center justify-center min-h-screen p-4 bg-indigo-600">
                     <h1 class="text-4xl font-bold text-white mb-4">خدمات الشرقية</h1>
-                    <p class="text-lg text-blue-100 mb-8 text-center">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
+                    <p class="text-lg text-indigo-100 mb-8 text-center">أهلاً بك في تطبيق خدمات محافظة الشرقية</p>
                     
                     <div class="w-full max-w-sm bg-white rounded-lg shadow-xl p-6">
                         <form id="login-form" class="space-y-4">
@@ -464,13 +460,13 @@
                             
                             <div>
                                 <label for="login-identifier" class="block text-sm font-medium text-gray-700">اسم المستخدم</label>
-                                <input type="text" id="login-identifier" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="ادخل اسم المستخدم">
+                                <input type="text" id="login-identifier" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="ادخل اسم المستخدم">
                             </div>
                             <div>
                                 <label for="login-password" class="block text-sm font-medium text-gray-700">كلمة المرور</label>
-                                <input type="password" id="login-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="********">
+                                <input type="password" id="login-password" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="********">
                             </div>
-                            <button type="submit" data-action="login" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <button type="submit" data-action="login" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 دخول
                             </button>
                         </form>
@@ -481,7 +477,7 @@
                             <span class="border-t border-gray-300 flex-grow"></span>
                         </div>
                         
-                        <button data-action="navigateTo" data-page="register" class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <button data-action="navigateTo" data-page="register" class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             إنشاء حساب جديد
                         </button>
                     </div>
@@ -512,9 +508,9 @@
                             <label for="photo-upload-input" class="block text-sm font-medium text-gray-700 text-center cursor-pointer">
                                 الصورة الشخصية (اختياري)
                                 <div class="mt-2 flex flex-col items-center justify-center">
-                                    <img id="photo-preview" class="w-24 h-24 rounded-full object-cover border-2 border-gray-300 p-1 hover:border-blue-500 transition-colors" 
+                                    <img id="photo-preview" class="w-24 h-24 rounded-full object-cover border-2 border-gray-300 p-1 hover:border-indigo-500 transition-colors" 
                                          src="https://placehold.co/100x100/EBF8FF/3182CE?text=User" alt="صورة افتراضية">
-                                    <span class="text-xs text-blue-500 mt-2 hover:underline">اضغط لرفع صورتك</span>
+                                    <span class="text-xs text-indigo-500 mt-2 hover:underline">اضغط لرفع صورتك</span>
                                 </div>
                             </label>
                             <input type="hidden" id="photo-base64" value="">
@@ -524,36 +520,36 @@
                         
                         <div>
                             <label for="register-username" class="block text-sm font-medium text-gray-700">اسم المستخدم</label>
-                            <input type="text" id="register-username" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: myname123">
+                            <input type="text" id="register-username" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: myname123">
                         </div>
                         
                         <div>
                             <label for="register-password" class="block text-sm font-medium text-gray-700">كلمة المرور (6 حروف أو أرقام على الأقل)</label>
-                            <input type="password" id="register-password" required minlength="6" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="********">
+                            <input type="password" id="register-password" required minlength="6" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="********">
                         </div>
                         
                         <hr class="my-3">
                         
                         <div>
                             <label for="register-name" class="block text-sm font-medium text-gray-700">الاسم الكامل</label>
-                            <input type="text" id="register-name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: محمد أحمد علي">
+                            <input type="text" id="register-name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: محمد أحمد علي">
                         </div>
                         <div>
                             <label for="register-phone" class="block text-sm font-medium text-gray-700">رقم الهاتف (11 رقم)</label>
-                            <input type="tel" id="register-phone" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: 01012345678">
+                            <input type="tel" id="register-phone" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: 01012345678">
                         </div>
                         
                         <!-- تقسيم العنوان -->
                         <div>
                             <label for="register-city" class="block text-sm font-medium text-gray-700">المركز / المدينة</label>
-                            <select id="register-city" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                            <select id="register-city" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                 <option value="">اختر المركز/المدينة</option>
                                 ${cityOptions}
                             </select>
                         </div>
                         <div>
                             <label for="register-area" class="block text-sm font-medium text-gray-700">المنطقة / تفاصيل العنوان</label>
-                            <input type="text" id="register-area" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: القومية، شارع 33">
+                            <input type="text" id="register-area" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: القومية، شارع 33">
                         </div>
                         
                         <hr class="my-3">
@@ -562,11 +558,11 @@
                             <label class="block text-sm font-medium text-gray-700">أرغب في التسجيل كـ:</label>
                             <div class="mt-2 flex space-x-4 space-x-reverse">
                                 <label class="flex items-center">
-                                    <input type="radio" name="role" value="client" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300" checked>
+                                    <input type="radio" name="role" value="client" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" checked>
                                     <span class="mr-2 text-gray-700 text-sm">عميل</span>
                                 </label>
                                 <label class="flex items-center">
-                                    <input type="radio" name="role" value="provider" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
+                                    <input type="radio" name="role" value="provider" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
                                     <span class="mr-2 text-gray-700 text-sm">مقدم خدمة</span>
                                 </label>
                             </div>
@@ -575,7 +571,7 @@
                         <div id="job-title-field" class="hidden space-y-4">
                             <div>
                                 <label for="register-job-select" class="block text-sm font-medium text-gray-700">اختر وظيفتك / الخدمة:</label>
-                                <select id="register-job-select" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                <select id="register-job-select" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                     <option value="">اختر...</option>
                                     ${serviceOptions}
                                     <option value="أخرى">أخرى (اذكرها بالأسفل)</option>
@@ -583,17 +579,17 @@
                             </div>
                             <div id="job-title-other-field" class="hidden">
                                 <label for="register-job-title" class="block text-sm font-medium text-gray-700">اذكر وظيفتك:</label>
-                                <input type="text" id="register-job-title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: مصمم جرافيك">
+                                <input type="text" id="register-job-title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: مصمم جرافيك">
                             </div>
                         </div>
                         
-                        <button type="submit" data-action="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <button type="submit" data-action="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             إنشاء الحساب
                         </button>
                         
                         <p class="text-center text-xs text-gray-600">
                             هل لديك حساب بالفعل؟ 
-                            <button type="button" data-action="navigateTo" data-page="auth" class="font-medium text-blue-600 hover:text-blue-500">
+                            <button type="button" data-action="navigateTo" data-page="auth" class="font-medium text-indigo-600 hover:text-indigo-500">
                                 سجل الدخول
                             </button>
                         </p>
@@ -620,33 +616,33 @@
             });
         }
         
-        // === إصلاح 4: عرض جميع الأقسام في الصفحة الرئيسية للعميل ===
+        // === تعديل 1 و 2 و 4: الصفحة الرئيسية للعميل ===
         function renderClientHome() {
             const categoriesHtml = SERVICES_LIST.map(cat => `
                 <div data-action="navigateTo" data-page="category" data-category="${cat.categorySearch}" 
-                     class="flex flex-col items-center justify-center bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-gray-200 hover:border-blue-500">
-                    <span class="text-4xl mb-2">${cat.icon}</span>
-                    <h3 class="text-sm font-semibold text-gray-800 text-center">${cat.name}</h3>
+                     class="flex flex-col items-center justify-center bg-indigo-50 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-indigo-200 hover:border-indigo-500">
+                    <span class="text-3xl mb-1">${cat.icon}</span>
+                    <h3 class="text-xs font-semibold text-gray-800 text-center">${cat.name}</h3>
                 </div>
             `).join('');
 
 
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-blue-600 text-white app-header shadow-md sticky top-0 z-10">
-                        <h1 class="text-xl font-bold">أهلاً بك، ${userProfile.name}</h1>
-                        <p class="text-blue-100 text-sm">ابحث عن الخدمة التي تحتاجها في محافظة الشرقية</p>
+                    <header class="bg-indigo-600 text-white welcome-header shadow-md sticky top-0 z-10">
+                        <h1 class="text-lg font-bold">أهلاً بك، ${userProfile.name}</h1>
+                        <p class="text-indigo-100 text-xs">ابحث عن الخدمة التي تحتاجها في محافظة الشرقية</p>
                     </header>
                     
                     <main class="main-padding">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-4">أقسام الخدمات</h2>
+                        <h2 class="text-base font-semibold text-gray-900 mb-4">أقسام الخدمات المتاحة</h2>
                         <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
                             ${categoriesHtml}
                         </div>
                     </main>
                     
                     <button data-action="navigateTo" data-page="newRequest" 
-                            class="fixed bottom-24 left-4 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-blue-700 transition-colors">
+                            class="fixed bottom-16 left-4 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-indigo-700 transition-colors">
                         ${ICONS.add}
                     </button>
                     
@@ -656,18 +652,19 @@
         }
 
 
+        // === تعديل 1 و 2 و 3: الصفحة الرئيسية لمقدم الخدمة ===
         async function renderProviderHome() {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-blue-600 text-white app-header shadow-md sticky top-0 z-10">
-                        <h1 class="text-xl font-bold">أهلاً بك، ${userProfile.name}</h1>
-                        <p class="text-blue-100 text-sm">تصفح طلبات الخدمات المتاحة حالياً</p>
+                    <header class="bg-indigo-600 text-white welcome-header shadow-md sticky top-0 z-10">
+                        <h1 class="text-lg font-bold">أهلاً بك، ${userProfile.name}</h1>
+                        <p class="text-indigo-100 text-xs">تصفح طلبات الخدمات المتاحة حالياً</p>
                     </header>
                     
-                    <main class="main-padding">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-4">طلبات الخدمات المتاحة</h2>
-                        <div id="requests-list" class="space-y-3 bg-gray-50">
-                            <p class="text-gray-500 text-center p-6">جاري تحميل الطلبات...</p>
+                    <main class="main-padding bg-gray-50">
+                        <h2 class="text-base font-semibold text-gray-900 mb-4">طلبات الخدمات المتاحة</h2>
+                        <div id="requests-list" class="space-y-3">
+                            <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري تحميل الطلبات...</p>
                         </div>
                     </main>
                     
@@ -679,7 +676,7 @@
             currentUnsubscribe = onSnapshot(requestsColRef, (snapshot) => {
                 const requestsList = document.getElementById('requests-list');
                 if (snapshot.empty) {
-                    requestsList.innerHTML = '<p class="text-gray-500 text-center p-6">لا توجد طلبات خدمات متاحة حالياً.</p>';
+                    requestsList.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا توجد طلبات خدمات متاحة حالياً.</p>';
                     return;
                 }
                 
@@ -688,7 +685,7 @@
 
 
                 requestsList.innerHTML = requests.map(req => `
-                    <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                    <div class="bg-indigo-50 p-4 rounded-lg shadow-md border border-indigo-200">
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center space-x-3 space-x-reverse">
                                 <img data-action="navigateTo" data-page="profile" data-uid="${req.requesterId}"
@@ -696,7 +693,7 @@
                                      alt="${req.requesterName}" class="w-10 h-10 rounded-full object-cover cursor-pointer">
                                 <div>
                                     <h4 data-action="navigateTo" data-page="profile" data-uid="${req.requesterId}" 
-                                        class="font-semibold text-gray-800 text-sm cursor-pointer hover:text-blue-600">${req.requesterName}</h4>
+                                        class="font-semibold text-gray-800 text-sm cursor-pointer hover:text-indigo-600">${req.requesterName}</h4>
                                     <p class="text-xs text-gray-500">طلب خدمة: ${req.category}</p>
                                 </div>
                             </div>
@@ -705,7 +702,7 @@
                         <h3 class="text-base font-semibold text-gray-900 mb-1">${req.title}</h3>
                         <p class="text-sm text-gray-600 mb-3">${req.description.substring(0, 100)}...</p>
                         <button data-action="navigateTo" data-page="chat" data-otheruserid="${req.requesterId}"
-                                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+                                class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors">
                             تواصل مع العميل
                         </button>
                     </div>
@@ -716,19 +713,20 @@
             });
         }
         
+        // === تعديل 1 و 2 و 3: صفحة تصنيف الخدمات ===
         async function renderCategoryPage(categoryName) {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-white text-gray-800 app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
                         <h1 class="text-lg font-bold">مقدمو خدمة: ${categoryName || 'كل الخدمات'}</h1>
-                        <button data-action="goBack" class="bg-blue-800 text-white rounded-full p-1.5 w-7 h-7 flex items-center justify-center hover:bg-blue-900 transition-colors">
+                        <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             ${ICONS.back}
                         </button>
                     </header>
                     
-                    <main class="main-padding">
-                        <div id="providers-list" class="space-y-3 bg-gray-50">
-                            <p class="text-gray-500 text-center p-6">جاري البحث عن مقدمي خدمات...</p>
+                    <main class="main-padding bg-gray-50">
+                        <div id="providers-list" class="space-y-3">
+                            <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري البحث عن مقدمي خدمات...</p>
                         </div>
                     </main>
                     
@@ -748,25 +746,24 @@
 
 
                 if (providers.length === 0) {
-                    providersListEl.innerHTML = '<p class="text-gray-500 text-center p-6">لا يوجد مقدمو خدمات مسجلون في هذا القسم حالياً.</p>';
+                    providersListEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا يوجد مقدمو خدمات مسجلون في هذا القسم حالياً.</p>';
                     return;
                 }
 
 
-                // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون ===
                 providersListEl.innerHTML = providers.map(p => {
                     const avgRating = p.avgRating ? p.avgRating.toFixed(1) : 'جديد';
                     const ratingCount = p.ratings ? p.ratings.length : 0;
                     
                     return `
-                    <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-200 flex items-center space-x-3 space-x-reverse">
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-sm border border-indigo-200 flex items-center space-x-3 space-x-reverse">
                         <img data-action="navigateTo" data-page="profile" data-uid="${p.uid}"
                              src="${p.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
                              alt="${p.name}" class="w-12 h-12 rounded-full object-cover cursor-pointer">
                         <div class="flex-1">
                             <div class="flex justify-between items-center">
                                 <h3 data-action="navigateTo" data-page="profile" data-uid="${p.uid}"
-                                    class="text-base font-semibold text-gray-900 cursor-pointer hover:text-blue-600">${p.name}</h3>
+                                    class="text-base font-semibold text-gray-900 cursor-pointer hover:text-indigo-600">${p.name}</h3>
                                 <div class="flex items-center text-yellow-500 text-xs">
                                     <span class="font-bold mr-1">${avgRating}</span>
                                     ${ICONS.star}
@@ -777,7 +774,7 @@
                             <p class="text-xs text-gray-500">${p.addressCity || p.address} - ${p.addressArea || ''}</p>
                         </div>
                         <button data-action="navigateTo" data-page="chat" data-otheruserid="${p.uid}"
-                                class="flex-shrink-0 bg-blue-100 text-blue-700 py-1.5 px-3 rounded-md text-sm font-medium hover:bg-blue-200 transition-colors">
+                                class="flex-shrink-0 bg-indigo-100 text-indigo-700 py-1.5 px-3 rounded-md text-sm font-medium hover:bg-indigo-200 transition-colors">
                             تواصل
                         </button>
                     </div>
@@ -788,6 +785,7 @@
             });
         }
         
+        // === تعديل 1 و 2 و 3: صفحة دليل المستخدمين ===
         async function renderDirectoryPage() {
             function renderUserList(users) {
                 const listEl = document.getElementById('directory-list');
@@ -802,17 +800,17 @@
 
 
                 if (filteredUsers.length === 0) {
-                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6">لم يتم العثور على مستخدمين مطابقين لنتائج البحث.</p>';
+                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لم يتم العثور على مستخدمين مطابقين لنتائج البحث.</p>';
                     return;
                 }
                 
                 // === إصلاح 3: تصميم بطاقة الأعضاء مميز بمسافة ولون ===
                 listEl.innerHTML = filteredUsers.map(user => {
                     const userRole = user.role === 'provider' ? (user.jobTitle || 'مقدم خدمة') : 'عميل';
-                    const userColor = user.role === 'provider' ? 'text-blue-600' : 'text-green-600';
+                    const userColor = user.role === 'provider' ? 'text-indigo-600' : 'text-green-600';
                     return `
                     <div data-action="navigateTo" data-page="profile" data-uid="${user.uid}" 
-                         class="bg-white p-3 rounded-lg shadow-sm border border-gray-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-gray-100 transition-colors">
+                         class="bg-indigo-50 p-3 rounded-lg shadow-sm border border-indigo-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-indigo-100 transition-colors">
                         <img src="${user.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
                              alt="${user.name}" class="w-12 h-12 rounded-full object-cover">
                         <div class="flex-1">
@@ -827,14 +825,14 @@
             
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-white app-header shadow-md sticky top-0 z-10">
-                        <h1 class="text-xl font-bold text-gray-900 mb-3">دليل المستخدمين</h1>
-                        <input type="text" id="search-directory" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="ابحث بالاسم أو الوظيفة...">
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10">
+                        <h1 class="text-xl font-bold mb-0">دليل المستخدمين</h1>
+                        <input type="text" id="search-directory" class="w-full px-4 py-1.5 border border-indigo-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-white focus:border-white text-sm text-gray-900 mt-2" placeholder="ابحث بالاسم أو الوظيفة...">
                     </header>
                     
-                    <main class="main-padding">
-                        <div id="directory-list" class="space-y-3 bg-gray-50">
-                            <p class="text-gray-500 text-center p-6">جاري تحميل المستخدمين...</p>
+                    <main class="main-padding bg-gray-50">
+                        <div id="directory-list" class="space-y-3">
+                            <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري تحميل المستخدمين...</p>
                         </div>
                     </main>
                     
@@ -862,16 +860,17 @@
         }
 
 
+        // === تعديل 1 و 2 و 3: صفحة قائمة المحادثات ===
         async function renderChatListPage() {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-white app-header shadow-md sticky top-0 z-10">
-                        <h1 class="text-xl font-bold text-gray-900">المحادثات</h1>
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10">
+                        <h1 class="text-xl font-bold">المحادثات</h1>
                     </header>
                     
-                    <main class="main-padding">
-                        <div id="chat-list-container" class="space-y-3 bg-gray-50">
-                            <p class="text-gray-500 text-center p-6">جاري تحميل المحادثات...</p>
+                    <main class="main-padding bg-gray-50">
+                        <div id="chat-list-container" class="space-y-3">
+                            <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري تحميل المحادثات...</p>
                         </div>
                     </main>
                     
@@ -882,17 +881,17 @@
             const chatsColRef = collection(db, `artifacts/${appId}/public/data/chats`);
             const q = query(chatsColRef, where('users', 'array-contains', userId));
             
-            // === إصلاح 3: تصميم بطاقة المحادثات مميز بمسافة ولون ===
             currentUnsubscribe = onSnapshot(q, (snapshot) => {
                 const listEl = document.getElementById('chat-list-container');
                 if (snapshot.empty) {
-                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6">لا توجد لديك محادثات حتى الآن.</p>';
+                    listEl.innerHTML = '<p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">لا توجد لديك محادثات حتى الآن.</p>';
                     return;
                 }
                 
                 const chats = snapshot.docs.map(doc => doc.data());
                 chats.sort((a, b) => b.lastUpdate.toMillis() - a.lastUpdate.toMillis());
                 
+                // === إصلاح 3: تصميم بطاقة المحادثات مميز بمسافة ولون ===
                 listEl.innerHTML = chats.map(chat => {
                     const otherUserId = chat.users.find(uid => uid !== userId);
                     if (!chat.userDetails || !chat.userDetails[otherUserId]) {
@@ -902,7 +901,7 @@
                     
                     return `
                     <div data-action="navigateTo" data-page="chat" data-otheruserid="${otherUserId}"
-                         class="bg-white p-3 rounded-lg shadow-md border border-gray-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-gray-100 transition-colors">
+                         class="bg-indigo-50 p-3 rounded-lg shadow-md border border-indigo-200 flex items-center space-x-3 space-x-reverse cursor-pointer hover:bg-indigo-100 transition-colors">
                         <img src="${otherUser.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
                              alt="${otherUser.name}" class="w-12 h-12 rounded-full object-cover">
                         <div class="flex-1 overflow-hidden">
@@ -921,26 +920,27 @@
             });
         }
         
+        // === تعديل 1 و 2: صفحة الملف الشخصي ===
         async function renderProfilePage(uid) {
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-white text-gray-800 app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
-                        <h1 class="text-xl font-bold text-gray-900">الملف الشخصي</h1>
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold">الملف الشخصي</h1>
                         <div class="flex items-center space-x-2 space-x-reverse">
                             ${uid === userId ? `
                                 <button data-action="navigateTo" data-page="editProfile"
-                                        class="p-1 text-blue-600 hover:text-blue-700 w-8 h-8 flex items-center justify-center rounded-full">
+                                        class="p-1 text-white hover:text-indigo-100 w-7 h-7 flex items-center justify-center rounded-full">
                                     ${ICONS.edit}
                                 </button>
                             ` : ''}
-                            <button data-action="goBack" class="bg-blue-800 text-white rounded-full p-1.5 w-7 h-7 flex items-center justify-center hover:bg-blue-900 transition-colors">
+                            <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                                 ${ICONS.back}
                             </button>
                         </div>
                     </header>
                     
                     <main id="profile-content" class="main-padding bg-gray-50">
-                        <p class="text-gray-500 text-center p-6">جاري تحميل الملف الشخصي...</p>
+                        <p class="text-gray-500 text-center p-6 bg-white rounded-lg shadow-sm">جاري تحميل الملف الشخصي...</p>
                     </main>
                     
                     ${renderBottomNav(uid === userId ? 'profile' : '')}
@@ -969,13 +969,13 @@
                              alt="${profileData.name}" class="w-28 h-28 rounded-full object-cover shadow-lg border-4 border-white mb-3">
                         <h2 class="text-2xl font-bold text-gray-900">${profileData.name}</h2>
                         ${profileData.role === 'provider' ? 
-                            `<p class="text-lg text-blue-600 font-medium mt-1">${profileData.jobTitle || 'مقدم خدمة'}</p>` : 
+                            `<p class="text-lg text-indigo-600 font-medium mt-1">${profileData.jobTitle || 'مقدم خدمة'}</p>` : 
                             '<p class="text-lg text-green-600 font-medium mt-1">عميل</p>'
                         }
                         
                         ${uid !== userId ? `
                             <button data-action="navigateTo" data-page="chat" data-otheruserid="${uid}"
-                                    class="mt-4 bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold text-base hover:bg-blue-700 transition-colors">
+                                    class="mt-4 bg-indigo-600 text-white py-2 px-6 rounded-lg font-semibold text-base hover:bg-indigo-700 transition-colors">
                                 تواصل الآن
                             </button>
                         ` : ''}
@@ -1053,6 +1053,7 @@
         }
 
 
+        // === تعديل 1 و 2: صفحة تعديل الملف الشخصي ===
         function renderEditProfilePage() {
             if (!userProfile) {
                 navigateTo('auth');
@@ -1073,9 +1074,9 @@
             
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
-                        <h1 class="text-xl font-bold text-gray-900">تعديل الملف الشخصي</h1>
-                        <button data-action="goBack" class="bg-blue-800 text-white rounded-full p-1.5 w-7 h-7 flex items-center justify-center hover:bg-blue-900 transition-colors">
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold">تعديل الملف الشخصي</h1>
+                        <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             ${ICONS.back}
                         </button>
                     </header>
@@ -1090,9 +1091,9 @@
                                 <label for="photo-upload-input" class="block text-sm font-medium text-gray-700 text-center cursor-pointer">
                                     الصورة الشخصية
                                     <div class="mt-2 flex flex-col items-center justify-center">
-                                        <img id="photo-preview" class="w-24 h-24 rounded-full object-cover border-2 border-blue-400 p-0.5 hover:border-blue-700 transition-colors" 
+                                        <img id="photo-preview" class="w-24 h-24 rounded-full object-cover border-2 border-indigo-400 p-0.5 hover:border-indigo-700 transition-colors" 
                                              src="${userProfile.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" alt="الصورة الحالية">
-                                        <span class="text-xs text-blue-500 mt-2 hover:underline">اضغط لتغيير صورتك</span>
+                                        <span class="text-xs text-indigo-500 mt-2 hover:underline">اضغط لتغيير صورتك</span>
                                     </div>
                                 </label>
                                 <input type="hidden" id="photo-base64" value="${userProfile.photoURL || ''}">
@@ -1102,31 +1103,31 @@
                             
                             <div>
                                 <label for="edit-name" class="block text-sm font-medium text-gray-700">الاسم الكامل</label>
-                                <input type="text" id="edit-name" value="${userProfile.name}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                <input type="text" id="edit-name" value="${userProfile.name}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                             </div>
                             <div>
                                 <label for="edit-phone" class="block text-sm font-medium text-gray-700">رقم الهاتف (11 رقم)</label>
-                                <input type="tel" id="edit-phone" value="${userProfile.phone}" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                <input type="tel" id="edit-phone" value="${userProfile.phone}" required pattern="[0-9]{11}" maxlength="11" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm">
                             </div>
                             
                             <!-- تقسيم العنوان -->
                             <div>
                                 <label for="edit-city" class="block text-sm font-medium text-gray-700">المركز / المدينة</label>
-                                <select id="edit-city" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                <select id="edit-city" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                     <option value="">اختر المركز/المدينة</option>
                                     ${cityOptions}
                                 </select>
                             </div>
                             <div>
                                 <label for="edit-area" class="block text-sm font-medium text-gray-700">المنطقة / تفاصيل العنوان</label>
-                                <input type="text" id="edit-area" value="${userProfile.addressArea}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: القومية، شارع 33">
+                                <input type="text" id="edit-area" value="${userProfile.addressArea}" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: القومية، شارع 33">
                             </div>
                             
                             ${userProfile.role === 'provider' ? `
                                 <div id="job-title-edit-field" class="space-y-4">
                                     <div>
                                         <label for="edit-job-select" class="block text-sm font-medium text-gray-700">اختر وظيفتك / الخدمة:</label>
-                                        <select id="edit-job-select" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                        <select id="edit-job-select" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                             <option value="" ${!userProfile.jobTitle ? 'selected' : ''}>اختر...</option>
                                             ${serviceOptions}
                                             <option value="other" ${isCustomJobTitle ? 'selected' : ''}>أخرى (اذكرها بالأسفل)</option>
@@ -1134,7 +1135,7 @@
                                     </div>
                                     <div id="edit-job-title-other-field" class="${isCustomJobTitle ? '' : 'hidden'}">
                                         <label for="edit-job-title" class="block text-sm font-medium text-gray-700">اذكر وظيفتك:</label>
-                                        <input type="text" id="edit-job-title" value="${isCustomJobTitle ? userProfile.jobTitle : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: مصمم جرافيك">
+                                        <input type="text" id="edit-job-title" value="${isCustomJobTitle ? userProfile.jobTitle : ''}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: مصمم جرافيك">
                                     </div>
                                 </div>
                             ` : ''}
@@ -1177,6 +1178,7 @@
             });
         }
         
+        // === تعديل 1 و 2: صفحة المحادثة ===
         async function renderChatPage(otherUserId) {
             let otherUserProfile = null;
             try {
@@ -1195,7 +1197,7 @@
             
             appContainer.innerHTML = `
                 <div class="flex flex-col h-screen max-h-screen"> 
-                    <header class="bg-white text-gray-800 app-header shadow-md sticky top-0 z-10 flex items-center justify-between space-x-3 space-x-reverse">
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between space-x-3 space-x-reverse">
                         <div class="flex items-center space-x-3 space-x-reverse">
                             <img data-action="navigateTo" data-page="profile" data-uid="${otherUserId}"
                                  src="${otherUserProfile.photoURL || 'https://placehold.co/100x100/EBF8FF/3182CE?text=User'}" 
@@ -1206,25 +1208,25 @@
                         <div class="flex items-center space-x-2 space-x-reverse">
                             ${(otherUserProfile.role === 'provider' && userProfile.role === 'client') ? `
                                 <button data-action="openRatingModal" data-providerid="${otherUserId}" data-providername="${otherUserProfile.name}"
-                                        class="p-1 text-yellow-500 hover:text-yellow-600">
+                                        class="p-1 text-yellow-300 hover:text-yellow-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.31h5.513c.498 0 .704.656.34.985l-4.46 4.062a.562.562 0 0 0-.162.541l1.618 5.22c.19.613-.526 1.09-1.04.724l-4.59-3.44a.563.563 0 0 0-.642 0l-4.59 3.44c-.514.366-1.23-.111-1.04-.724l1.618-5.22a.562.562 0 0 0-.162-.541l-4.46-4.062a.563.563 0 0 1 .34-.985h5.513a.563.563 0 0 0 .475.31l2.125-5.112Z" /></svg>
                                 </button>
                             ` : ''}
-                            <button data-action="goBack" class="bg-blue-800 text-white rounded-full p-1.5 w-7 h-7 flex items-center justify-center hover:bg-blue-900 transition-colors">
+                            <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                                 ${ICONS.back}
                             </button>
                         </div>
                     </header>
                     
                     <main id="messages-container" class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-100 no-scrollbar">
-                        <p class="text-center text-gray-500 text-sm">جاري تحميل الرسائل...</p>
+                        <p class="text-center text-gray-500 text-sm">ابدأ المحادثة...</p>
                     </main>
                     
                     <footer class="bg-white p-3 shadow-inner sticky bottom-0 z-10 border-t border-gray-200">
                         <form id="chat-form" class="flex items-center space-x-2 space-x-reverse">
-                            <input type="text" id="message-input" class="flex-1 block w-full px-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="اكتب رسالتك..." required>
+                            <input type="text" id="message-input" class="flex-1 block w-full px-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="اكتب رسالتك..." required>
                             <button type="submit" data-action="sendMessage" data-otheruserid="${otherUserId}"
-                                    class="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 ${ICONS.send}
                             </button>
                         </form>
@@ -1256,7 +1258,7 @@
                         <div class="flex ${alignmentClass}">
                             <div class="${bubbleClass} max-w-[80%] text-sm">
                                 <p>${msg.text}</p>
-                                <span class="text-xs ${isSent ? 'text-blue-100' : 'text-gray-500'} block text-left mt-1">
+                                <span class="text-xs ${isSent ? 'text-indigo-100' : 'text-gray-500'} block text-left mt-1">
                                     ${new Date(msg.createdAt.toDate()).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </div>
@@ -1275,6 +1277,7 @@
             });
         }
         
+        // === تعديل 1 و 2: صفحة طلب خدمة جديد ===
         function renderNewRequestPage() {
             const serviceOptions = SERVICES_LIST.map(service => 
                 `<option value="${service.name}">${service.name}</option>`
@@ -1283,9 +1286,9 @@
 
             appContainer.innerHTML = `
                 <div class="pb-24">
-                    <header class="bg-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
-                        <h1 class="text-xl font-bold text-gray-900">طلب خدمة جديد</h1>
-                        <button data-action="goBack" class="bg-blue-800 text-white rounded-full p-1.5 w-7 h-7 flex items-center justify-center hover:bg-blue-900 transition-colors">
+                    <header class="bg-indigo-600 text-white app-header shadow-md sticky top-0 z-10 flex items-center justify-between">
+                        <h1 class="text-xl font-bold">طلب خدمة جديد</h1>
+                        <button data-action="goBack" class="bg-white text-indigo-800 rounded-full p-1 w-7 h-7 flex items-center justify-center hover:bg-gray-100 transition-colors">
                             ${ICONS.back}
                         </button>
                     </header>
@@ -1296,24 +1299,23 @@
                             
                             <div>
                                 <label for="request-title" class="block text-sm font-medium text-gray-700">عنوان الطلب</label>
-                                <input type="text" id="request-title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="مثال: أحتاج سباك لإصلاح صنبور">
+                                <input type="text" id="request-title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="مثال: أحتاج سباك لإصلاح صنبور">
                             </div>
                             
                             <div>
                                 <label for="request-category" class="block text-sm font-medium text-gray-700">القسم</label>
-                                <select id="request-category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white text-sm">
+                                <select id="request-category" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm">
                                     <option value="">اختر القسم</option>
                                     ${serviceOptions}
-                                    <option value="أخرى">أخرى</option>
                                 </select>
                             </div>
                             
                             <div>
                                 <label for="request-description" class="block text-sm font-medium text-gray-700">وصف الخدمة المطلوبة</label>
-                                <textarea id="request-description" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="يرجى كتابة تفاصيل الخدمة المطلوبة..."></textarea>
+                                <textarea id="request-description" rows="4" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="يرجى كتابة تفاصيل الخدمة المطلوبة..."></textarea>
                             </div>
                             
-                            <button type="submit" data-action="submitRequest" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <button type="submit" data-action="submitRequest" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 نشر الطلب
                             </button>
                         </form>
@@ -1323,34 +1325,34 @@
         }
 
 
-        // === إصلاح 1: تصغير ارتفاع شريط التنقل السفلي ===
+        // === إصلاح 1 و 2: تصغير ارتفاع شريط التنقل السفلي وتغيير اللون ===
         function renderBottomNav(activeTab) {
-            const activeClass = 'text-blue-600';
-            const inactiveClass = 'text-gray-500 hover:text-gray-700';
+            const activeClass = 'text-white bg-indigo-800';
+            const inactiveClass = 'text-indigo-200 hover:text-white';
             
             return `
-                <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-white shadow-lg border-t border-gray-200 z-20">
-                    <div class="flex justify-around items-center h-14">
+                <nav class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto md:max-w-2xl lg:max-w-4xl bg-indigo-600 shadow-lg border-t border-indigo-700 z-20">
+                    <div class="flex justify-around items-center h-12">
                         <button data-action="navigateTo" data-page="home" 
-                                class="flex flex-col items-center justify-center p-2 ${activeTab === 'home' ? activeClass : inactiveClass}">
+                                class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'home' ? activeClass : inactiveClass}">
                             ${ICONS.home}
                             <span class="text-xs font-medium">الرئيسية</span>
                         </button>
                         
                         <button data-action="navigateTo" data-page="directory" 
-                                class="flex flex-col items-center justify-center p-2 ${activeTab === 'directory' ? activeClass : inactiveClass}">
+                                class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'directory' ? activeClass : inactiveClass}">
                             ${ICONS.users}
                             <span class="text-xs font-medium">الدليل</span>
                         </button>
                         
                         <button data-action="navigateTo" data-page="chatList" 
-                                class="flex flex-col items-center justify-center p-2 ${activeTab === 'chatList' ? activeClass : inactiveClass}">
+                                class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'chatList' ? activeClass : inactiveClass}">
                             ${ICONS.chat}
                             <span class="text-xs font-medium">المحادثات</span>
                         </button>
                         
                         <button data-action="navigateTo" data-page="profile" data-uid="${userId}"
-                                class="flex flex-col items-center justify-center p-2 ${activeTab === 'profile' ? activeClass : inactiveClass}">
+                                class="flex flex-col items-center justify-center p-1 rounded-md ${activeTab === 'profile' ? activeClass : inactiveClass}">
                             ${ICONS.profile}
                             <span class="text-xs font-medium">ملفي</span>
                         </button>
@@ -1692,7 +1694,7 @@
                     <button data-action="closeModal" class="flex-1 py-2 px-4 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 text-sm">
                         إلغاء
                     </button>
-                    <button data-action="submitRating" data-providerid="${providerId}" class="flex-1 py-2 px-4 border border-transparent rounded-md text-white bg-blue-600 hover:bg-blue-700 text-sm">
+                    <button data-action="submitRating" data-providerid="${providerId}" class="flex-1 py-2 px-4 border border-transparent rounded-md text-white bg-indigo-600 hover:bg-indigo-700 text-sm">
                         إرسال التقييم
                     </button>
                 </div>
@@ -1779,13 +1781,12 @@
                     else navigateTo(page);
                     break;
                 
-                // === إصلاح 1: زر الرجوع الذكي ===
                 case 'goBack':
                     if (navigationHistory.length > 1) {
                         navigationHistory.pop(); 
                         const previousRoute = navigationHistory[navigationHistory.length - 1];
                         navigateTo(previousRoute.page, previousRoute.params); 
-                        navigationHistory.pop(); // سيتم إضافتها مرة أخرى في navigateTo، لذا نحذفها من هنا لتجنب التكرار
+                        navigationHistory.pop(); 
                     } else if (userId) {
                          navigateTo(userProfile.role === 'provider' ? 'providerHome' : 'clientHome');
                     } else {
@@ -1895,11 +1896,11 @@
             e.preventDefault();
         });
         
-        // 12. PWA Logic (إصلاح 2)
+        // 12. PWA Logic 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             deferredPrompt = e; 
-            showInstallBanner(); // إظهار البانر عند توفره
+            showInstallBanner(); 
             console.log("PWA install prompt deferred.");
         });
         
